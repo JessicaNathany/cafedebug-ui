@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { KeyboardEvent } from "react";
+import { Controller } from "react-hook-form";
 import type { UseFormReturn } from "react-hook-form";
 
 import { useCategories } from "@/features/categories/hooks/use-categories";
@@ -260,19 +261,25 @@ export function EpisodeEditorForm({
                 <label className="flex flex-col gap-2">
                   <span className={labelClassName}>Category</span>
                   <span className="relative block">
-                    <select
-                      aria-invalid={errors.categoryId ? true : undefined}
-                      className={`${inputClassName} cursor-pointer appearance-none pr-12`}
-                      disabled={isCategoriesLoading || isCategoriesError}
-                      {...register("categoryId")}
-                    >
-                      <option value="">Select a category</option>
-                      {categories.map((category) => (
-                        <option key={category.id} value={String(category.id)}>
-                          {category.name}
-                        </option>
-                      ))}
-                    </select>
+                    <Controller
+                      control={form.control}
+                      name="categoryId"
+                      render={({ field }) => (
+                        <select
+                          aria-invalid={errors.categoryId ? true : undefined}
+                          className={`${inputClassName} cursor-pointer appearance-none pr-12`}
+                          disabled={isCategoriesLoading || isCategoriesError}
+                          {...field}
+                        >
+                          <option value="">Select a category</option>
+                          {categories.map((category) => (
+                            <option key={category.id} value={String(category.id)}>
+                              {category.name}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    />
                     <span
                       aria-hidden="true"
                       className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] text-on-surface-variant"

@@ -92,7 +92,7 @@ const readEpisodeRecord = (
   const publishedAt =
     toTrimmedString(source.publishedAt) ?? toTrimmedString(source.publishDate) ?? "";
   const number = toInteger(source.number) ?? toInteger(source.episodeNumber) ?? null;
-  const categoryId = toInteger(source.categoryId) ?? null;
+  const categoryId = toInteger(readNestedRecord(source, "category")?.id) ?? null;
   const createdAt = toTrimmedString(source.createdAt) ?? "";
   const updatedAt = toTrimmedString(source.updatedAt) ?? "";
 
