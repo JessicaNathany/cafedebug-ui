@@ -66,3 +66,4 @@ TestResults/
 docker-data/
 .docker-data/
 .mcp.json
+.junie/
