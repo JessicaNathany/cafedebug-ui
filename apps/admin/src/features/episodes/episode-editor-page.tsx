@@ -113,10 +113,14 @@ export function EpisodeEditorPage({ mode, id }: EpisodeEditorPageProps) {
     <EpisodeEditorForm
       activeAction={editor.activeAction}
       activeStatus={editor.activeStatus}
+      fileSelectionError={editor.fileSelectionError}
       form={editor.form}
+      imagePreviewUrl={editor.imagePreviewUrl}
       isSubmitting={editor.isSubmitting}
+      isUploadingImage={editor.isUploadingImage}
       mode={mode}
       onCancel={editor.handleNavigateBack}
+      onFileSelected={editor.handleFileSelected}
       onSubmitAction={editor.submitAction}
       submitError={editor.submitError}
     />

@@ -23,7 +23,7 @@ export const episodeEditorSchema = z.object({
   shortDescription: z
     .string()
     .trim()
-    .max(240, "Short description must have at most 240 characters."),
+    .max(500, "Short description must have at most 500 characters."),
   description: z
     .string()
     .trim()

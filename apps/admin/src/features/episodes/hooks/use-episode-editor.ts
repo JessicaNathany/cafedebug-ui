@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +11,10 @@ import {
   createEpisodeEditorTelemetryHooks,
   trackApiFailure
 } from "@/lib/observability/telemetry";
+import {
+  ACCEPTED_IMAGE_MIME_TYPES,
+  uploadEpisodeImage
+} from "@/features/images/services/images.service";
 
 import { episodeEditorDefaultValues } from "../defaults";
 import { useCreateEpisode } from "./use-create-episode";
@@ -103,6 +107,10 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
   const [submitError, setSubmitError] = useState<AdminRouteError | null>(null);
   const [activeAction, setActiveAction] = useState<EpisodeMutationAction | null>(null);
   const [hasPendingNavigation, setHasPendingNavigation] = useState(false);
+  const [pendingImageFile, setPendingImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [fileSelectionError, setFileSelectionError] = useState<string | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const telemetry = useMemo(
     () => createEpisodeEditorTelemetryHooks(mode === "new" ? "create" : "edit"),
     [mode]
@@ -143,6 +151,46 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
     return () => window.removeEventListener("beforeunload", beforeUnloadHandler);
   }, [form.formState.isDirty, hasPendingNavigation]);
 
+  useEffect(() => {
+    if (!imagePreviewUrl) {
+      return;
+    }
+
+    return () => URL.revokeObjectURL(imagePreviewUrl);
+  }, [imagePreviewUrl]);
+
+  const handleFileSelected = useCallback((file: File | null) => {
+    if (!file) {
+      setPendingImageFile(null);
+      setImagePreviewUrl((previous) => {
+        if (previous) {
+          URL.revokeObjectURL(previous);
+        }
+        return null;
+      });
+      setFileSelectionError(null);
+      return;
+    }
+
+    const isAccepted = (ACCEPTED_IMAGE_MIME_TYPES as readonly string[]).includes(
+      file.type
+    );
+
+    if (!isAccepted) {
+      setFileSelectionError("Only JPG, PNG, or SVG files are supported.");
+      return;
+    }
+
+    setImagePreviewUrl((previous) => {
+      if (previous) {
+        URL.revokeObjectURL(previous);
+      }
+      return URL.createObjectURL(file);
+    });
+    setPendingImageFile(file);
+    setFileSelectionError(null);
+  }, []);
+
   const loadError =
     episodeQuery.error && mode === "edit" ? normalizeError(episodeQuery.error) : null;
 
@@ -177,6 +225,14 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
   const handleMutationSuccess = async (action: EpisodeMutationAction) => {
     setSubmitError(null);
     setActiveAction(null);
+    setPendingImageFile(null);
+    setImagePreviewUrl((previous) => {
+      if (previous) {
+        URL.revokeObjectURL(previous);
+      }
+      return null;
+    });
+    setFileSelectionError(null);
 
     if (action === "publish") {
       telemetry.onPublishSuccess({
@@ -233,22 +289,56 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
   };
 
   const submitAction = (action: EpisodeMutationAction) =>
-    form.handleSubmit((values) => {
+    form.handleSubmit(async (values) => {
+      setSubmitError(null);
+      setActiveAction(action);
+
+      let resolvedImageUrl = values.imageUrl;
+
+      if (pendingImageFile) {
+        setIsUploadingImage(true);
+
+        try {
+          const { imageUrl } = await uploadEpisodeImage(pendingImageFile);
+          resolvedImageUrl = imageUrl;
+        } catch (uploadError) {
+          setIsUploadingImage(false);
+
+          const normalizedError = normalizeError(uploadError);
+
+          setSubmitError(normalizedError);
+          setActiveAction(null);
+
+          trackApiFailure({
+            module: "images",
+            action: "upload",
+            endpoint: "/api/admin/images/upload",
+            method: "POST",
+            error: normalizedError,
+            fallbackStatus: normalizedError.status,
+            ...(normalizedError.traceId ? { traceId: normalizedError.traceId } : {})
+          });
+
+          return;
+        }
+
+        setIsUploadingImage(false);
+      }
+
       const payload = toEpisodeRequestPayload({
         values: {
           ...values,
+          imageUrl: resolvedImageUrl,
           publishedAt: toIsoDateTimeValue(values.publishedAt)
         },
         action
       });
 
-      setSubmitError(null);
-      setActiveAction(action);
-
       if (mode === "new") {
         createEpisodeMutation.mutate(payload, {
           onError: (error) => handleMutationError(action, error),
           onSuccess: async () => {
+            form.setValue("imageUrl", resolvedImageUrl, { shouldDirty: false });
             await handleMutationSuccess(action);
           }
         });
@@ -269,6 +359,7 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
         {
           onError: (error) => handleMutationError(action, error),
           onSuccess: async () => {
+            form.setValue("imageUrl", resolvedImageUrl, { shouldDirty: false });
             await handleMutationSuccess(action);
           }
         }
@@ -279,11 +370,18 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
     activeAction,
     activeStatus: episodeQuery.data?.active ?? false,
     episode: episodeQuery.data as EpisodeRecord | null | undefined,
+    fileSelectionError,
     form,
+    handleFileSelected,
     handleNavigateBack,
+    imagePreviewUrl,
     isInvalidEpisodeId: mode === "edit" && !episodeId,
     isLoading: mode === "edit" && episodeQuery.isLoading,
-    isSubmitting: createEpisodeMutation.isPending || updateEpisodeMutation.isPending,
+    isSubmitting:
+      createEpisodeMutation.isPending ||
+      updateEpisodeMutation.isPending ||
+      isUploadingImage,
+    isUploadingImage,
     loadError,
     mode,
     retryLoad: () => episodeQuery.refetch(),
