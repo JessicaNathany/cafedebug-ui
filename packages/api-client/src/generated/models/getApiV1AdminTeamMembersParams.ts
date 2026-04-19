@@ -7,6 +7,7 @@
  */
 
 export type GetApiV1AdminTeamMembersParams = {
+search?: string;
 page?: number;
 pageSize?: number;
 sortBy?: string;

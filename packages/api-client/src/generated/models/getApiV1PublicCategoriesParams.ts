@@ -6,7 +6,7 @@
  * OpenAPI spec version: v1
  */
 
-export type GetApiV1AdminCategoriesParams = {
+export type GetApiV1PublicCategoriesParams = {
 search?: string;
 page?: number;
 pageSize?: number;

@@ -19,6 +19,7 @@ export * from './getApiV1AdminCategoriesParams';
 export * from './getApiV1AdminEpisodesParams';
 export * from './getApiV1AdminTeamMembersParams';
 export * from './getApiV1PublicBannersParams';
+export * from './getApiV1PublicCategoriesParams';
 export * from './getApiV1PublicEpisodesParams';
 export * from './imageFolder';
 export * from './imageResponse';

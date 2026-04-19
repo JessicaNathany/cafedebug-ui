@@ -7,6 +7,7 @@
  */
 
 export type GetApiV1PublicEpisodesParams = {
+search?: string;
 page?: number;
 pageSize?: number;
 sortBy?: string;

@@ -7,6 +7,7 @@
  */
 
 export type GetApiV1PublicBannersParams = {
+search?: string;
 page?: number;
 pageSize?: number;
 sortBy?: string;
