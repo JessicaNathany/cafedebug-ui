@@ -23,7 +23,6 @@ The repo is currently in the architecture and project-definition phase. The firs
 The modernization plan is based on the current public assets and repositories:
 
 - live website: `https://cafedebug.com.br`
-- legacy frontend: [`JessicaNathany/cafedebug.legacy`](https://github.com/JessicaNathany/cafedebug.legacy)
 - backend API: [`JessicaNathany/cafedebug-backend.api`](https://github.com/JessicaNathany/cafedebug-backend.api)
 
 What we confirmed from those sources:
