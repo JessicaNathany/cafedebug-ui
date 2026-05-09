@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  admin-validation:
-    name: admin-validation
+  admin-gate:
+    name: admin-gate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

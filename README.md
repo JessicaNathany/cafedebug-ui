@@ -1,5 +1,7 @@
 # CafeDebug Platform
 
+[![Validation Gates](https://github.com/RegisBarros/cafedebug-ui/actions/workflows/validation-gates.yml/badge.svg?branch=main)](https://github.com/RegisBarros/cafedebug-ui/actions/workflows/validation-gates.yml)
+
 ![image](https://user-images.githubusercontent.com/11943572/234849730-c6b41618-6c13-4a87-9b5e-5b9d16ba4474.png)
 
 
@@ -392,7 +394,7 @@ Use these root commands locally to match CI:
 - `pnpm ci:admin:validate` → runs `@cafedebug/admin` lint, then typecheck
 - `pnpm ci:validation` → runs the full admin sequence in order: build → test → validate
 
-Branch protection for `main` should require the single `admin-validation` job from the `Validation Gates` workflow.
+Branch protection for `main` should require the single `admin-gate` job from the `Validation Gates` workflow.
 
 `apps/web`, `packages/api-client`, and other packages are not part of this required CI gate.
 
