@@ -20,7 +20,8 @@ export interface EpisodeRequest {
   /** @nullable */
   tags?: string[] | null;
   publishedAt?: string;
-  active?: boolean;
+  /** @nullable */
+  status?: string | null;
   number?: number;
   categoryId?: number;
 }

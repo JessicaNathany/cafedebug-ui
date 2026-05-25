@@ -17,3 +17,14 @@ body {
 :root[data-theme="dark"] body {
   @apply bg-surface;
 }
+
+@layer utilities {
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}

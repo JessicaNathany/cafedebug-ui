@@ -11,7 +11,7 @@ export type TelemetryLevel = "debug" | "info" | "warn" | "error";
 type TelemetryOutcome = "success" | "failure";
 type LoginEventSource = "login-form" | "auth-login-route";
 type EpisodeEditorMode = "create" | "edit";
-type EpisodeMutationAction = "save-draft" | "publish";
+type EpisodeMutationAction = "save-draft" | "archive" | "publish";
 
 type TelemetryEventInput = {
   level: TelemetryLevel;
@@ -68,6 +68,8 @@ type CaptureUiExceptionInput = {
 export type EpisodeEditorTelemetryHooks = {
   onSaveDraftSuccess: (context?: EpisodeOutcomeContext) => void;
   onSaveDraftFailure: (context?: EpisodeOutcomeContext) => void;
+  onArchiveSuccess: (context?: EpisodeOutcomeContext) => void;
+  onArchiveFailure: (context?: EpisodeOutcomeContext) => void;
   onPublishSuccess: (context?: EpisodeOutcomeContext) => void;
   onPublishFailure: (context?: EpisodeOutcomeContext) => void;
 };
@@ -297,6 +299,24 @@ export const createEpisodeEditorTelemetryHooks = (
     trackEpisodeEditorOutcome({
       mode,
       action: "save-draft",
+      outcome: "failure",
+      ...(context?.traceId ? { traceId: context.traceId } : {}),
+      ...(typeof context?.status === "number" ? { status: context.status } : {}),
+      ...(context?.reason ? { reason: context.reason } : {})
+    }),
+  onArchiveSuccess: (context) =>
+    trackEpisodeEditorOutcome({
+      mode,
+      action: "archive",
+      outcome: "success",
+      ...(context?.traceId ? { traceId: context.traceId } : {}),
+      ...(typeof context?.status === "number" ? { status: context.status } : {}),
+      ...(context?.reason ? { reason: context.reason } : {})
+    }),
+  onArchiveFailure: (context) =>
+    trackEpisodeEditorOutcome({
+      mode,
+      action: "archive",
       outcome: "failure",
       ...(context?.traceId ? { traceId: context.traceId } : {}),
       ...(typeof context?.status === "number" ? { status: context.status } : {}),

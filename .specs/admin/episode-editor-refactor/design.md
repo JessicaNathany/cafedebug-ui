@@ -1,54 +1,46 @@
 # Episode Editor Refactor Design
 
+| Field | Value |
+|---|---|
+| **Status** | `Implemented` |
+| **Token source** | `.specs/admin/DESIGN_SYSTEM.md` + `packages/design-tokens/styles.css` |
+
 ## Architecture
 
 - Route files remain thin and render `EpisodeEditorPage`.
-- `EpisodeEditorPage` becomes a feature composition boundary.
-- A new `useEpisodeEditor` hook owns data loading, mutation orchestration, dirty navigation guard, and submit state.
-- A new `EpisodeEditorForm` component owns the split-pane UI and local presentation concerns like preview mode and markdown toolbar behavior.
+- `EpisodeEditorPage` remains the feature composition boundary.
+- `useEpisodeEditor` owns data loading, mutation orchestration, dirty navigation guard, upload state, and lifecycle status exposure.
+- `EpisodeEditorForm` owns the split-pane presentation and footer actions.
 
-## UI Structure
-
-### Top Bar
+## Top Bar
 
 - Back button on the left.
 - Overline `EPISODES` and mode-aware subtitle.
-- Status badge on the right.
+- Lifecycle badge on the right.
+- New mode resolves the badge to `draft` immediately.
+- Edit mode resolves the badge from the parsed episode `status`, with `unknown` fallback.
 
-### Left Pane
+## Footer Actions
 
-- Large title input.
-- Short description as a secondary support field.
-- Show Notes heading.
-- Write / Preview segmented control.
-- Markdown toolbar with grouped actions.
-- Large editor surface.
-
-### Right Pane
-
-- Cover artwork preview surface.
-- Cover image URL support field.
-- Audio URL input with leading icon.
-- Category ID field styled as metadata.
-- Publish date input.
-- Tag chip editor backed by the existing comma-separated string form field.
-- Additional metadata block for episode number.
-
-### Footer
-
-- Sticky footer separated from the content region.
-- Cancel, Save Draft, Publish actions aligned to the right.
+- `Cancel` remains the navigation escape hatch.
+- `Save Draft` is always available.
+- `Archive` appears only in edit mode.
+- `Archive` is disabled when the current status is `archived`.
+- `Publish` remains available from any persisted state.
 
 ## Data Rules
 
-- Continue using `episodeEditorSchema`, `toEpisodeEditorDefaults`, and `toEpisodeRequestPayload`.
-- Keep `tags` as a string in the form model and adapt it through chip UI helpers.
-- Preserve `publishedAt` conversion between datetime-local and ISO strings.
-- Preserve existing telemetry and API error reporting behavior.
+- `EpisodeMutationAction` expands to `save-draft | archive | publish`.
+- `toEpisodeRequestPayload` maps actions as follows:
+  - `save-draft` -> `status: "draft"`
+  - `archive` -> `status: "archived"`
+  - `publish` -> omit `status`, send `publishedAt`
+- `publishedAt` autofills to `now` only when publishing with a blank field.
+- `publishedAt` is omitted for non-publish actions.
+- Telemetry uses `episodes.mutation.outcome` with `archive` as a first-class action.
 
-## Styling Rules
+## Error and fallback behavior
 
-- Use semantic tokens from `packages/design-tokens/styles.css`.
-- Follow Stitch spacing and grouping, but do not copy raw CSS.
-- Prefer tonal surfaces over heavy borders.
-- Maintain visible focus rings and accessible error states.
+- Unsupported API statuses surface as `Unknown` in both the top bar and list badge.
+- The editor does not add extra helper copy for status-specific states in this change.
+- Existing load, invalid-id, submit-error, and upload-error surfaces remain intact.

@@ -32,13 +32,13 @@
 | **Change type** | Verification only |
 
 **Steps:**
-1. Run `pnpm gate:contract` from the repository root
+1. Run `pnpm --filter @cafedebug/api-client run contract:check` from the repository root
 2. Confirm the generated types for `POST /api/v1/admin/auth/token` include response fields:
    `accessToken`, `refreshToken.token`, `refreshToken.expirationDate`, `tokenType`, `expiresIn`
 3. If types are stale, regenerate via `openapi-typescript` before proceeding
 
 **Validation:**
-- `pnpm gate:contract` exits with code 0
+- `pnpm --filter @cafedebug/api-client run contract:check` exits with code 0
 - The success response type for `auth.token` POST includes all five fields listed above
 
 ### Task 1.2 — Verify Backend Set-Cookie Behaviour
@@ -93,7 +93,7 @@ export type TokenResponse = {
 2. Do NOT remove any existing types — these are additions only
 
 **Validation:**
-- `pnpm gate:quality` (typecheck) passes
+- `pnpm typecheck` passes
 - `TokenResponse` is importable from `auth.types.ts`
 
 ### Task 2.2 — Fix Email Validation in `loginSchema`
@@ -269,7 +269,7 @@ export type TokenResponse = {
   - `Set-Cookie: accessToken=...; HttpOnly; Path=/; MaxAge=3600`
   - `Set-Cookie: refreshToken=...; HttpOnly; Path=/; Expires=...`
   - `Set-Cookie: cafedebug_admin_session=active; HttpOnly; ...`
-- `pnpm gate:quality` passes
+- `pnpm lint && pnpm typecheck && pnpm build` passes
 
 ### Task 3.3 — Verify `adminRuntimeEnv` has `accessCookieName` and `refreshCookieName`
 
@@ -498,4 +498,3 @@ in a test:
 | 6 | Component validation | Low | Phase 5 |
 | 7 | Route thinness check | Low | Phase 3 |
 | 8 | Spec index update | Trivial | Phase 1–7 |
-

@@ -129,7 +129,7 @@
 ### Task 3.1 — Root validation
 
 **Steps:**
-1. Run `pnpm gate:validation`
+1. Run `pnpm ci:validation`
 
 **Pass criteria:** Exits with code 0.
 

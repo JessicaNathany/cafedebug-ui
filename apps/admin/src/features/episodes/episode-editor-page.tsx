@@ -22,7 +22,11 @@ export function EpisodeEditorPage({ mode, id }: EpisodeEditorPageProps) {
   if (editor.isInvalidEpisodeId) {
     return (
       <div className="flex min-h-screen flex-col bg-surface">
-        <EpisodeEditorTopBar active={false} mode={mode} onBack={editor.handleNavigateBack} />
+        <EpisodeEditorTopBar
+          mode={mode}
+          onBack={editor.handleNavigateBack}
+          status={mode === "new" ? "draft" : "unknown"}
+        />
         <section className={statePanelClassName}>
           <div className="rounded-[2rem] bg-surface-container-low px-6 py-8 shadow-ambient lg:px-8">
             <h1 className="font-display text-3xl font-bold text-on-surface">
@@ -47,7 +51,11 @@ export function EpisodeEditorPage({ mode, id }: EpisodeEditorPageProps) {
   if (editor.isLoading) {
     return (
       <div className="flex min-h-screen flex-col bg-surface">
-        <EpisodeEditorTopBar active={false} mode={mode} onBack={editor.handleNavigateBack} />
+        <EpisodeEditorTopBar
+          mode={mode}
+          onBack={editor.handleNavigateBack}
+          status={mode === "new" ? "draft" : "unknown"}
+        />
         <section className="grid flex-1 animate-pulse xl:grid-cols-[minmax(0,1fr)_minmax(340px,420px)]">
           <div className="space-y-8 px-6 pb-32 pt-8 lg:px-8 xl:px-10 xl:pt-12">
             <span className="block h-16 w-full max-w-[760px] rounded-2xl bg-surface-container-low" />
@@ -73,7 +81,11 @@ export function EpisodeEditorPage({ mode, id }: EpisodeEditorPageProps) {
   if (editor.loadError) {
     return (
       <div className="flex min-h-screen flex-col bg-surface">
-        <EpisodeEditorTopBar active={false} mode={mode} onBack={editor.handleNavigateBack} />
+        <EpisodeEditorTopBar
+          mode={mode}
+          onBack={editor.handleNavigateBack}
+          status={mode === "new" ? "draft" : "unknown"}
+        />
         <section className={statePanelClassName}>
           <div className="rounded-[2rem] border border-danger/20 bg-danger/10 px-6 py-8 lg:px-8">
             <h1 className="font-display text-3xl font-bold text-on-surface">
@@ -112,11 +124,16 @@ export function EpisodeEditorPage({ mode, id }: EpisodeEditorPageProps) {
   return (
     <EpisodeEditorForm
       activeAction={editor.activeAction}
-      activeStatus={editor.activeStatus}
+      currentStatus={editor.status}
+      fileSelectionError={editor.fileSelectionError}
       form={editor.form}
+      imagePreviewUrl={editor.imagePreviewUrl}
       isSubmitting={editor.isSubmitting}
+      isUploadingImage={editor.isUploadingImage}
+      isArchiveDisabled={editor.isArchiveDisabled}
       mode={mode}
       onCancel={editor.handleNavigateBack}
+      onFileSelected={editor.handleFileSelected}
       onSubmitAction={editor.submitAction}
       submitError={editor.submitError}
     />

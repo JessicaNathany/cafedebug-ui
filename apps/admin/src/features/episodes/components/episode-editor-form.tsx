@@ -1,21 +1,30 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import type { KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
+import { Controller } from "react-hook-form";
 import type { UseFormReturn } from "react-hook-form";
 
+import { useCategories } from "@/features/categories/hooks/use-categories";
+
 import type { EpisodeEditorSchemaValues } from "../schemas/episode.schema";
-import type { AdminRouteError, EpisodeMutationAction } from "../types/episode.types";
+import type { AdminRouteError, EpisodeDisplayStatus, EpisodeMutationAction } from "../types/episode.types";
 import { EpisodeEditorTopBar } from "./episode-editor-topbar";
 import { EpisodeShowNotesField } from "./episode-show-notes-field";
+import { EpisodeTitleInput } from "./episode-title-input";
 
 type EpisodeEditorFormProps = {
   activeAction: EpisodeMutationAction | null;
-  activeStatus: boolean;
+  currentStatus: EpisodeDisplayStatus;
+  fileSelectionError: string | null;
   form: UseFormReturn<EpisodeEditorSchemaValues>;
+  imagePreviewUrl: string | null;
   isSubmitting: boolean;
+  isUploadingImage: boolean;
+  isArchiveDisabled: boolean;
   mode: "new" | "edit";
   onCancel: () => void;
+  onFileSelected: (file: File | null) => void;
   onSubmitAction: (action: EpisodeMutationAction) => () => void;
   submitError: AdminRouteError | null;
 };
@@ -39,15 +48,27 @@ const metadataSectionClassName = "space-y-5";
 
 export function EpisodeEditorForm({
   activeAction,
-  activeStatus,
+  currentStatus,
+  fileSelectionError,
   form,
+  imagePreviewUrl,
   isSubmitting,
+  isUploadingImage,
+  isArchiveDisabled,
   mode,
   onCancel,
+  onFileSelected,
   onSubmitAction,
   submitError
 }: EpisodeEditorFormProps) {
   const [tagDraft, setTagDraft] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const {
+    data: categories = [],
+    isLoading: isCategoriesLoading,
+    isError: isCategoriesError
+  } = useCategories();
 
   const {
     register,
@@ -100,12 +121,25 @@ export function EpisodeEditorForm({
     commitTag();
   };
 
+  const handleChooseImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const nextFile = event.target.files?.[0] ?? null;
+    onFileSelected(nextFile);
+    event.target.value = "";
+  };
+
+  const hasTrimmedImageUrl = imageUrl.trim().length > 0;
+  const displayedImageSrc = imagePreviewUrl ?? (hasTrimmedImageUrl ? imageUrl : null);
+
   return (
     <div className="flex min-h-screen flex-col bg-surface">
       <EpisodeEditorTopBar
-        active={mode === "edit" ? activeStatus : false}
         mode={mode}
         onBack={onCancel}
+        status={currentStatus}
       />
 
       {submitError ? (
@@ -127,12 +161,9 @@ export function EpisodeEditorForm({
           <section className="w-full px-6 pb-32 pt-8 md:w-[60%] md:p-8 lg:w-[68%] lg:p-12">
             <div className="flex flex-col gap-8">
               <div className="space-y-4">
-                <textarea
-                  aria-invalid={errors.title ? true : undefined}
-                  className="min-h-[3.25rem] w-full resize-none border-0 border-b-2 border-transparent bg-transparent px-0 py-1.5 font-display text-2xl font-bold leading-tight text-on-surface outline-none transition-colors placeholder:text-on-surface-variant/35 hover:border-outline-variant/60 focus:border-primary focus:ring-0 md:min-h-[3.75rem] md:text-3xl xl:text-4xl"
-                  placeholder="Episode Title..."
-                  rows={1}
-                  {...register("title")}
+                <EpisodeTitleInput
+                  hasError={!!errors.title}
+                  registration={register("title")}
                 />
                 {errors.title?.message ? (
                   <p className="text-xs text-danger">{errors.title.message}</p>
@@ -145,7 +176,7 @@ export function EpisodeEditorForm({
                   <textarea
                     aria-invalid={errors.shortDescription ? true : undefined}
                     className="min-h-24 w-full rounded-[1.75rem] border border-outline-variant/60 bg-slate-50 px-5 py-4 text-sm text-on-surface outline-none transition placeholder:text-on-surface-variant/55 focus:border-primary focus:ring-2 focus:ring-focus-ring"
-                    maxLength={240}
+                    maxLength={500}
                     placeholder="Add a concise summary for episode cards and share surfaces."
                     {...register("shortDescription")}
                   />
@@ -170,11 +201,11 @@ export function EpisodeEditorForm({
 
                   <div className="flex flex-col gap-4">
                     <div className="relative mx-auto aspect-square w-full max-w-[240px] overflow-hidden rounded-xl border-2 border-dashed border-outline-variant/40 bg-surface">
-                      {imageUrl.trim().length > 0 ? (
+                      {displayedImageSrc ? (
                         <img
                           alt="Episode cover preview"
                           className="h-full w-full object-cover"
-                          src={imageUrl}
+                          src={displayedImageSrc}
                         />
                       ) : (
                         <div className="flex h-full flex-col items-center justify-center gap-2 text-center text-on-surface-variant">
@@ -193,15 +224,28 @@ export function EpisodeEditorForm({
                     </div>
 
                     <div className="flex flex-col gap-3 xl:max-w-[280px]">
+                      <input
+                        accept="image/jpeg,image/png,image/svg+xml"
+                        className="hidden"
+                        onChange={handleFileInputChange}
+                        ref={fileInputRef}
+                        type="file"
+                      />
                       <button
-                        className="inline-flex h-12 items-center justify-center rounded-full border border-outline-variant/70 px-5 text-sm font-semibold text-on-surface transition hover:bg-surface-container-low focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                        className="inline-flex h-12 items-center justify-center rounded-full border border-outline-variant/70 px-5 text-sm font-semibold text-on-surface transition hover:bg-surface-container-low focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring disabled:cursor-not-allowed disabled:opacity-60"
+                        disabled={isUploadingImage}
+                        onClick={handleChooseImageClick}
                         type="button"
                       >
-                        Choose Image
+                        {isUploadingImage ? "Uploading image..." : "Choose Image"}
                       </button>
-                      <p className="text-sm leading-6 text-on-surface-variant">
-                        Recommended: 3000x3000px. Format: JPG or PNG.
-                      </p>
+                      {fileSelectionError ? (
+                        <p className="text-xs text-danger">{fileSelectionError}</p>
+                      ) : (
+                        <p className="text-sm leading-6 text-on-surface-variant">
+                          Recommended: 3000x3000px. Format: JPG, PNG, or SVG.
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -252,17 +296,25 @@ export function EpisodeEditorForm({
                 <label className="flex flex-col gap-2">
                   <span className={labelClassName}>Category</span>
                   <span className="relative block">
-                    <select
-                      aria-invalid={errors.categoryId ? true : undefined}
-                      className={`${inputClassName} cursor-pointer appearance-none pr-12`}
-                      {...register("categoryId")}
-                    >
-                      <option value="">Select a category</option>
-                      <option value="1">1 - Design</option>
-                      <option value="2">2 - Development</option>
-                      <option value="3">3 - Product</option>
-                      <option value="4">4 - Career</option>
-                    </select>
+                    <Controller
+                      control={form.control}
+                      name="categoryId"
+                      render={({ field }) => (
+                        <select
+                          aria-invalid={errors.categoryId ? true : undefined}
+                          className={`${inputClassName} cursor-pointer appearance-none pr-12`}
+                          disabled={isCategoriesLoading || isCategoriesError}
+                          {...field}
+                        >
+                          <option value="">Select a category</option>
+                          {categories.map((category) => (
+                            <option key={category.id} value={String(category.id)}>
+                              {category.name}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    />
                     <span
                       aria-hidden="true"
                       className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] text-on-surface-variant"
@@ -287,6 +339,7 @@ export function EpisodeEditorForm({
                     <input
                       aria-invalid={errors.publishedAt ? true : undefined}
                       className={iconInputClassName}
+                      step={1}
                       type="datetime-local"
                       {...register("publishedAt")}
                     />
@@ -377,6 +430,20 @@ export function EpisodeEditorForm({
                   ? "Saving Draft..."
                   : "Save Draft"}
               </button>
+
+              {mode === "edit" ? (
+                <button
+                  className="inline-flex items-center justify-center rounded-lg border border-status-archived-border bg-status-archived-surface px-5 py-2.5 text-sm font-semibold text-status-archived-on shadow-sm transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring disabled:cursor-not-allowed disabled:opacity-60"
+                  disabled={isSubmitting || isArchiveDisabled}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    onSubmitAction("archive")();
+                  }}
+                  type="button"
+                >
+                  {isSubmitting && activeAction === "archive" ? "Archiving..." : "Archive"}
+                </button>
+              ) : null}
 
               <button
                 className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-on-primary shadow-sm transition hover:bg-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring disabled:cursor-not-allowed disabled:opacity-60"

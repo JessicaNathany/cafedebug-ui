@@ -1,101 +1,101 @@
-# Episode Show Notes Editor (Tiptap)
+# Episode Show Notes Editor (Tiptap + HTML Source)
+
+## Overview
+
+Keep the existing Tiptap-based Show Notes editor and replace the `Preview` mode with an editable `HTML` source mode.  
+The Show Notes control becomes `Write | HTML`, where:
+
+- `Write` is the rich-text Tiptap surface;
+- `HTML` is a CodeMirror-based source editor for the same `description` field.
+
+The backend contract stays unchanged: `description` remains an HTML string in form state and API payloads.
 
 ## Problem
 
-The current Show Notes experience in the episode editor is implemented as a plain `<textarea>` plus manual string transforms for toolbar actions.
+The current Show Notes control gives rich editing, but it does not provide direct source-level control for advanced editors who need to inspect and adjust generated HTML.
 
-This creates three gaps:
+## Goals
 
-1. formatting behavior is limited and fragile (manual cursor and text manipulation per button);
-2. preview mode shows raw text blocks instead of rendered rich content;
-3. we do not have a robust, extensible editor foundation for future authoring improvements.
+- Replace `Write | Preview` with `Write | HTML`.
+- Keep `description` as the only persisted source-of-truth in RHF.
+- Add an HTML source editor with live two-way sync (debounced) to Tiptap.
+- Preserve create/edit lifecycle behavior, dirty-state semantics, and submit flows.
+- Keep route files thin and feature boundaries unchanged.
 
-## Goal
+## Non-goals
 
-Adopt Tiptap for the Show Notes field so the editor supports reliable rich-text authoring and HTML rendering for preview while preserving current episode create/edit API behavior. The backend already stores and serves `description` as HTML, so the editor must ingest HTML on load and emit HTML on save.
+- No backend schema or endpoint changes.
+- No migration of non-Show-Notes fields to Tiptap.
+- No collaboration/version-history features.
+- No arbitrary HTML fidelity guarantee outside Tiptap schema support.
 
-## Scope
+## Users and Use Cases
 
-- Replace only the Show Notes editor surface inside:
-  - `apps/admin/src/features/episodes/components/episode-editor-form.tsx`
-- Keep existing page layout and Stitch visual hierarchy intact.
-- Build the editor with:
-  - `@tiptap/react` (v3.x)
-  - `@tiptap/pm` (v3.x)
-  - `@tiptap/starter-kit` (v3.x — includes Link extension)
-- Preserve toolbar actions currently visible in the UI:
-  - bold
-  - italic
-  - link
-  - quote
-  - inline code
-  - bulleted list
-  - numbered list
-- Preserve Write / Preview toggle behavior.
-- Keep `react-hook-form` integration and continue using `description` as a `string` in form state.
-- Persist Show Notes as HTML string (matching the existing backend storage format).
-- Load existing HTML `description` values into Tiptap natively on edit pages.
-- Render Preview as sanitized HTML generated from the current editor state.
+### Primary user
 
-## Non-Goals
+- Admin editors maintaining episode show notes.
 
-- No backend schema or API contract changes.
-- No collaborative editing, comments, or track changes.
-- No media embed pipeline (images/video uploads inside Show Notes).
-- No migration of other fields (title, short description, metadata rail) to Tiptap.
-- No immediate change to website rendering strategy for episode descriptions.
+### Use cases
 
-## Source Of Truth
+- Write and format notes visually in Tiptap.
+- Switch to `HTML` and edit source directly.
+- Return to `Write` and continue visual editing after normalization.
+- Submit from either mode with unchanged payload semantics.
 
-- Existing editor feature boundary:
-  - `apps/admin/src/features/episodes/components/episode-editor-form.tsx`
-- Episode editor visual references:
-  - `.specs/admin/stitch/cafedebug-admin/code/themes/light/episode-edit.html`
-  - `.specs/admin/stitch/cafedebug-admin/code/themes/dark/episode-edit.html`
-  - `.specs/admin/stitch/cafedebug-admin/images/themes/light/episode-edit.png`
-- Theme and token guidance:
-  - `.specs/admin/DESIGN_SYSTEM.md`
-  - `packages/design-tokens/styles.css`
+## User Flows
+
+### Flow 1 — Write to HTML source
+
+1. Admin opens `/episodes/new` or `/episodes/[id]/edit`.
+2. Admin edits content in `Write`.
+3. Admin switches to `HTML`.
+4. Source editor shows latest canonical HTML from Tiptap.
+5. Admin adjusts HTML; RHF `description` updates immediately.
+
+### Flow 2 — HTML source back to Write
+
+1. Admin edits source in `HTML`.
+2. Debounced sync applies source back to Tiptap.
+3. Unsupported markup is normalized/dropped per Tiptap schema rules.
+4. Admin switches to `Write` and sees normalized rich content.
+
+## Routes or Screens
+
+- `apps/admin/src/app/(admin)/episodes/new/page.tsx`
+- `apps/admin/src/app/(admin)/episodes/[id]/edit/page.tsx`
+- `apps/admin/src/features/episodes/components/episode-editor-form.tsx`
 
 ## Constraints
 
-- Must follow feature-based architecture and keep route files thin.
-- Must keep form validation contract unchanged (`episodeEditorSchema.description` remains a string field).
-- Must preserve `toEpisodeRequestPayload` behavior and action semantics (`save-draft`, `publish`).
-- Must be client-only safe for Next.js App Router:
-  - use `'use client'` editor component;
-  - initialize Tiptap with `immediatelyRender: false` to avoid hydration mismatches.
-- Must use semantic tokens only for visuals (no hardcoded colors).
-- Must sanitize rendered HTML in preview mode before injecting into DOM.
+- Must follow feature architecture (`features/episodes/*` owns behavior).
+- Must keep `episodeEditorSchema.description` as a `string`.
+- Must preserve `toEpisodeRequestPayload` behavior for save-draft/publish.
+- Must remain client-safe for App Router (`'use client'`, hydration-safe editor init).
+- Must not render raw HTML in source mode (`dangerouslySetInnerHTML` is not used there).
 
-## Functional Requirements
+## Success Criteria
 
-1. User can apply formatting via toolbar buttons using Tiptap commands.
-2. Toolbar active states reflect current selection context when applicable.
-3. Write mode allows rich-text keyboard authoring.
-4. Preview mode renders rich content output (headings, lists, links, quote, code).
-5. Existing HTML `description` values load correctly into the editor when editing an existing episode.
-6. Form dirty-state behavior remains consistent with current navigation guard.
-7. Save Draft and Publish submit flows keep existing payload shape and success/error behavior.
+1. Mode toggle is `Write | HTML` (no `Preview` in v1).
+2. HTML mode uses a code editor and allows direct HTML edits.
+3. Write and HTML modes stay in sync without infinite update loops.
+4. Switching modes without content edits does not create false-dirty state.
+5. Existing HTML loads correctly on edit routes and remains editable in both modes.
+6. Save Draft and Publish continue submitting `description` as HTML string.
+7. Existing loading/error/invalid-id/submit-error/telemetry behavior remains unchanged.
 
-## Acceptance Criteria
+## Risks and Open Questions
 
-1. Show Notes in `/episodes/new` and `/episodes/[id]/edit` uses Tiptap-backed editing.
-2. Buttons for bold, italic, link, quote, code, unordered list, and ordered list work end-to-end.
-3. Write/Preview toggle continues to work, with Preview showing rendered HTML (not raw text).
-4. The `description` field submitted to API remains an HTML string compatible with existing backend storage format.
-5. Existing validation, telemetry, loading, invalid-id, fetch-error, and submit-error flows still pass.
-6. UI remains aligned with Stitch references in both light and dark themes.
-7. Lint, typecheck, and tests for `@cafedebug/admin` pass after implementation.
+- Risk: source HTML may be normalized when parsed by Tiptap.
+  - Mitigation: helper copy in UI clarifies normalization behavior.
+- Risk: aggressive mode switching could cause sync churn.
+  - Mitigation: debounced source-to-editor sync + explicit flush on `HTML -> Write`.
+- Risk: unsupported HTML can be lossy.
+  - Mitigation: accept schema-bound normalization as product default in v1.
 
-## Risks And Mitigations
+## Handoff Status
 
-- Risk: HTML preview introduces XSS risk if unsanitized content is rendered.
-  - Mitigation: sanitize HTML with DOMPurify before rendering preview and limit allowed tags/attributes to editor-supported output.
-- Risk: Legacy HTML data may contain markup not supported by Tiptap's schema.
-  - Mitigation: Tiptap gracefully drops unsupported nodes on parse; accept normalization where semantics are preserved.
-
-## Out Of Scope Follow-Up Ideas
-
-- Shared HTML renderer package for admin preview and website episode rendering.
-- Authoring enhancements such as slash commands, keyboard shortcut hints, and autosave.
+- **Phase:** Specification
+- **What changed:** Re-scoped mode behavior from `Write | Preview` to `Write | HTML` with live two-way sync and CodeMirror source editing.
+- **Where:** `.specs/admin/episode-editor-tiptap/spec.md`
+- **Unresolved risks or blockers:** schema normalization differences for arbitrary source HTML.
+- **Approval status:** Draft, ready for design/task execution.

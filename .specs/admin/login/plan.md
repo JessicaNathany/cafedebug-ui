@@ -36,7 +36,7 @@
 
 ---
 
-### P0-T1 — Run `pnpm gate:contract`
+### P0-T1 — Run `pnpm --filter @cafedebug/api-client run contract:check`
 
 | Field | Value |
 |---|---|
@@ -51,7 +51,7 @@
 Run the contract gate from the monorepo root:
 
 ```bash
-pnpm gate:contract
+pnpm --filter @cafedebug/api-client run contract:check
 ```
 
 This runs `openapi-typescript --check` against the backend OpenAPI/Swagger specification
@@ -60,13 +60,13 @@ and validates that `packages/api-client/src/generated/schema.ts` is up to date.
 If the check fails, regenerate the client:
 
 ```bash
-pnpm generate:api-client
+pnpm --filter @cafedebug/api-client run generate
 ```
 
-Then re-run `pnpm gate:contract` to confirm it passes before proceeding.
+Then re-run `pnpm --filter @cafedebug/api-client run contract:check` to confirm it passes before proceeding.
 
 **Validation step:**
-- `pnpm gate:contract` exits with code `0`
+- `pnpm --filter @cafedebug/api-client run contract:check` exits with code `0`
 - The generated schema contains the `POST /api/v1/admin/auth/token` → `200 OK` response
   body with fields: `accessToken`, `refreshToken`, `tokenType`, `expiresIn`
 - Confirm the generated `components["schemas"]["Result"]` type matches:
@@ -392,7 +392,7 @@ return {
 
 ### ✅ Phase 1 Validation Checkpoint
 
-- `pnpm gate:quality` passes across all packages
+- `pnpm lint && pnpm typecheck && pnpm build` passes across all packages
 - `auth.types.ts` exports `TokenResponse` and `RefreshTokenPayload`
 - `loginSchema` rejects invalid email format and short passwords
 - `loginErrorResponseSchema` parses `type` field
@@ -643,7 +643,7 @@ Add a comment explaining the decision:
 
 ### ✅ Phase 2 Validation Checkpoint
 
-- `pnpm gate:quality` passes
+- `pnpm lint && pnpm typecheck && pnpm build` passes
 - Handler success branch uses typed `TokenResponse`
 - Dead `isSuccess` block is removed
 - Both cookie strategies (A and B) are present in the handler
@@ -748,7 +748,7 @@ document them explicitly before modifying the file.
 
 ### ✅ Phase 3 Validation Checkpoint
 
-- `pnpm gate:quality` passes
+- `pnpm lint && pnpm typecheck && pnpm build` passes
 - `loginService` propagates `type` field in error results
 - `useLogin` correctly handles all five error scenarios
 
@@ -919,7 +919,7 @@ confirm the component renders the correct UI state:
 
 ---
 
-### P5-T1 — Run `pnpm gate:quality`
+### P5-T1 — Run `pnpm lint && pnpm typecheck && pnpm build`
 
 | Field | Value |
 |---|---|
@@ -931,13 +931,13 @@ confirm the component renders the correct UI state:
 
 **What to do:**
 
-Run the quality gate from the monorepo root:
+Run the repository quality commands from the monorepo root:
 
 ```bash
-pnpm gate:quality
+pnpm lint && pnpm typecheck && pnpm build
 ```
 
-This runs `lint`, `typecheck`, and `build` across all workspaces in parallel via Turborepo.
+This runs `lint`, `typecheck`, and `build` across the workspaces via the root Turborepo-backed scripts.
 
 If any step fails:
 - **Lint failure:** Address ESLint warnings/errors in the reported file before proceeding
@@ -945,14 +945,14 @@ If any step fails:
 - **Build failure:** Resolve compilation or import errors
 
 **Validation step:**
-- `pnpm gate:quality` exits with code `0`
+- `pnpm lint && pnpm typecheck && pnpm build` exits with code `0`
 - Zero TypeScript errors
 - Zero ESLint errors
 - Build artifacts produced successfully
 
 ---
 
-### P5-T2 — Run `pnpm gate:contract` (Final Verification)
+### P5-T2 — Run `pnpm --filter @cafedebug/api-client run contract:check` (Final Verification)
 
 | Field | Value |
 |---|---|
@@ -967,11 +967,11 @@ If any step fails:
 Run the contract gate a final time to confirm no drift occurred during implementation:
 
 ```bash
-pnpm gate:contract
+pnpm --filter @cafedebug/api-client run contract:check
 ```
 
 **Validation step:**
-- `pnpm gate:contract` exits with code `0`
+- `pnpm --filter @cafedebug/api-client run contract:check` exits with code `0`
 - The generated schema has not diverged from the backend contract
 
 ---
@@ -1030,8 +1030,8 @@ With both the admin app and backend API running locally, execute these manual sc
 
 The login feature is **complete** when ALL of the following are true:
 
-- [ ] `pnpm gate:contract` passes (RISK-01 closed)
-- [ ] `pnpm gate:quality` passes (lint + typecheck + build)
+- [ ] `pnpm --filter @cafedebug/api-client run contract:check` passes (RISK-01 closed)
+- [ ] `pnpm lint && pnpm typecheck && pnpm build` passes (lint + typecheck + build)
 - [ ] `TokenResponse` and `RefreshTokenPayload` are exported from `auth.types.ts` (GAP-03)
 - [ ] `loginSchema` validates email format and password minimum length (GAP-04, GAP-05)
 - [ ] `loginErrorResponseSchema` parses the `type` field (GAP-09)

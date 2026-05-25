@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +11,10 @@ import {
   createEpisodeEditorTelemetryHooks,
   trackApiFailure
 } from "@/lib/observability/telemetry";
+import {
+  ACCEPTED_IMAGE_MIME_TYPES,
+  uploadEpisodeImage
+} from "@/features/images/services/images.service";
 
 import { episodeEditorDefaultValues } from "../defaults";
 import { useCreateEpisode } from "./use-create-episode";
@@ -20,6 +24,7 @@ import { episodeEditorSchema, type EpisodeEditorSchemaValues } from "../schemas/
 import { toEpisodeEditorDefaults, toEpisodeRequestPayload } from "../transformers";
 import type {
   AdminRouteError,
+  EpisodeDisplayStatus,
   EpisodeMutationAction,
   EpisodeRecord
 } from "../types/episode.types";
@@ -61,24 +66,47 @@ const normalizeError = (error: unknown): AdminRouteError => {
 const toTelemetryReason = (error: AdminRouteError): string =>
   `${error.status}:${error.title}`;
 
+const DATE_TIME_WITH_MINUTES_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+const DATE_TIME_WITH_SECONDS_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
+const DATE_TIME_EXTRACT_PATTERN =
+  /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})(?::(\d{2}))?(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+
 const formatDateInputValue = (value: string): string => {
-  if (!value) {
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue) {
     return "";
   }
 
-  const parsedDate = new Date(value);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return value;
+  if (DATE_TIME_WITH_SECONDS_PATTERN.test(trimmedValue)) {
+    return trimmedValue;
   }
 
-  const year = parsedDate.getUTCFullYear();
-  const month = String(parsedDate.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(parsedDate.getUTCDate()).padStart(2, "0");
-  const hour = String(parsedDate.getUTCHours()).padStart(2, "0");
-  const minute = String(parsedDate.getUTCMinutes()).padStart(2, "0");
+  if (DATE_TIME_WITH_MINUTES_PATTERN.test(trimmedValue)) {
+    return `${trimmedValue}:00`;
+  }
 
-  return `${year}-${month}-${day}T${hour}:${minute}`;
+  const extractedDateTime = DATE_TIME_EXTRACT_PATTERN.exec(trimmedValue);
+
+  if (extractedDateTime) {
+    const [, minutesValue, secondsValue] = extractedDateTime;
+    return `${minutesValue}:${secondsValue ?? "00"}`;
+  }
+
+  const parsedDate = new Date(trimmedValue);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return trimmedValue;
+  }
+
+  const year = parsedDate.getFullYear();
+  const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+  const day = String(parsedDate.getDate()).padStart(2, "0");
+  const hour = String(parsedDate.getHours()).padStart(2, "0");
+  const minute = String(parsedDate.getMinutes()).padStart(2, "0");
+  const second = String(parsedDate.getSeconds()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
 };
 
 const toIsoDateTimeValue = (value: string): string => {
@@ -88,13 +116,28 @@ const toIsoDateTimeValue = (value: string): string => {
     return "";
   }
 
+  if (DATE_TIME_WITH_SECONDS_PATTERN.test(trimmedValue)) {
+    return trimmedValue;
+  }
+
+  if (DATE_TIME_WITH_MINUTES_PATTERN.test(trimmedValue)) {
+    return `${trimmedValue}:00`;
+  }
+
+  const extractedDateTime = DATE_TIME_EXTRACT_PATTERN.exec(trimmedValue);
+
+  if (extractedDateTime) {
+    const [, minutesValue, secondsValue] = extractedDateTime;
+    return `${minutesValue}:${secondsValue ?? "00"}`;
+  }
+
   const parsedDate = new Date(trimmedValue);
 
   if (Number.isNaN(parsedDate.getTime())) {
     return trimmedValue;
   }
 
-  return parsedDate.toISOString();
+  return parsedDate.toISOString().slice(0, 19);
 };
 
 export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
@@ -103,6 +146,10 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
   const [submitError, setSubmitError] = useState<AdminRouteError | null>(null);
   const [activeAction, setActiveAction] = useState<EpisodeMutationAction | null>(null);
   const [hasPendingNavigation, setHasPendingNavigation] = useState(false);
+  const [pendingImageFile, setPendingImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [fileSelectionError, setFileSelectionError] = useState<string | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const telemetry = useMemo(
     () => createEpisodeEditorTelemetryHooks(mode === "new" ? "create" : "edit"),
     [mode]
@@ -143,6 +190,46 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
     return () => window.removeEventListener("beforeunload", beforeUnloadHandler);
   }, [form.formState.isDirty, hasPendingNavigation]);
 
+  useEffect(() => {
+    if (!imagePreviewUrl) {
+      return;
+    }
+
+    return () => URL.revokeObjectURL(imagePreviewUrl);
+  }, [imagePreviewUrl]);
+
+  const handleFileSelected = useCallback((file: File | null) => {
+    if (!file) {
+      setPendingImageFile(null);
+      setImagePreviewUrl((previous) => {
+        if (previous) {
+          URL.revokeObjectURL(previous);
+        }
+        return null;
+      });
+      setFileSelectionError(null);
+      return;
+    }
+
+    const isAccepted = (ACCEPTED_IMAGE_MIME_TYPES as readonly string[]).includes(
+      file.type
+    );
+
+    if (!isAccepted) {
+      setFileSelectionError("Only JPG, PNG, or SVG files are supported.");
+      return;
+    }
+
+    setImagePreviewUrl((previous) => {
+      if (previous) {
+        URL.revokeObjectURL(previous);
+      }
+      return URL.createObjectURL(file);
+    });
+    setPendingImageFile(file);
+    setFileSelectionError(null);
+  }, []);
+
   const loadError =
     episodeQuery.error && mode === "edit" ? normalizeError(episodeQuery.error) : null;
 
@@ -177,9 +264,21 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
   const handleMutationSuccess = async (action: EpisodeMutationAction) => {
     setSubmitError(null);
     setActiveAction(null);
+    setPendingImageFile(null);
+    setImagePreviewUrl((previous) => {
+      if (previous) {
+        URL.revokeObjectURL(previous);
+      }
+      return null;
+    });
+    setFileSelectionError(null);
 
     if (action === "publish") {
       telemetry.onPublishSuccess({
+        status: mode === "new" ? 201 : 200
+      });
+    } else if (action === "archive") {
+      telemetry.onArchiveSuccess({
         status: mode === "new" ? 201 : 200
       });
     } else {
@@ -225,6 +324,15 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
       return;
     }
 
+    if (action === "archive") {
+      telemetry.onArchiveFailure({
+        status: normalizedError.status,
+        ...(normalizedError.traceId ? { traceId: normalizedError.traceId } : {}),
+        reason
+      });
+      return;
+    }
+
     telemetry.onSaveDraftFailure({
       status: normalizedError.status,
       ...(normalizedError.traceId ? { traceId: normalizedError.traceId } : {}),
@@ -233,22 +341,56 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
   };
 
   const submitAction = (action: EpisodeMutationAction) =>
-    form.handleSubmit((values) => {
+    form.handleSubmit(async (values) => {
+      setSubmitError(null);
+      setActiveAction(action);
+
+      let resolvedImageUrl = values.imageUrl;
+
+      if (pendingImageFile) {
+        setIsUploadingImage(true);
+
+        try {
+          const { imageUrl } = await uploadEpisodeImage(pendingImageFile);
+          resolvedImageUrl = imageUrl;
+        } catch (uploadError) {
+          setIsUploadingImage(false);
+
+          const normalizedError = normalizeError(uploadError);
+
+          setSubmitError(normalizedError);
+          setActiveAction(null);
+
+          trackApiFailure({
+            module: "images",
+            action: "upload",
+            endpoint: "/api/admin/images/upload",
+            method: "POST",
+            error: normalizedError,
+            fallbackStatus: normalizedError.status,
+            ...(normalizedError.traceId ? { traceId: normalizedError.traceId } : {})
+          });
+
+          return;
+        }
+
+        setIsUploadingImage(false);
+      }
+
       const payload = toEpisodeRequestPayload({
         values: {
           ...values,
+          imageUrl: resolvedImageUrl,
           publishedAt: toIsoDateTimeValue(values.publishedAt)
         },
         action
       });
 
-      setSubmitError(null);
-      setActiveAction(action);
-
       if (mode === "new") {
         createEpisodeMutation.mutate(payload, {
           onError: (error) => handleMutationError(action, error),
           onSuccess: async () => {
+            form.setValue("imageUrl", resolvedImageUrl, { shouldDirty: false });
             await handleMutationSuccess(action);
           }
         });
@@ -269,24 +411,36 @@ export function useEpisodeEditor({ mode, id }: UseEpisodeEditorOptions) {
         {
           onError: (error) => handleMutationError(action, error),
           onSuccess: async () => {
+            form.setValue("imageUrl", resolvedImageUrl, { shouldDirty: false });
             await handleMutationSuccess(action);
           }
         }
       );
     });
 
+  const status: EpisodeDisplayStatus =
+    mode === "new" ? "draft" : episodeQuery.data?.status ?? "unknown";
+
   return {
     activeAction,
-    activeStatus: episodeQuery.data?.active ?? false,
     episode: episodeQuery.data as EpisodeRecord | null | undefined,
+    fileSelectionError,
     form,
+    handleFileSelected,
     handleNavigateBack,
+    imagePreviewUrl,
+    isArchiveDisabled: mode !== "edit" || status === "archived",
     isInvalidEpisodeId: mode === "edit" && !episodeId,
     isLoading: mode === "edit" && episodeQuery.isLoading,
-    isSubmitting: createEpisodeMutation.isPending || updateEpisodeMutation.isPending,
+    isSubmitting:
+      createEpisodeMutation.isPending ||
+      updateEpisodeMutation.isPending ||
+      isUploadingImage,
+    isUploadingImage,
     loadError,
     mode,
     retryLoad: () => episodeQuery.refetch(),
+    status,
     submitAction,
     submitError
   };

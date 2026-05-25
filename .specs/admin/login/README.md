@@ -372,7 +372,7 @@ const tokenData = apiResult.data as unknown as TokenResponse;
 
 This is intentional and safe given the runtime guard that follows (a 502 is returned if
 `tokenData.accessToken` is absent). It will self-heal when the backend OpenAPI
-description is updated and `pnpm gate:contract` regenerates the types.
+description is updated and `pnpm --filter @cafedebug/api-client run contract:check` regenerates the types.
 
 **Do not remove the runtime guard** that validates token fields before setting cookies.
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useMemo, useRef, useEffect, useState } from "react";
 
 import { appRoutes } from "@/lib/routes";
@@ -35,22 +36,46 @@ const getErrorDetail = (error: unknown): AdminRouteError => {
 };
 
 export function EpisodesListPage() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [page, setPage] = useState<number>(episodesListDefaultParams.page);
   const [pageSize] = useState<number>(episodesListDefaultParams.pageSize);
   const [sortBy] = useState<string>(episodesListDefaultParams.sortBy);
   const [descending] = useState<boolean>(episodesListDefaultParams.descending);
   const previousErrorKeyRef = useRef<string | null>(null);
+  const isMountedRef = useRef(false);
+
+  const { searchInput, setSearchInput, debouncedSearch } = useDebouncedSearch(
+    searchParams.get("search") ?? ""
+  );
+
+  useEffect(() => {
+    if (!isMountedRef.current) {
+      isMountedRef.current = true;
+      return;
+    }
+
+    const params = new URLSearchParams();
+    if (debouncedSearch) params.set("search", debouncedSearch);
+    const query = params.toString();
+    router.replace(`${pathname}${query ? `?${query}` : ""}`, { scroll: false });
+    setPage(1);
+  }, [debouncedSearch, router, pathname]);
 
   const queryParams = useMemo<EpisodesQueryParams>(
-    () => ({ page, pageSize, sortBy, descending }),
-    [page, pageSize, sortBy, descending]
+    () => ({
+      page,
+      pageSize,
+      sortBy,
+      descending,
+      ...(debouncedSearch ? { search: debouncedSearch } : {})
+    }),
+    [page, pageSize, sortBy, descending, debouncedSearch]
   );
 
   const episodesQuery = useEpisodesList(queryParams);
-
-  const { searchInput, setSearchInput, searchTerm, filteredItems } = useDebouncedSearch(
-    episodesQuery.data?.items ?? []
-  );
 
   const normalizedError = episodesQuery.error
     ? getErrorDetail(episodesQuery.error)
@@ -90,8 +115,9 @@ export function EpisodesListPage() {
     await episodesQuery.refetch();
   };
 
-  const showTable = !episodesQuery.isLoading && !normalizedError && filteredItems.length > 0;
-  const showEmpty = !episodesQuery.isLoading && !normalizedError && filteredItems.length === 0;
+  const items = episodesQuery.data?.items ?? [];
+  const showTable = !episodesQuery.isLoading && !normalizedError && items.length > 0;
+  const showEmpty = !episodesQuery.isLoading && !normalizedError && items.length === 0;
 
   return (
     <div className="flex flex-col gap-8">
@@ -131,13 +157,13 @@ export function EpisodesListPage() {
       {showEmpty ? (
         <EpisodesEmptyState
           onClearSearch={() => setSearchInput("")}
-          searchTerm={searchTerm}
+          searchTerm={debouncedSearch}
         />
       ) : null}
 
       {showTable ? (
         <div className="overflow-hidden rounded-lg border border-outline-variant/60 bg-surface-container-lowest shadow-ambient">
-          <EpisodesTable isLoading={false} items={filteredItems} />
+          <EpisodesTable isLoading={false} items={items} />
 
           <EpisodesPagination
             hasPrevious={episodesQuery.data?.hasPrevious ?? false}

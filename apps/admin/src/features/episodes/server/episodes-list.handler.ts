@@ -33,17 +33,18 @@ export async function episodesListHandler(request: Request) {
   const pageSize = parseInteger(requestUrl.searchParams.get("pageSize"), 5);
   const sortBy = requestUrl.searchParams.get("sortBy")?.trim() || "number";
   const descending = parseBoolean(requestUrl.searchParams.get("descending"), true);
+  const search = requestUrl.searchParams.get("search")?.trim() || undefined;
   const cookieHeader = request.headers.get("cookie") ?? "";
 
   addSentryBreadcrumb("Admin episodes list request", {
     category: "episodes",
-    data: { module: "episodes", action: "list", page, pageSize, sortBy, descending }
+    data: { module: "episodes", action: "list", page, pageSize, sortBy, descending, search }
   });
 
   try {
     const backendResult = await listEpisodesFromBackend({
       cookieHeader,
-      query: { page, pageSize, sortBy, descending }
+      query: { page, pageSize, sortBy, descending, ...(search ? { search } : {}) }
     });
 
     if ("error" in backendResult) {

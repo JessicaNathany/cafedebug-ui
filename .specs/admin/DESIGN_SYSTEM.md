@@ -326,7 +326,26 @@ Use shadows for floating layers only. Prefer tonal layering for base composition
 | `success` | color-mix(success, surface) | `--color-success` | `--radius-full` | Published/success |
 | `neutral` | `--color-surface-container-high` | `--color-on-surface` | `--radius-full` | Default status |
 
-Badges must always include text labels; color alone is never sufficient.
+### Lifecycle badge contract
+
+Shared lifecycle badges for admin content use these semantic tokens:
+
+| State | Surface token | Text token | Border token | Notes |
+| --- | --- | --- | --- | --- |
+| `draft` | `--color-status-draft-surface` | `--color-status-draft-on` | none | Active editing state |
+| `scheduled` | `--color-status-scheduled-surface` | `--color-status-scheduled-on` | none | Future publish date |
+| `published` | `--color-status-published-surface` | `--color-status-published-on` | none | Live content |
+| `archived` | `--color-status-archived-surface` | `--color-status-archived-on` | `--color-status-archived-border` | Retired content |
+| `unknown` | `--color-status-unknown-surface` | `--color-status-unknown-on` | `--color-status-unknown-border` | Unsupported API fallback |
+
+Lifecycle badge rules:
+
+- Geometry: full pill (`--radius-full`)
+- Typography: `Space Grotesk`, `11px`, `600`
+- Labels stay title-case
+- Light theme `published` uses a neutral gray chip with dark text (`--color-status-published-surface: #f3f4f6`, `--color-status-published-on: #1a1a1a`) to match Stitch episodes-list references.
+- `unknown` is intentionally neutral and outlined to expose contract drift without appearing destructive
+- Badges must always include text labels; color alone is never sufficient.
 
 ---
 

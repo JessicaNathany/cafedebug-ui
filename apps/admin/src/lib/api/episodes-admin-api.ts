@@ -13,6 +13,7 @@ export type BackendEpisodesQuery = {
   pageSize?: number;
   sortBy?: string;
   descending?: boolean;
+  search?: string;
 };
 
 export type EpisodeMutationInput = EpisodeRequest;

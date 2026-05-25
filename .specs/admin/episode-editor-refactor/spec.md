@@ -1,44 +1,76 @@
-# Episode Editor Refactor
+# Spec: Episode Editor Refactor
+
+| Field | Value |
+|---|---|
+| **Status** | `Implemented` |
+| **Domain** | `admin/episodes` |
+| **Spec path** | `.specs/admin/episode-editor-refactor/` |
+| **Affected app** | `apps/admin` |
 
 ## Problem
 
-The current admin episode editor does not match the approved Stitch source-of-truth layout for the episode edit screen. It uses a generic stacked form inside a single card, while the target experience uses an editorial split-pane layout with an oversized inline title, markdown editor shell, metadata rail, and detached sticky footer.
+The admin episode editor was designed around a boolean `active` lifecycle and did not cover the newer `status`-driven contract. The editor must now support `draft`, `scheduled`, `published`, and `archived` as lifecycle states, while preserving the existing form architecture and Stitch-aligned layout.
 
 ## Goal
 
-Refactor the episode editor so both `/episodes/new` and `/episodes/[id]/edit` match the Stitch layout near pixel-accurately in light and dark themes, while preserving the current episode create and update behavior.
+Refactor the editor so both `/episodes/new` and `/episodes/[id]/edit` keep the current split-pane design while aligning payloads, top-bar badges, footer actions, telemetry, and post-submit behavior with the `status` contract.
 
 ## Scope
 
-- Rebuild the episode editor UI to match the Stitch episode edit references.
-- Keep the route files thin and move orchestration into the episodes feature.
-- Preserve existing validation, payload mapping, telemetry, and loading/error behavior.
-- Keep `shortDescription`, `number`, and `categoryId` visible, but place them in lower-prominence sections.
+- Keep route files thin and orchestration inside `features/episodes`.
+- Show the top-bar badge immediately as `Draft` on `/episodes/new`.
+- Show backend-returned `status` on edit mode, with `Unknown` fallback for unsupported values.
+- Add edit-only `Archive` action.
+- Preserve existing validation, loading, error, and image upload flows.
+- Keep title, show notes, metadata, and tag editing behavior intact.
 
 ## Non-Goals
 
-- Backend schema or API changes.
-- Real file-upload support.
-- New category data source integration.
-- Full markdown rendering engine.
+- Backend API redesign beyond the approved OpenAPI contract.
+- New status helper copy or restore-specific UI.
+- Status filters or workflow dashboards.
 
-## Source Of Truth
+## Lifecycle contract
 
-- Layout and composition:
-  - `.specs/admin/stitch/cafedebug-admin/code/themes/light/episode-edit.html`
-  - `.specs/admin/stitch/cafedebug-admin/code/themes/dark/episode-edit.html`
-- Expected visuals:
-  - `.specs/admin/stitch/cafedebug-admin/images/themes/light/episode-edit.png`
-  - `.specs/admin/stitch/cafedebug-admin/images/themes/dark/episodes-edit.png`
-- Theming and tokens:
-  - `.specs/admin/DESIGN_SYSTEM.md`
-  - `packages/design-tokens/styles.css`
+Canonical episode lifecycle values:
+
+```ts
+type EpisodeStatus = "draft" | "scheduled" | "published" | "archived";
+```
+
+Safe UI fallback:
+
+```ts
+type EpisodeDisplayStatus = EpisodeStatus | "unknown";
+```
+
+## Action semantics
+
+- `Save Draft` always sends `status: "draft"`.
+- `Archive` always sends `status: "archived"` and is only available in edit mode.
+- `Publish` omits `status` and sends `publishedAt`.
+- If `publishedAt` is blank when publishing, the frontend sends `now`.
+- If `publishedAt` is already filled when publishing, the frontend preserves the user-entered value.
+- `publishedAt` is omitted for `Save Draft` and `Archive`.
+- Archived episodes can be republished through `Publish`.
+
+## Footer behavior
+
+- `/episodes/new`: `Cancel`, `Save Draft`, `Publish`
+- `/episodes/[id]/edit`: `Cancel`, `Save Draft`, `Archive`, `Publish`
+- `Save Draft` stays enabled even when the current status is `draft`.
+- `Archive` is disabled when the current status is `archived`.
+
+## Post-submit behavior
+
+- Successful edit-mode mutations stay on the editor page and refresh the visible status badge.
+- Successful create-mode mutations keep the existing redirect behavior.
 
 ## Acceptance Criteria
 
-1. The editor uses a top bar, split content area, and sticky footer consistent with the Stitch references.
-2. The left pane contains the inline title and show-notes editor shell.
-3. The right pane contains cover artwork, audio URL, category metadata, publish date, and tags.
-4. Existing episode fields remain editable and submit through the current payload transformer.
-5. Create, edit, save-draft, publish, loading, invalid-id, fetch-error, and submit-error flows continue to work.
-6. Light and dark themes both visually align with their respective references.
+1. The editor top bar renders `Draft`, `Scheduled`, `Published`, `Archived`, or `Unknown` badges.
+2. `/episodes/new` shows the `Draft` badge immediately before the first save.
+3. Edit mode supports `Archive` and tracks it as a first-class mutation action.
+4. The payload transformer uses `status` for draft/archive and `publishedAt` for publish.
+5. Edit success stays on the editor page and reflects the refreshed lifecycle state.
+6. Unsupported response statuses render `Unknown` visibly instead of failing silently.

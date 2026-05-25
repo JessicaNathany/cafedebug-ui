@@ -7,6 +7,7 @@
  */
 
 export type GetApiV1AdminBannersParams = {
+search?: string;
 page?: number;
 pageSize?: number;
 sortBy?: string;

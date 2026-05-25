@@ -110,6 +110,7 @@ const toSearchParams = (params: EpisodesQueryParams): URLSearchParams => {
   queryParams.set("pageSize", String(params.pageSize));
   queryParams.set("sortBy", params.sortBy);
   queryParams.set("descending", String(params.descending));
+  if (params.search) queryParams.set("search", params.search);
 
   return queryParams;
 };

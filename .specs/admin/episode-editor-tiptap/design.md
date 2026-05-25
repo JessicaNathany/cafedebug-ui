@@ -1,199 +1,158 @@
-# Design: Episode Show Notes Editor (Tiptap)
+# Design: Episode Show Notes Editor (`Write | HTML`)
 
 | Field | Value |
 |---|---|
-| **Status** | `Implemented` |
+| **Status** | `Draft` |
 | **Spec** | `.specs/admin/episode-editor-tiptap/spec.md` |
 | **Source of truth** | `.specs/admin/stitch/cafedebug-admin/code/themes/*/episode-edit.html` |
-| **Visual reference** | `.specs/admin/stitch/cafedebug-admin/images/themes/light/episode-edit.png` |
 | **Token source** | `.specs/admin/DESIGN_SYSTEM.md` + `packages/design-tokens/styles.css` |
 
 ---
 
-## 1. Architecture Scope
+## 1. Overview
 
-This design updates only the Show Notes authoring surface inside the existing episode editor feature.
+This design replaces Show Notes `Preview` mode with an editable HTML source mode.  
+The feature remains fully inside `features/episodes` and keeps the same form/payload contract (`description: string`).
+
+---
+
+## 2. Architecture decisions
 
 Preserved boundaries:
 
-- `app/` routes stay thin and continue rendering `EpisodeEditorPage`.
-- `useEpisodeEditor` remains the owner of load/reset/mutation/telemetry/navigation orchestration.
-- `episodeEditorSchema` and `toEpisodeRequestPayload` remain the validation and payload source-of-truth.
-- `description` remains `string` in RHF model and API payload (HTML format, matching backend storage).
+- `app/` routes remain thin.
+- `useEpisodeEditor` remains owner of fetch/reset/mutation/telemetry/navigation orchestration.
+- `episodeEditorSchema` and `toEpisodeRequestPayload` remain unchanged.
+- `description` remains HTML string in RHF and API payload.
 
-Out of scope:
+New authoring model:
 
-- backend contract changes;
-- migration of title/metadata fields to Tiptap;
-- collaborative editing.
-
----
-
-## 2. Component Architecture
-
-### 2.1 File map
-
-| Path | Status | Responsibility | Layer |
-|---|---|---|---|
-| `apps/admin/src/features/episodes/components/episode-editor-form.tsx` | Changed | Replace current Show Notes textarea and inline markdown transforms with a dedicated Show Notes field component. Keep split layout and submit area unchanged. | component |
-| `apps/admin/src/features/episodes/components/episode-show-notes-field.tsx` | New | RHF-connected wrapper for write/preview mode, editor mount lifecycle, and field error display. | component |
-| `apps/admin/src/features/episodes/components/episode-show-notes-toolbar.tsx` | New | Toolbar UI for bold, italic, link, quote, inline code, bulleted list, numbered list. Stateless/presentational. | component |
-| `apps/admin/src/features/episodes/components/episode-show-notes-preview.tsx` | New | Sanitized HTML preview renderer with empty-state fallback. | component |
-| `apps/admin/src/features/episodes/hooks/use-episode-show-notes-editor.ts` | New | Tiptap setup, HTML sync with RHF `description`, command handlers, active-state selectors, hydration-safe options. | hook |
-| `apps/admin/src/features/episodes/services/episode-show-notes-serialization.ts` | New | HTML extraction helpers and editor-content normalization rules. | service |
-| `apps/admin/src/features/episodes/services/episode-show-notes-sanitizer.ts` | New | HTML sanitization allowlist boundary for preview render. | service |
-| `apps/admin/src/features/episodes/hooks/use-episode-editor.ts` | Unchanged | Continues to own remote state, submit actions, and route guard behavior. | hook |
-| `apps/admin/src/features/episodes/transformers.ts` | Unchanged | Keeps final API payload shaping (`description` stays string). | service |
-| `apps/admin/src/features/episodes/schemas/episode.schema.ts` | Unchanged | Keeps `description` validation contract. | schema |
-
-### 2.2 Route boundaries
-
-- `apps/admin/src/app/(admin)/episodes/new/page.tsx` and `apps/admin/src/app/(admin)/episodes/[id]/edit/page.tsx` remain thin and unchanged.
-- `apps/admin/src/features/episodes/episode-editor-page.tsx` remains the feature composition boundary for loading/error/invalid-id states.
+- `Write`: Tiptap editor surface.
+- `HTML`: CodeMirror source editor.
+- Single persisted value: RHF `description`.
 
 ---
 
-## 3. Editor Design Contract
+## 3. File structure
 
-### 3.1 Tiptap baseline
+```text
+apps/admin/src/features/episodes/
+  components/
+    episode-editor-form.tsx
+    episode-show-notes-field.tsx
+    episode-show-notes-toolbar.tsx
+  hooks/
+    use-episode-editor.ts
+    use-episode-show-notes-editor.ts
+  services/
+    episode-show-notes-serialization.ts
+  schemas/
+    episode.schema.ts
+```
 
-Required editor stack:
+---
 
-- `@tiptap/react` (v3.x)
-- `@tiptap/pm` (v3.x)
-- `@tiptap/starter-kit` (v3.x — includes Link extension, no separate `@tiptap/extension-link` needed)
+## 4. Responsibilities
 
-Client safety:
+- `episode-show-notes-field.tsx`
+  - Renders label, `Write | HTML` toggle, editor surface, helper copy, and field errors.
+  - Keeps toolbar disabled while in HTML mode.
+- `use-episode-show-notes-editor.ts`
+  - Owns Tiptap init, command set, active states.
+  - Owns source-mode sync helpers and loop guards.
+- `episode-show-notes-serialization.ts`
+  - Owns HTML extraction + source-to-editor canonicalization helper.
 
-- editor components remain `'use client'`;
-- initialize with `immediatelyRender: false` to avoid hydration mismatch in Next.js App Router.
+---
 
-### 3.2 Toolbar command mapping
+## 5. UI/UX structure
 
-| UI action | Command intent |
+### 5.1 Field changes
+
+| Path | Change |
 |---|---|
-| Bold | toggle bold mark |
-| Italic | toggle italic mark |
-| Link | set/unset link mark (URL prompt/flow defined at component level) |
-| Quote | toggle blockquote node |
-| Code | toggle inline code mark |
-| Bulleted list | toggle bullet list node |
-| Numbered list | toggle ordered list node |
+| `apps/admin/src/features/episodes/components/episode-show-notes-field.tsx` | Replace `Preview` tab with `HTML`; render CodeMirror source editor panel instead of rendered preview block. |
+| `apps/admin/src/features/episodes/hooks/use-episode-show-notes-editor.ts` | Add source HTML state, debounced source->editor sync, explicit flush/sync methods, and loop guards. |
+| `apps/admin/src/features/episodes/services/episode-show-notes-serialization.ts` | Add `syncEditorFromHtmlSource()` for canonicalization after applying source HTML. |
+| `apps/admin/package.json` + `pnpm-lock.yaml` | Add CodeMirror dependencies. |
 
-Command states:
+### 5.2 Source editor UX
 
-- each action has `enabled` and `active` state from the editor instance;
-- toolbar actions are disabled when editor is not ready or when preview mode is active.
-
-### 3.3 Write / Preview
-
-- Write mode: editable Tiptap surface.
-- Preview mode: sanitized HTML render of current editor document.
-- Toggling modes must not drop unsaved edits.
+- Code editor: `@uiw/react-codemirror` + `@codemirror/lang-html`.
+- No HTML rendering in source mode.
+- Helper text: unsupported HTML can be normalized by Tiptap schema.
 
 ---
 
-## 4. Data Flow
+## 6. Data flow
 
-### 4.1 New episode flow (`/episodes/new`)
+### 6.1 Write mode updates
 
-1. `useEpisodeEditor` creates RHF form with `episodeEditorDefaultValues` (`description: ""`).
-2. `EpisodeEditorForm` renders `EpisodeShowNotesField` bound to RHF `description`.
-3. Tiptap initializes with empty content from RHF string value.
-4. User edits update Tiptap doc, then serialize to HTML string via `editor.getHTML()`.
-5. Serialized HTML updates RHF `description` with dirty/touched flags.
-6. Submit action (`save-draft` or `publish`) stays unchanged through `toEpisodeRequestPayload`.
+1. User edits Tiptap content.
+2. Hook serializes with `editor.getHTML()`.
+3. RHF `description` is updated (`setValue` with dirty/touch/validate flags).
+4. Source editor state mirrors latest canonical HTML.
 
-### 4.2 Edit flow (`/episodes/[id]/edit`)
+### 6.2 HTML mode updates
 
-1. `useEpisodeEditor` fetches episode and executes `form.reset(toEpisodeEditorDefaults(...))`.
-2. Field receives updated RHF `description` (HTML string from backend) and syncs editor content via `editor.commands.setContent(html)`.
-3. Sync guard prevents reset loops and false-dirty transitions.
-4. User edits follow the same path (doc -> HTML string -> RHF string).
-5. Submit keeps current payload shape and mutation logic.
-6. Post-success reset behavior remains under `useEpisodeEditor`.
+1. User edits source HTML in CodeMirror.
+2. RHF `description` updates immediately.
+3. Hook debounces source->editor apply.
+4. On apply: `setContent(html, false)` and canonicalize with `getHTML()`.
+5. If canonical HTML differs, RHF is updated with canonical value.
 
-### 4.3 State ownership
+### 6.3 Mode transitions
 
-| State | Owner |
-|---|---|
-| Route loading, invalid-id, fetch error | `EpisodeEditorPage` + `useEpisodeEditor` |
-| Submit action, submit error, telemetry | `useEpisodeEditor` |
-| Write/preview mode | `EpisodeShowNotesField` |
-| Editor selection/active marks | `useEpisodeShowNotesEditor` |
-| Persisted description value | RHF form (`description: string`, HTML format) |
+- `Write -> HTML`: sync source state from current editor HTML.
+- `HTML -> Write`: flush pending source sync before switching.
 
 ---
 
-## 5. Preview HTML Pipeline
+## 7. Sync and loop-guard rules
 
-Pipeline:
-
-1. Tiptap document -> HTML string.
-2. HTML string -> `sanitizeEpisodeShowNotesHtml`.
-3. Sanitized HTML -> preview renderer.
-
-Rules:
-
-- never render raw, unsanitized HTML;
-- sanitizer allowlist only includes nodes/attributes needed for supported features;
-- disallow unsafe URL protocols and event attributes;
-- preview HTML is ephemeral UI state, not persisted API state.
+- `isInternalUpdate` ref prevents editor-originated `onChange` from re-applying to editor.
+- `isSourceUpdate` ref prevents source-originated form updates from triggering immediate duplicate apply path.
+- Debounce timer governs source->editor live sync.
+- Cleanup on unmount clears pending timer.
 
 ---
 
-## 6. Styling and Theme Rules
-
-- Keep existing split-pane shell and spacing from current episode editor implementation.
-- Use semantic token classes only (`surface`, `surface-container-*`, `on-surface`, `outline-variant`, `focus-ring`).
-- No hardcoded colors or ad-hoc dark-mode overrides.
-- Keep focus-visible styles for all toolbar and editor interactive elements.
-- Preserve light/dark parity and Stitch visual hierarchy.
-
----
-
-## 7. Accessibility and UX
-
-- Toolbar buttons keep explicit `aria-label`s.
-- Editor region keeps programmatic label association with Show Notes field label.
-- Visible keyboard focus for toolbar actions and write/preview segmented control.
-- Preview mode remains readable and preserves semantic structure for lists, links, quote, and code.
-- Error message rendering for `description` stays connected to RHF validation output.
-
----
-
-## 8. Edge Cases and Mitigations
+## 8. Edge cases
 
 | Risk | Mitigation |
 |---|---|
-| Hydration mismatch | Client-only editor leaf + `immediatelyRender: false`. |
-| Legacy HTML with unsupported markup | Tiptap gracefully drops unsupported nodes on parse; accept normalization where semantics are preserved. |
-| XSS via preview render | Mandatory DOMPurify sanitizer boundary before `dangerouslySetInnerHTML`. |
-| Unsafe links | URL protocol filtering in DOMPurify sanitizer policy. |
-| Form reset overwrites live edits | Sync guard with last-synced reference/source-aware update logic. |
-| Dirty-state regression | All editor changes must route through RHF field updates. |
-| Unsupported pasted content | Graceful fallback to plain text when unsupported structures are encountered. |
+| Infinite editor/form update loops | Dual guard refs + controlled sync points. |
+| Source HTML incompatible with schema | Canonicalization path; never crash on apply attempts. |
+| False dirty-state on mode switch | Flush/sync methods avoid noop churn and preserve existing RHF semantics. |
+| Hydration mismatch | Existing `immediatelyRender: false` remains. |
 
 ---
 
-## 9. Acceptance Criteria Mapping
+## 9. Accessibility and tokens
+
+- Keep programmatic label association for Show Notes.
+- Preserve focus-visible states for toggle/buttons/editor.
+- Keep token-based styling (no new hardcoded hex values).
+- Toolbar remains keyboard reachable; disabled when source mode is active.
+
+---
+
+## 10. Acceptance mapping
 
 | Spec acceptance | Design mechanism |
 |---|---|
-| Tiptap-backed editing on new/edit pages | Dedicated `EpisodeShowNotesField` + editor hook replacing textarea internals. |
-| Toolbar actions work end-to-end | Explicit command mapping and toolbar action state contract. |
-| Preview renders HTML, not raw text | Sanitized HTML preview pipeline. |
-| `description` remains backend-compatible string | RHF string storage (HTML format) and unchanged transformer contract. |
-| Existing lifecycle states remain intact | No changes to `EpisodeEditorPage` state branches or `useEpisodeEditor` orchestration. |
-| Theme fidelity in light/dark | Token-only styling and preserved shell structure. |
-| Quality gates pass | Scoped changes to features/episodes plus targeted tests for sync/sanitization/commands. |
+| `Write | HTML` mode toggle | Updated segmented control in `EpisodeShowNotesField`. |
+| Editable HTML source | CodeMirror integration with HTML language mode. |
+| Live two-way sync | Debounced source->editor + editor->RHF immediate sync. |
+| Canonicalization | `syncEditorFromHtmlSource()` helper. |
+| No contract drift | Unchanged schema/transformer/API payload shape. |
 
 ---
 
-## 10. Governance Handoff (Design Phase)
+## 11. Governance handoff (Design phase)
 
-- **Phase:** Design (`Specification -> Planning` path is valid)
-- **What changed:** Defined component architecture and runtime data flow for Show Notes Tiptap adoption with HTML persistence format, without altering API contracts.
+- **Phase:** Design
+- **What changed:** Replaced preview-render architecture with editable HTML source architecture and canonicalization flow.
 - **Where:** `.specs/admin/episode-editor-tiptap/design.md`
-- **Unresolved risks:** Legacy HTML normalization behavior; sanitizer allowlist coverage.
-- **Approval status:** Draft design ready for planning (`tasks.md` phase).
+- **Unresolved risks:** arbitrary HTML lossiness due to schema normalization.
+- **Approval status:** Draft design ready for task execution.

@@ -1,14 +1,15 @@
 "use client";
 
+import type { EpisodeDisplayStatus } from "../types/episode.types";
 import { EpisodeStatusBadge } from "./episode-status-badge";
 
 type EpisodeEditorTopBarProps = {
-  active: boolean;
+  status: EpisodeDisplayStatus;
   mode: "new" | "edit";
   onBack: () => void;
 };
 
-export function EpisodeEditorTopBar({ active, mode, onBack }: EpisodeEditorTopBarProps) {
+export function EpisodeEditorTopBar({ status, mode, onBack }: EpisodeEditorTopBarProps) {
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between border-b border-outline-variant/60 bg-surface-container-lowest px-6 py-5 lg:px-8 xl:px-10">
       <div className="flex items-center gap-4">
@@ -33,7 +34,7 @@ export function EpisodeEditorTopBar({ active, mode, onBack }: EpisodeEditorTopBa
         </div>
       </div>
 
-      <EpisodeStatusBadge active={active} />
+      <EpisodeStatusBadge status={status} />
     </header>
   );
 }

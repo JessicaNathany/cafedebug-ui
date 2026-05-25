@@ -8,6 +8,11 @@ import type {
 
 const toTrimmedValue = (value: string): string => value.trim();
 
+const DATE_TIME_WITH_MINUTES_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+const DATE_TIME_WITH_SECONDS_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
+const DATE_TIME_EXTRACT_PATTERN =
+  /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})(?::(\d{2}))?(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+
 const parseOptionalInteger = (value: string): number | undefined => {
   const normalizedValue = value.trim();
 
@@ -33,6 +38,39 @@ const toTagsList = (value: string): string[] => {
 
   return Array.from(new Set(tags));
 };
+
+const toApiDateTimeValue = (value: string): string | undefined => {
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue) {
+    return undefined;
+  }
+
+  if (DATE_TIME_WITH_SECONDS_PATTERN.test(trimmedValue)) {
+    return trimmedValue;
+  }
+
+  if (DATE_TIME_WITH_MINUTES_PATTERN.test(trimmedValue)) {
+    return `${trimmedValue}:00`;
+  }
+
+  const extractedDateTime = DATE_TIME_EXTRACT_PATTERN.exec(trimmedValue);
+
+  if (extractedDateTime) {
+    const [, minutesValue, secondsValue] = extractedDateTime;
+    return `${minutesValue}:${secondsValue ?? "00"}`;
+  }
+
+  const parsedDate = new Date(trimmedValue);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return undefined;
+  }
+
+  return parsedDate.toISOString().slice(0, 19);
+};
+
+const toCurrentApiDateTimeValue = (): string => new Date().toISOString().slice(0, 19);
 
 export const toEpisodeEditorDefaults = (
   episode: EpisodeRecord | null
@@ -64,6 +102,20 @@ export const toEpisodeEditorDefaults = (
   };
 };
 
+const toStatusForAction = (
+  action: EpisodeMutationAction
+): NonNullable<EpisodeRequest["status"]> => {
+  if (action === "save-draft") {
+    return "draft";
+  }
+
+  if (action === "archive") {
+    return "archived";
+  }
+
+  return "published";
+};
+
 export const toEpisodeRequestPayload = ({
   values,
   action
@@ -82,12 +134,11 @@ export const toEpisodeRequestPayload = ({
   const tags = toTagsList(values.tags);
 
   const payload: EpisodeRequest = {
-    title,
-    active: action === "publish"
+    title
   };
 
-  const normalizedPublishedAt =
-    publishedAt || (action === "publish" ? new Date().toISOString() : "");
+  const status = toStatusForAction(action);
+  payload.status = status;
 
   const maybeShortDescription = maybeString(shortDescription);
   if (maybeShortDescription) {
@@ -113,10 +164,7 @@ export const toEpisodeRequestPayload = ({
     payload.tags = tags;
   }
 
-  const maybePublishedAt = maybeString(normalizedPublishedAt);
-  if (maybePublishedAt) {
-    payload.publishedAt = maybePublishedAt;
-  }
+  payload.publishedAt = toApiDateTimeValue(publishedAt) ?? toCurrentApiDateTimeValue();
 
   if (typeof number === "number" && Number.isInteger(number)) {
     payload.number = number;

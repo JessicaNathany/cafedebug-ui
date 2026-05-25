@@ -119,4 +119,4 @@ If the migration fails validation:
 3. Rename `proxy.ts` back to `middleware.ts` and restore named export
 4. Revert `events.ts` changes
 5. Run `pnpm install` to restore lockfile
-6. Verify `pnpm gate:validation` passes on reverted state
+6. Verify `pnpm ci:validation` passes on reverted state

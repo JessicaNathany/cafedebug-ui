@@ -18,9 +18,9 @@ const formatPublishDate = (publishedAt?: string): string => {
 };
 
 const tableHeadCellClassName =
-  "py-4 px-6 font-display font-medium text-sm text-on-surface";
+  "px-6 py-4 font-display text-sm font-semibold text-on-surface";
 
-const tableCellClassName = "py-4 px-6";
+const tableCellClassName = "px-6 py-4";
 
 const skeletonRows = Array.from({ length: 5 }, (_, index) => index + 1);
 
@@ -45,7 +45,7 @@ function EpisodesTableSkeleton() {
               <span className="inline-block h-3 w-56 animate-pulse rounded bg-surface-container-high" />
             </td>
             <td className={tableCellClassName}>
-              <span className="inline-block h-5 w-20 animate-pulse rounded-[4px] bg-surface-container-high" />
+              <span className="inline-block h-6 w-24 animate-pulse rounded-md bg-surface-container-high" />
             </td>
             <td className={tableCellClassName}>
               <span className="inline-block h-3 w-24 animate-pulse rounded bg-surface-container-high" />
@@ -71,49 +71,49 @@ export function EpisodesTable({ items, isLoading }: EpisodesTableProps) {
 
   return (
     <table className="w-full border-collapse text-left">
-        <thead>
+      <thead>
         <tr className="border-b border-outline-variant/60 bg-table-header-surface">
           <th className={`${tableHeadCellClassName} w-16`}>Number</th>
           <th className={tableHeadCellClassName}>Title</th>
           <th className={`${tableHeadCellClassName} w-1/6`}>Status</th>
           <th className={`${tableHeadCellClassName} w-1/6`}>Publish Date</th>
         </tr>
-        </thead>
+      </thead>
 
-        <tbody className="divide-y divide-outline-variant/40 font-body">
-          {items.map((episode) => (
-            <tr
-              className="group cursor-pointer transition-colors duration-150 hover:bg-[var(--color-table-row-hover)]"
-              key={episode.id}
-              onClick={() => router.push(appRoutes.editEpisode(String(episode.id)))}
-            >
-              <td className={`${tableCellClassName} text-sm font-normal text-on-surface`}>
-                {typeof episode.number === "number" ? `#${episode.number}` : "—"}
-              </td>
+      <tbody className="divide-y divide-outline-variant/40 font-body">
+        {items.map((episode) => (
+          <tr
+            className="group cursor-pointer transition-colors duration-150 hover:bg-table-row-hover"
+            key={episode.id}
+            onClick={() => router.push(appRoutes.editEpisode(String(episode.id)))}
+          >
+            <td className={`${tableCellClassName} text-sm font-medium text-on-surface`}>
+              {typeof episode.number === "number" ? `#${episode.number}` : "—"}
+            </td>
 
-              <td className={tableCellClassName}>
-                <div className="flex flex-col">
-                  <span className="font-normal text-on-surface transition-colors group-hover:text-primary">
-                    {episode.title}
+            <td className={tableCellClassName}>
+              <div className="flex flex-col">
+                <span className="font-medium text-on-surface transition-colors group-hover:text-primary">
+                  {episode.title}
+                </span>
+                {episode.shortDescription || episode.description ? (
+                  <span className="mt-0.5 text-sm text-on-surface-variant">
+                    {episode.shortDescription || episode.description}
                   </span>
-                  {(episode.shortDescription || episode.description) ? (
-                    <span className="mt-0.5 text-sm text-on-surface-variant">
-                      {episode.shortDescription || episode.description}
-                    </span>
-                  ) : null}
-                </div>
-              </td>
+                ) : null}
+              </div>
+            </td>
 
-              <td className={tableCellClassName}>
-                <EpisodeStatusBadge active={episode.active} />
-              </td>
+            <td className={tableCellClassName}>
+              <EpisodeStatusBadge status={episode.status} />
+            </td>
 
-              <td className={`${tableCellClassName} text-sm text-on-surface-variant`}>
-                {formatPublishDate(episode.publishedAt)}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            <td className={`${tableCellClassName} text-sm text-on-surface-variant`}>
+              {formatPublishDate(episode.publishedAt)}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }

@@ -4,7 +4,8 @@ export const episodesListDefaultParams: EpisodesQueryParams = {
   page: 1,
   pageSize: 5,
   sortBy: "number",
-  descending: true
+  descending: true,
+  search: ""
 };
 
 export const episodeEditorDefaultValues: EpisodeEditorFormValues = {

@@ -240,3 +240,47 @@ export const deleteApiV1AdminCategoriesId = async (id: number, options?: Request
 );}
 
 
+export type getApiV1AdminCategoriesCategoryNameResponse200 = {
+  data: BannerResponse
+  status: 200
+}
+
+export type getApiV1AdminCategoriesCategoryNameResponse400 = {
+  data: ProblemDetails
+  status: 400
+}
+
+export type getApiV1AdminCategoriesCategoryNameResponse404 = {
+  data: ProblemDetails
+  status: 404
+}
+
+export type getApiV1AdminCategoriesCategoryNameResponseSuccess = (getApiV1AdminCategoriesCategoryNameResponse200) & {
+  headers: Headers;
+};
+export type getApiV1AdminCategoriesCategoryNameResponseError = (getApiV1AdminCategoriesCategoryNameResponse400 | getApiV1AdminCategoriesCategoryNameResponse404) & {
+  headers: Headers;
+};
+
+export type getApiV1AdminCategoriesCategoryNameResponse = (getApiV1AdminCategoriesCategoryNameResponseSuccess | getApiV1AdminCategoriesCategoryNameResponseError)
+
+export const getGetApiV1AdminCategoriesCategoryNameUrl = (categoryName: string,) => {
+
+
+
+
+  return `/api/v1/admin/categories/${categoryName}`
+}
+
+export const getApiV1AdminCategoriesCategoryName = async (categoryName: string, options?: RequestInit): Promise<getApiV1AdminCategoriesCategoryNameResponse> => {
+
+  return customFetch<getApiV1AdminCategoriesCategoryNameResponse>(getGetApiV1AdminCategoriesCategoryNameUrl(categoryName),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+

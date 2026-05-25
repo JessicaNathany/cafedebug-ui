@@ -38,6 +38,15 @@ const config: Config = {
         "status-draft-surface": "var(--color-status-draft-surface)",
         "status-draft-on": "var(--color-status-draft-on)",
         "status-draft-border": "var(--color-status-draft-border)",
+        "status-scheduled-surface": "var(--color-status-scheduled-surface)",
+        "status-scheduled-on": "var(--color-status-scheduled-on)",
+        "status-scheduled-border": "var(--color-status-scheduled-border)",
+        "status-archived-surface": "var(--color-status-archived-surface)",
+        "status-archived-on": "var(--color-status-archived-on)",
+        "status-archived-border": "var(--color-status-archived-border)",
+        "status-unknown-surface": "var(--color-status-unknown-surface)",
+        "status-unknown-on": "var(--color-status-unknown-on)",
+        "status-unknown-border": "var(--color-status-unknown-border)",
         "nav-active-surface": "var(--color-nav-active-surface)"
       },
       spacing: {

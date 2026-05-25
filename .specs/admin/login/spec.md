@@ -515,7 +515,7 @@ current response shape was finalised, the TypeScript types from `openapi-typescr
 may not accurately reflect `{ accessToken, refreshToken, tokenType, expiresIn }`.
 
 **Required action:**  
-Run `pnpm gate:contract` to verify the generated types match the current backend
+Run `pnpm --filter @cafedebug/api-client run contract:check` to verify the generated types match the current backend
 response. If the OpenAPI spec is outdated, regenerate the client types before
 implementing GAP-01 / GAP-03 fixes.
 
