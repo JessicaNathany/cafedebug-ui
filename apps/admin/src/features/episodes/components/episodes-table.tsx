@@ -88,7 +88,7 @@ export function EpisodesTable({ items, isLoading }: EpisodesTableProps) {
             onClick={() => router.push(appRoutes.editEpisode(String(episode.id)))}
           >
             <td className={`${tableCellClassName} text-sm font-medium text-on-surface`}>
-              {typeof episode.number === "number" ? `#${episode.number}` : "—"}
+              {typeof episode.number === "number" ? episode.number : "—"}
             </td>
 
             <td className={tableCellClassName}>
