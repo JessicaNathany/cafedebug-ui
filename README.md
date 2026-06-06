@@ -94,7 +94,6 @@ infra/
 
 docs/
   CONTRIBUTING.md
-  design-system.md
 
 .specs/
   README.md

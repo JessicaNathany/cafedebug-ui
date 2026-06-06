@@ -73,6 +73,7 @@ Implementation must follow:
 | API Client Refactor | `Implemented` | `.specs/admin/api-client-refactor/` | Refactors API contract and client organization around Orval, with TanStack Query in admin and server-first fetching in web |
 | Episode Category Selector | `Implemented` | `.specs/admin/episode-category-selector/` | Replaces hardcoded category options in the episode editor with a dynamic list fetched from the backend categories API |
 | Episode List Search | `Draft` | `.specs/admin/episode-search/` | Replaces client-side filtering with server-side search via `GET /api/v1/admin/episodes?search=` |
+| Episode List Number Display | `Implemented` | `.specs/admin/episode-list-number-display/` | Removes the `#` prefix from the episodes list number column while keeping the same numeric content and table behavior |
 
 ### `platform`
 
