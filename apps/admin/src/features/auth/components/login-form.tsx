@@ -40,7 +40,7 @@ export function LoginForm() {
           </span>
         </div>
         <h1 className="font-display text-2xl font-extrabold tracking-tight text-on-surface">
-          CafeDebug
+          Café Debug
         </h1>
         <p className="mt-1 text-sm text-on-surface-variant">Admin Console Login</p>
       </div>
@@ -178,7 +178,7 @@ export function LoginForm() {
           </span>
           <span className="select-none text-xs text-on-surface-variant/50">|</span>
           <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
-            CafeDebug
+            Café Debug
           </span>
         </div>
       </div>

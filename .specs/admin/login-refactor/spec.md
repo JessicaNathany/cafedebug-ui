@@ -33,7 +33,7 @@ The goal is to implement this layout while:
 | Area | Detail |
 |---|---|
 | Auth page chrome | New `(auth)/layout.tsx`: top bar + background orbs + page footer |
-| Login card — brand block | Logo icon (mic symbol) + "CafeDebug" heading + "Admin Console Login" subtitle |
+| Login card — brand block | Logo icon (mic symbol) + "Café Debug" heading + "Admin Console Login" subtitle |
 | Login card — email field | Input with leading mail icon |
 | Login card — password field | Input with leading lock icon + password visibility toggle button |
 | Login card — security note | "Secure access for authorized administrators only." text below form |
@@ -55,7 +55,7 @@ The goal is to implement this layout while:
 
 ### FR-1: Auth Layout Shell
 - A new `(auth)/layout.tsx` must render:
-  - A sticky top bar (height: 64px) with the "CafeDebug" brand name on the left
+  - A sticky top bar (height: 64px) with the "Café Debug" brand name on the left
   - Background ambient orbs: two blurred circles using primary with low opacity
   - A page footer with three links (Privacy Policy, Terms of Service, Support) and a copyright line
 - This layout wraps all auth routes (currently only `/login`)
@@ -63,7 +63,7 @@ The goal is to implement this layout while:
 ### FR-2: Login Card — Brand Block
 - The card must display, above the form:
   - A 48×48 icon box with `--color-primary` background, `--radius-xl` radius, and a filled mic symbol (white)
-  - An `<h1>` reading "CafeDebug" (display font, 2xl, extrabold)
+  - An `<h1>` reading "Café Debug" (display font, 2xl, extrabold)
   - A subtitle `<p>` reading "Admin Console Login" (body-sm, on-surface-variant)
 
 ### FR-3: Email Input with Icon
@@ -129,7 +129,7 @@ Because the implementation uses only semantic tokens, **light/dark parity is aut
 | `#FF6B35/10` orb | `bg-orange-100/50` orb | `bg-primary/10` | via opacity | via opacity |
 | `focus:ring-[#FF6B35]/20` | `focus:ring-orange-500/20` | `--color-focus-ring` | `rgb(255 107 53 / 50%)` | `rgb(255 107 53 / 45%)` |
 
-> **Note:** CafeDebug uses warm tonal surfaces instead of zinc. The semantic token values differ from Stitch's zinc-based prototype; DESIGN_SYSTEM.md resolved this in favor of warm tones for both themes. The Stitch light and dark prototypes are visual direction references only — not pixel-exact targets.
+> **Note:** Café Debug uses warm tonal surfaces instead of zinc. The semantic token values differ from Stitch's zinc-based prototype; DESIGN_SYSTEM.md resolved this in favor of warm tones for both themes. The Stitch light and dark prototypes are visual direction references only — not pixel-exact targets.
 
 ### Theme parity guarantee
 

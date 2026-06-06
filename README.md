@@ -1,9 +1,11 @@
-# CafeDebug Platform
+# Cafe Debug Platform
 
 [![Validation Gates](https://github.com/RegisBarros/cafedebug-ui/actions/workflows/validation-gates.yml/badge.svg?branch=main)](https://github.com/RegisBarros/cafedebug-ui/actions/workflows/validation-gates.yml)
 
 ![image](https://user-images.githubusercontent.com/11943572/234849730-c6b41618-6c13-4a87-9b5e-5b9d16ba4474.png)
 
+
+🇺🇸 English | 🇧🇷 [Português](README.pt-BR.md)
 
 🚧  Project 🚀 under construction (with coffee and bugs)...  ☕💻🚧
 
@@ -253,6 +255,20 @@ Use when debugging or changing the API in Visual Studio (or `dotnet run`) while 
 
 1. In `apps/admin/.env.local`: set `ADMIN_API_BASE_URL` to that URL (e.g. `https://localhost:7211`).
 2. HTTPS with a dev certificate: uncomment `NODE_TLS_REJECT_UNAUTHORIZED=0` in `apps/admin/.env.local` (see `.env.example`). Do not put it in `package.json` scripts.
+
+**Installing pnpm:**
+
+If you don't have pnpm installed globally, install it first:
+
+```bash
+npm install -g pnpm
+```
+
+Then verify the installation:
+
+```bash
+pnpm --version
+```
 
 #### 1. Install dependencies
 

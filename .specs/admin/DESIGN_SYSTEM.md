@@ -1,4 +1,4 @@
-# CafeDebug Admin Unified Design System
+# Café Debug Admin Unified Design System
 
 **Status:** Canonical specification  
 **Scope:** `apps/admin`, `packages/ui`, `packages/design-tokens`  
@@ -9,7 +9,7 @@
 
 ## 1) Purpose
 
-This document is the single source of truth for the CafeDebug admin design system.
+This document is the single source of truth for the Café Debug admin design system.
 
 It merges:
 
