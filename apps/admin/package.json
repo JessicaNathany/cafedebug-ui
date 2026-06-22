@@ -11,8 +11,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf .next .turbo tsconfig.tsbuildinfo",
-    "test": "node --test tests/**/*.test.mjs",
-    "test:states": "node --test tests/episodes-list-states.test.mjs"
+    "test": "node --experimental-strip-types --test tests/**/*.test.mjs",
+    "test:states": "node --experimental-strip-types --test tests/episodes-list-states.test.mjs"
   },
   "dependencies": {
     "@codemirror/lang-html": "^6.4.11",

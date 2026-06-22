@@ -12,6 +12,9 @@ type TelemetryOutcome = "success" | "failure";
 type LoginEventSource = "login-form" | "auth-login-route";
 type EpisodeEditorMode = "create" | "edit";
 type EpisodeMutationAction = "save-draft" | "archive" | "publish";
+type BannerEditorMode = "create" | "edit";
+type BannerMutationAction = "save-draft" | "publish";
+type EpisodeMutationAction = "save-draft" | "archive" | "publish";
 
 type TelemetryEventInput = {
   level: TelemetryLevel;
@@ -57,6 +60,21 @@ type EpisodeOutcomeContext = {
   reason?: string;
 };
 
+type BannerOutcomeInput = {
+  mode: BannerEditorMode;
+  action: BannerMutationAction;
+  outcome: TelemetryOutcome;
+  traceId?: string;
+  status?: number;
+  reason?: string;
+};
+
+type BannerOutcomeContext = {
+  status?: number;
+  traceId?: string;
+  reason?: string;
+};
+
 type CaptureUiExceptionInput = {
   module: string;
   action: string;
@@ -72,6 +90,14 @@ export type EpisodeEditorTelemetryHooks = {
   onArchiveFailure: (context?: EpisodeOutcomeContext) => void;
   onPublishSuccess: (context?: EpisodeOutcomeContext) => void;
   onPublishFailure: (context?: EpisodeOutcomeContext) => void;
+};
+
+export type BannerEditorTelemetryHooks = {
+  onDetailFailure: (context?: BannerOutcomeContext) => void;
+  onSaveDraftSuccess: (context?: BannerOutcomeContext) => void;
+  onSaveDraftFailure: (context?: BannerOutcomeContext) => void;
+  onPublishSuccess: (context?: BannerOutcomeContext) => void;
+  onPublishFailure: (context?: BannerOutcomeContext) => void;
 };
 
 const sentryLevelByTelemetryLevel = {
@@ -333,6 +359,85 @@ export const createEpisodeEditorTelemetryHooks = (
     }),
   onPublishFailure: (context) =>
     trackEpisodeEditorOutcome({
+      mode,
+      action: "publish",
+      outcome: "failure",
+      ...(context?.traceId ? { traceId: context.traceId } : {}),
+      ...(typeof context?.status === "number" ? { status: context.status } : {}),
+      ...(context?.reason ? { reason: context.reason } : {})
+    })
+});
+
+export const trackBannerEditorOutcome = ({
+  mode,
+  action,
+  outcome,
+  traceId,
+  status,
+  reason
+}: BannerOutcomeInput): void => {
+  emitTelemetryEvent({
+    level: outcome === "failure" ? "error" : "info",
+    event: "banners.mutation.outcome",
+    module: "banners",
+    action: `${mode}.${action}`,
+    outcome,
+    ...(traceId ? { traceId } : {}),
+    ...(typeof status === "number" ? { status } : {}),
+    details: {
+      mode,
+      mutation: action,
+      ...(reason ? { reason } : {})
+    }
+  });
+};
+
+export const createBannerEditorTelemetryHooks = (
+  mode: BannerEditorMode
+): BannerEditorTelemetryHooks => ({
+  onDetailFailure: (context) =>
+    emitTelemetryEvent({
+      level: "error",
+      event: "banners.detail.failure",
+      module: "banners",
+      action: `${mode}.detail`,
+      outcome: "failure",
+      ...(context?.traceId ? { traceId: context.traceId } : {}),
+      ...(typeof context?.status === "number" ? { status: context.status } : {}),
+      details: {
+        mode,
+        ...(context?.reason ? { reason: context.reason } : {})
+      }
+    }),
+  onSaveDraftSuccess: (context) =>
+    trackBannerEditorOutcome({
+      mode,
+      action: "save-draft",
+      outcome: "success",
+      ...(context?.traceId ? { traceId: context.traceId } : {}),
+      ...(typeof context?.status === "number" ? { status: context.status } : {}),
+      ...(context?.reason ? { reason: context.reason } : {})
+    }),
+  onSaveDraftFailure: (context) =>
+    trackBannerEditorOutcome({
+      mode,
+      action: "save-draft",
+      outcome: "failure",
+      ...(context?.traceId ? { traceId: context.traceId } : {}),
+      ...(typeof context?.status === "number" ? { status: context.status } : {}),
+      ...(context?.reason ? { reason: context.reason } : {})
+    }),
+  onPublishSuccess: (context) =>
+    trackBannerEditorOutcome({
+      mode,
+      action: "publish",
+      outcome: "success",
+      ...(context?.traceId ? { traceId: context.traceId } : {}),
+      ...(typeof context?.status === "number" ? { status: context.status } : {}),
+      ...(context?.reason ? { reason: context.reason } : {})
+    }),
+  onPublishFailure: (context) =>
+    trackBannerEditorOutcome({
       mode,
       action: "publish",
       outcome: "failure",
