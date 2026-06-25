@@ -115,7 +115,7 @@ export function AdminShellSidebar({ pathname, currentTheme }: AdminShellSidebarP
             </div>
             <div className="flex min-w-0 flex-1 flex-col">
               <h1 className="font-display text-base font-bold leading-tight text-on-surface">
-                CafeDebug
+                Café Debug
               </h1>
               <p className="mt-0.5 text-xs font-medium uppercase tracking-wide text-on-surface-variant">
                 Admin

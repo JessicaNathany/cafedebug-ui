@@ -12,7 +12,7 @@ export default async function AuthLayout({ children }: { children: ReactNode }) 
       <div className="flex min-h-screen flex-col bg-surface">
         <header className="sticky top-0 z-20 flex h-16 w-full items-center justify-between border-b border-outline-variant bg-surface-container-lowest px-6 backdrop-blur-md">
           <span className="font-display text-xl font-bold tracking-tight text-on-surface">
-            CafeDebug
+            Café Debug
           </span>
           <ThemeToggle currentTheme={currentTheme} />
         </header>
@@ -51,7 +51,7 @@ export default async function AuthLayout({ children }: { children: ReactNode }) 
             </a>
           </div>
           <p className="text-xs text-on-surface-variant">
-            © 2026 CafeDebug Admin. All rights reserved.
+            © 2026 Café Debug Admin. All rights reserved.
           </p>
         </footer>
       </div>

@@ -1,6 +1,6 @@
 # AI Agent Governance
 
-This document defines how agents coordinate work in CafeDebug.
+This document defines how agents coordinate work in Café Debug.
 It is intentionally focused on governance, lifecycle, and handoffs.
 
 ## Scope

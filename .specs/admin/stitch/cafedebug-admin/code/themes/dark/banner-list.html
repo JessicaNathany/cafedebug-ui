@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Banners List - CafeDebug</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Cabinet+Grotesk:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            background-color: #0F0F11;
+            color: #F4F4F5;
+        }
+        h1, h2, h3, h4, h5, h6, .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shadow-soft {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+        .focus-ring {
+            transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        .focus-ring:focus-within {
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+            border-color: #FF6B35;
+        }
+        .table-row-hover {
+            transition: background-color 0.15s ease-in-out;
+        }
+        .table-row-hover:hover {
+            background-color: #1F1F23;
+            cursor: pointer;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FF6B35",
+                        "background": "#0F0F11",
+                        "surface": "#18181B",
+                        "text": "#F4F4F5",
+                        "muted": "#A1A1AA",
+                        "border": "#27272A"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Cabinet Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-text antialiased flex h-screen overflow-hidden">
+<!-- Shared SideNavBar -->
+<div class="relative flex h-full w-60 flex-col bg-surface border-r border-border z-10 shrink-0">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2 pt-2">
+<div class="flex items-center justify-center rounded-lg h-10 w-auto overflow-hidden">
+<img alt="CafeDebug" class="h-8 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjFXcO_ved4ViR-oQUlyMCQIbcnQ8nbLWWAil5zns6BPs0imN0pCjfvpDA7SveSOnidJFvaMS8WpKcUrb6LnJA09N1ItgIv7HdlJ-WrnqaXZc9F-ak8fCWo9IsZLGPPK2Wea3AkxD1Nb9_4jY3na9gJjLcdGn5CvIRZVYweebUP4EGakD16MKw7fe1aTeDBLgvzsqLh8Nd5-0xBysqtHkXXGgPzNU1ftl497s3VBDqgjf-TgXfHxi2zBlz4CCcj37jjNS8XGrado0t"/>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted group-hover:text-text transition-colors">home</span>
+<span class="font-body text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted group-hover:text-text transition-colors">mic</span>
+<span class="font-body text-sm font-medium">Episodes</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium relative border-l-2 border-primary group" href="#">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">campaign</span>
+<span class="font-body text-sm font-semibold">Banners</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted group-hover:text-text transition-colors">bug_report</span>
+<span class="font-body text-sm font-medium">Debuggers</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted group-hover:text-text transition-colors">group</span>
+<span class="font-body text-sm font-medium">Users</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted group-hover:text-text transition-colors">settings</span>
+<span class="font-body text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- User Profile Bottom -->
+<div class="mt-auto border-t border-border pt-4 px-2">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="size-8 rounded-full border border-border" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4LcY3IwkilbPEDn5sfyMsRa1RYKLxjzYxJ0isEMNhL4jYSktZBYmaAichvrgqQU3T9m12yxYwddDNRN1Lxwe-4O8-DyiqSZ-i2zNFJ9czK4Tl8b6YXonDQBiYKd0N8X1HSBsR9uCgCasOiTAwb5jjDMLIPp5jqKvwWloNEdeMAI6ywnd6Goila23k4vafPwrPZMvx2Jxj_reK1r77HuzYqGjS6jLhEidtbvwUzdHSbc8iKhHuyZ65xf2kAoU84fKPSPgw1BdWLl4"/>
+<div class="flex flex-col overflow-hidden">
+<span class="text-sm font-medium text-text truncate">Alice Admin</span>
+<span class="text-xs text-muted truncate">alice@cafedebug.com</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-y-auto w-full relative">
+<div class="max-w-[1024px] w-full mx-auto px-8 py-10 flex flex-col gap-8">
+<!-- Header Section -->
+<header class="flex items-center justify-between w-full">
+<div class="flex flex-col gap-1">
+<h2 class="font-display text-text text-[32px] font-bold leading-tight">Banners</h2>
+<p class="text-muted font-body text-sm">Manage, edit, and publish your banner content.</p>
+</div>
+<button class="bg-primary hover:bg-[#E55A25] text-white font-display font-semibold text-sm h-10 px-5 rounded-lg flex items-center gap-2 transition-colors shadow-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    New Banner
+                </button>
+</header>
+<!-- Search and Filter Section -->
+<div class="flex w-full bg-surface rounded-lg shadow-soft border border-border focus-ring h-12 relative overflow-hidden items-center px-4">
+<span class="material-symbols-outlined text-muted mr-3">search</span>
+<input class="w-full h-full bg-transparent border-none outline-none font-body text-base text-text placeholder:text-muted focus:ring-0" placeholder="Search banners by name or status..." type="text"/>
+</div>
+<!-- Data Table Section -->
+<div class="bg-surface rounded-lg border border-border shadow-soft overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-border bg-white/5">
+<th class="py-4 px-6 font-display font-semibold text-sm text-text w-16">Order</th>
+<th class="py-4 px-6 font-display font-semibold text-sm text-text">Name</th>
+<th class="py-4 px-6 font-display font-semibold text-sm text-text w-1/6">Status</th>
+<th class="py-4 px-6 font-display font-semibold text-sm text-text w-1/6">Start Date</th>
+<th class="py-4 px-6 font-display font-semibold text-sm text-text w-1/6">End Date</th>
+</tr>
+</thead>
+<tbody class="font-body divide-y divide-border">
+<!-- Row 1: Published -->
+<tr class="table-row-hover group">
+<td class="py-4 px-6 text-text font-medium text-sm">1</td>
+<td class="py-4 px-6">
+<span class="text-text font-medium group-hover:text-primary transition-colors">Livro Carreira Dev</span>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-1 rounded-[4px] text-xs font-semibold bg-white/10 text-text border border-white/10">
+                                    Published
+                                </span>
+</td>
+<td class="py-4 px-6 text-muted text-sm">Oct 24, 2023</td>
+<td class="py-4 px-6 text-muted text-sm">Dec 31, 2023</td>
+</tr>
+<!-- Row 2: Draft -->
+<tr class="table-row-hover group">
+<td class="py-4 px-6 text-text font-medium text-sm">2</td>
+<td class="py-4 px-6">
+<span class="text-text font-medium group-hover:text-primary transition-colors">Banner perfil</span>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-1 rounded-[4px] text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
+                                    Draft
+                                </span>
+</td>
+<td class="py-4 px-6 text-muted text-sm">Nov 15, 2023</td>
+<td class="py-4 px-6 text-muted text-sm">Jan 15, 2024</td>
+</tr>
+<!-- Row 3: Published -->
+<tr class="table-row-hover group">
+<td class="py-4 px-6 text-text font-medium text-sm">3</td>
+<td class="py-4 px-6">
+<span class="text-text font-medium group-hover:text-primary transition-colors">Discord do Café Debug</span>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-1 rounded-[4px] text-xs font-semibold bg-white/10 text-text border border-white/10">
+                                    Published
+                                </span>
+</td>
+<td class="py-4 px-6 text-muted text-sm">Oct 10, 2023</td>
+<td class="py-4 px-6 text-muted text-sm">Dec 15, 2023</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination / Footer area -->
+<div class="px-6 py-4 border-t border-border bg-white/5 flex items-center justify-between">
+<span class="text-sm text-muted">Showing 1 to 3 of 3 banners</span>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded-md text-muted hover:text-text hover:bg-white/10 disabled:opacity-50 transition-colors" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="p-1 rounded-md text-muted hover:text-text hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -25,7 +25,7 @@
 **Creates:** New file
 
 **Deliverables:**
-1. Top bar: sticky, `h-16`, brand name "CafeDebug" left-aligned, icon slot on right (empty in V1)
+1. Top bar: sticky, `h-16`, brand name "Café Debug" left-aligned, icon slot on right (empty in V1)
 2. `<main>` wrapper with `flex-grow flex items-center justify-center p-6 relative`
 3. Two background orbs inside main as absolute decorative elements
 4. Page footer: three links (Privacy Policy, Terms of Service, Support) + copyright text
@@ -81,7 +81,7 @@ export default function LoginPage() {
 1. `<div className="flex flex-col items-center mb-8">`
 2. Icon box: `w-12 h-12 bg-primary rounded-xl flex items-center justify-center mb-4 shadow-float`
    - Material Symbol "mic" with `FILL=1`, color `text-on-primary`, size `text-2xl`
-3. `<h1>` "CafeDebug": `font-display text-2xl font-extrabold tracking-tight text-on-surface`
+3. `<h1>` "Café Debug": `font-display text-2xl font-extrabold tracking-tight text-on-surface`
 4. `<p>` "Admin Console Login": `text-sm text-on-surface-variant mt-1`
 
 **Note:** Material Symbols font must be available. Verify it's loaded in a parent layout or add to `(auth)/layout.tsx` via `<link>`.

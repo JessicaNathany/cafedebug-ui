@@ -1,7 +1,7 @@
 export const AUTH_ROUTE_RULES = Object.freeze({
   login: "/login",
   postLogin: "/episodes",
-  protectedPrefixes: ["/dashboard", "/episodes", "/settings"]
+  protectedPrefixes: ["/dashboard", "/episodes", "/banners", "/settings"]
 });
 
 const normalizePathname = (pathname) => {
