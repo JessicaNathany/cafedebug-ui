@@ -1,101 +1,96 @@
-# Cafe Debug Platform
-
-[![Validation Gates](https://github.com/RegisBarros/cafedebug-ui/actions/workflows/validation-gates.yml/badge.svg?branch=main)](https://github.com/RegisBarros/cafedebug-ui/actions/workflows/validation-gates.yml)
+# Cafe Debug UI
 
 ![image](https://user-images.githubusercontent.com/11943572/234849730-c6b41618-6c13-4a87-9b5e-5b9d16ba4474.png)
 
+<a href="README.md"><img src="https://flagcdn.com/w20/br.png" alt="Brasil" width="20" style="vertical-align: middle;" /> Português</a> | <a href="README.en-US.md"><img src="https://flagcdn.com/w20/us.png" alt="United States" width="20" style="vertical-align: middle;" /> English</a>
 
-🇺🇸 English | 🇧🇷 [Português](README.pt-BR.md)
+Este repositório é o espaço de planejamento e fundação para o esforço de modernização do Cafe Debug.
 
-🚧  Project 🚀 under construction (with coffee and bugs)...  ☕💻🚧
+Cafe Debug é um projeto de podcast e comunidade sobre desenvolvimento de software, arquitetura de software, vida de desenvolvedor, gerenciamento de projetos e engenharia de software. O estado alvo para este repositório é um monorepo público que contém:
 
-
-This repository is the planning and foundation space for the Cafe Debug modernization effort.
-
-Cafe Debug is a podcast and community project about software development, software architecture, developer life, project management, and software engineering. The target state for this repository is a public monorepo that contains:
-
-- the public website
-- the admin backoffice
-- the .NET REST API
+- o site público
+- o backoffice administrativo  
+- a API REST .NET
 
 ## Status
 
-The repo is currently in the architecture and project-definition phase. The first goal is to document a solid foundation before scaffolding code.
+O repositório está atualmente na fase de arquitetura e definição de projeto. O primeiro objetivo é documentar uma base sólida antes de estruturar o código.
 
-## Current Context
+## Contexto Atual
 
-The modernization plan is based on the current public assets and repositories:
+O plano de modernização é baseado nos assets públicos e repositórios atuais:
 
-- live website: `https://cafedebug.com.br`
-- backend API: [`JessicaNathany/cafedebug-backend.api`](https://github.com/JessicaNathany/cafedebug-backend.api)
+- site ao vivo: `https://cafedebug.com.br`
+- frontend legado: [`JessicaNathany/cafedebug.legacy`](https://github.com/JessicaNathany/cafedebug.legacy)
+- API backend: [`JessicaNathany/cafedebug-backend.api`](https://github.com/JessicaNathany/cafedebug-backend.api)
 
-What we confirmed from those sources:
+O que confirmamos dessas fontes:
 
-- the current site is a legacy ASP.NET Core website with Bootstrap, jQuery, Owl Carousel, and custom SCSS
-- the public brand is built around a dark charcoal header/footer and warm orange accents
-- the backend already exposes public/admin concerns for episodes, banners, images, auth, categories, team members, and users
-- the public website is SEO-sensitive because it is content-driven and episode pages need to be discoverable
+- o site atual é um website ASP.NET Core legado com Bootstrap, jQuery, Owl Carousel e SCSS customizado
+- a marca pública é construída em torno de um cabeçalho/rodapé escuro e acentos laranja quentes
+- o backend já expõe preocupações públicas/administrativas para episódios, banners, imagens, auth, categorias, membros da equipe e usuários
+- o site público é sensível ao SEO porque é orientado por conteúdo e as páginas de episódios precisam ser descobríveis
 
-## Product Goals
+## Objetivos do Produto
 
-- modernize the website without losing the recognizable Cafe Debug identity
-- create a separate admin app for episodes, banners, media, and related content
-- keep the website responsive on mobile and desktop
-- support white-label theming for colors, logo, and future brand variations
-- integrate with the existing REST API instead of rebuilding content management from scratch
-- keep SEO, analytics, testing, and clean architecture as first-class concerns
-- keep the repository open-source friendly and easy to contribute to
+- modernizar o site sem perder a identidade reconhecível do CafeDebug
+- criar um aplicativo administrativo separado para episódios, banners, mídia e conteúdo relacionado
+- manter o site responsivo em mobile e desktop
+- suportar temas white-label para cores, logo e variações futuras da marca
+- integrar com a API REST existente em vez de reconstruir o gerenciamento de conteúdo do zero
+- manter SEO, analytics, testes e arquitetura limpa como preocupações de primeira classe
+- manter o repositório amigável ao open-source e fácil de contribuir
 
-## Tech Stack Decision
+## Decisão de Stack Tecnológica
 
-| Area | Decision | Notes |
+| Área | Decisão | Notas |
 | --- | --- | --- |
-| Monorepo | `pnpm` workspaces + `Turborepo` | Great fit for the two Next.js apps and shared packages. The .NET API can live in the same repo under `services/api` with its own lifecycle. |
-| Website | `Next.js` App Router + `TypeScript` | Server Components first, ISR/SSG for content pages, modern SEO support. |
-| Admin | `Next.js` App Router + `TypeScript` | Separate app with authenticated CRUD workflows. |
-| Styling | `Tailwind CSS v4` + CSS variables | Best fit for white-label design tokens and shared theming. |
-| Components | `shadcn/ui` + custom primitives | Use as a base layer, not as the visual identity. |
-| API contract | `Orval` (fetch client) | Generate typed API endpoint functions and models from the backend Swagger/OpenAPI output. |
-| Data fetching | Server `fetch` by default on the website, `TanStack Query` in admin/client-heavy flows | Keep the public website SEO-first and the admin productivity-first. |
-| Forms | `React Hook Form` + `Zod` | Strong DX for admin forms and validation. |
-| Testing | `Vitest`, `React Testing Library`, `Playwright`, `MSW` | Unit, component, e2e, and API-mocking coverage. |
-| Quality | `ESLint`, `Prettier`, `Husky`, `lint-staged`, `commitlint` | Good defaults for an open-source repo. |
-| Containers | Multi-stage `Dockerfile` per app | Keep deployment consistent across apps. |
-| Hosting | AWS EC2 + Docker Swarm stack + reverse proxy | Recommended proxy: `Traefik` for multi-service routing in Swarm. |
+| Monorepo | `pnpm` workspaces + `Turborepo` | Ótimo ajuste para os dois apps Next.js e pacotes compartilhados. A API .NET pode viver no mesmo repo sob `services/api` com seu próprio ciclo de vida. |
+| Website | `Next.js` App Router + `TypeScript` | Server Components primeiro, ISR/SSG para páginas de conteúdo, suporte SEO moderno. |
+| Admin | `Next.js` App Router + `TypeScript` | App separado com fluxos de trabalho CRUD autenticados. |
+| Estilização | `Tailwind CSS v4` + variáveis CSS | Melhor ajuste para tokens de design white-label e temas compartilhados. |
+| Componentes | `shadcn/ui` + primitivos customizados | Usar como camada base, não como identidade visual. |
+| Contrato de API | `Orval` (cliente fetch) | Gerar funções de endpoint da API tipadas e modelos a partir da saída Swagger/OpenAPI do backend. |
+| Busca de dados | `fetch` do servidor por padrão no website, `TanStack Query` em admin/fluxos pesados do cliente | Manter o site público SEO-primeiro e o admin produtividade-primeiro. |
+| Formulários | `React Hook Form` + `Zod` | DX forte para formulários administrativos e validação. |
+| Testes | `Vitest`, `React Testing Library`, `Playwright`, `MSW` | Cobertura unitária, de componente, e2e e mock de API. |
+| Qualidade | `ESLint`, `Prettier`, `Husky`, `lint-staged`, `commitlint` | Bons padrões para um repo open-source. |
+| Contêineres | `Dockerfile` multi-estágio por app | Manter deployment consistente entre apps. |
+| Hospedagem | AWS EC2 + stack Docker Swarm + proxy reverso | Proxy recomendado: `Traefik` para roteamento multi-serviço no Swarm. |
 
-## Architecture Principles
+## Princípios de Arquitetura
 
-- Public website pages should be server-rendered by default.
-- SEO is part of the route definition, not an afterthought.
-- The admin app should optimize for content operations and authenticated workflows.
-- Shared logic should live in packages, not be copied between apps.
-- API contracts should be generated from Swagger, not handwritten twice.
-- Visual identity must come from tokens and theme config, never from hardcoded colors scattered across components.
-- Non-trivial work should start with a spec before implementation.
+- Páginas do site público devem ser renderizadas no servidor por padrão.
+- SEO é parte da definição da rota, não uma reflexão tardia.
+- O app administrativo deve otimizar para operações de conteúdo e fluxos de trabalho autenticados.
+- Lógica compartilhada deve viver em pacotes, não ser copiada entre apps.
+- Contratos de API devem ser gerados a partir do Swagger, não escritos à mão duas vezes.
+- A identidade visual deve vir de tokens e configuração de tema, nunca de cores hardcoded espalhadas pelos componentes.
+- Trabalho não trivial deve começar com uma especificação antes da implementação.
 
-## Monorepo Target Structure
+## Estrutura Alvo do Monorepo
 
 ```text
 apps/
-  web/                    # Public website
-  admin/                  # Admin backoffice
+  web/                    # Site público
+  admin/                  # Backoffice administrativo
 
 packages/
-  ui/                     # Shared components and primitives
-  api-client/             # Generated API types + fetch client
-  design-tokens/          # Brand tokens, theme CSS, logos metadata
-  config/                 # Shared site/admin runtime config
-  eslint-config/          # Shared lint config
-  tsconfig/               # Shared TS config
-
+  ui/                     # Componentes compartilhados e primitivos
+  api-client/             # Tipos de API gerados + cliente fetch
+  design-tokens/          # Tokens da marca, CSS de tema, metadados de logos
+  config/                 # Configuração de runtime compartilhada site/admin
+  eslint-config/          # Configuração de lint compartilhada
+  tsconfig/               # Configuração TS compartilhada
 
 infra/
-  docker/                 # Dockerfiles and local compose helpers
-  swarm/                  # Docker stack deploy manifests
-  scripts/                # Build/deploy/ops scripts
+  docker/                 # Dockerfiles e helpers de compose local
+  swarm/                  # Manifestos de deploy do stack Docker
+  scripts/                # Scripts de build/deploy/ops
 
 docs/
   CONTRIBUTING.md
+  design-system.md
 
 .specs/
   README.md
@@ -109,13 +104,13 @@ AGENTS.md
 README.md
 ```
 
-## App-Level Folder Shape
+## Formato de Pasta a Nível de App
 
-Inside each Next.js app, prefer feature-based structure with strict domain boundaries:
+Dentro de cada app Next.js, preferir estrutura baseada em feature com limites de domínio rigorosos:
 
 ```text
 src/
-  app/                    # Routes, layouts, metadata, route handlers
+  app/                    # Rotas, layouts, metadados, manipuladores de rota
   features/
     <domain>/
       components/
@@ -124,341 +119,316 @@ src/
       server/
       schemas/
       types/
-  lib/                    # Utilities, adapters, config helpers
+  lib/                    # Utilitários, adaptadores, helpers de config
 ```
 
-Keep reusable design primitives in `packages/ui`, not duplicated under both apps. For implementation constraints and anti-patterns, see `.github/copilot-instructions.md`.
+Manter primitivos de design reutilizáveis em `packages/ui`, não duplicados em ambos os apps. Para restrições de implementação e anti-padrões, veja `.github/copilot-instructions.md`.
 
-## Website Modernization Direction
+## Direção de Modernização do Website
 
-The new website should preserve the recognizable Cafe Debug feel while modernizing the UI:
+O novo site deve preservar a sensação reconhecível do CafeDebug enquanto moderniza a UI:
 
-- keep the dark header/footer and warm orange brand accents
-- keep core sections like banners, latest episodes, team, and contact/community
-- replace fragile carousel-heavy interactions with accessible responsive layouts when possible
-- improve spacing, typography hierarchy, and mobile navigation
-- make episode discovery easier with stronger filtering, cards, and internal linking
-- prepare the layout so banners and sponsorship placements feel intentional, not bolted on
+- manter o cabeçalho/rodapé escuro e os acentos da marca laranja quente
+- manter seções principais como banners, episódios mais recentes, equipe e contato/comunidade
+- substituir interações pesadas de carrossel frágeis por layouts responsivos acessíveis quando possível
+- melhorar espaçamento, hierarquia tipográfica e navegação mobile
+- tornar a descoberta de episódios mais fácil com filtros mais fortes, cards e links internos
+- preparar o layout para que banners e placements de patrocínio pareçam intencionais, não anexados
 
-## Design System Rules
+## Regras do Design System
 
-- never hardcode visual values in feature components; use tokens from `packages/design-tokens`
-- preserve the dark header/footer and warm orange accent palette unless design tokens are intentionally updated
-- prefer `packages/ui` primitives before creating new feature-level components
-- modernize via spacing, hierarchy, accessibility, and responsiveness while preserving brand identity
+- nunca hardcodar valores visuais em componentes de feature; use tokens de `packages/design-tokens`
+- preservar o cabeçalho/rodapé escuro e paleta de acentos laranja quente a menos que os tokens de design sejam intencionalmente atualizados
+- preferir primitivos de `packages/ui` antes de criar novos componentes a nível de feature
+- modernizar via espaçamento, hierarquia, acessibilidade e responsividade preservando a identidade da marca
 
-For execution-level enforcement and anti-patterns, use `.github/copilot-instructions.md`.
-For admin visual implementation references, use `.specs/admin/DESIGN_SYSTEM.md` and `.specs/admin/stitch/cafedebug-admin/*`.
+Para imposição a nível de execução e anti-padrões, use `.github/copilot-instructions.md`.
+Para referências de implementação visual admin, use `.specs/admin/DESIGN_SYSTEM.md` e `.specs/admin/stitch/cafedebug-admin/*`.
 
-## White-Label Strategy
+## Estratégia White-Label
 
-White-label support should be based on configuration, not branching:
+O suporte white-label deve ser baseado em configuração, não ramificação:
 
-- brand tokens in `packages/design-tokens`
-- logo and site metadata in a brand config file
-- Tailwind theme aliases that resolve to CSS variables
-- no app component should hardcode a Cafe Debug-specific color or logo path
+- tokens da marca em `packages/design-tokens`
+- logo e metadados do site em um arquivo de configuração da marca
+- aliases de tema Tailwind que resolvem para variáveis CSS
+- nenhum componente do app deve hardcodar uma cor específica do CafeDebug ou caminho de logo
 
-## Website and Admin Scope
+## Escopo do Website e Admin
 
-### Public website
+### Site público
 
-- home page
-- episodes listing
-- episode details
-- team/community pages
-- banners and sponsorship placements
-- SEO metadata, Open Graph, sitemap, robots, analytics
+- página inicial
+- listagem de episódios
+- detalhes do episódio
+- páginas da equipe/comunidade
+- banners e placements de patrocínio
+- metadados SEO, Open Graph, sitemap, robots, analytics
 
-### Admin backoffice
+### Backoffice administrativo
 
-- login/authentication
-- episode CRUD
-- banner CRUD
-- team member/content management
-- image/media upload
-- category and supporting content management
+- login/autenticação
+- CRUD de episódio
+- CRUD de banner
+- gerenciamento de membros da equipe/conteúdo
+- upload de imagem/mídia
+- gerenciamento de categoria e conteúdo de suporte
 
-## Content and API Strategy
+## Estratégia de Conteúdo e API
 
-The backend already separates public and admin controllers. That gives us a clean frontend split:
+O backend já separa controladores públicos e administrativos. Isso nos dá uma divisão limpa de frontend:
 
-- `apps/web` consumes public endpoints only
-- `apps/admin` consumes admin endpoints and authenticated flows
-- `packages/api-client` becomes the single typed client shared by both apps
+- `apps/web` consome apenas endpoints públicos
+- `apps/admin` consome endpoints administrativos e fluxos autenticados
+- `packages/api-client` torna-se o cliente tipado único compartilhado por ambos os apps
 
-Because the API already exposes Swagger/OpenAPI, generate client types from the contract instead of maintaining manual request/response types in the frontends.
+Como a API já expõe Swagger/OpenAPI, gere tipos de cliente a partir do contrato em vez de manter tipos de request/response manuais nos frontends.
 
-### Endpoint Context (from `.specs/admin/backend-openspec-api.json`)
+### Contexto de Endpoint (de `.specs/admin/backend-openspec-api.json`)
 
-Use this split as the default API boundary between frontend apps:
+Use essa divisão como limite de API padrão entre apps frontend:
 
-- `apps/admin`: authenticated backoffice and admin account flows
-- `apps/web`: public read-only website flows
+- `apps/admin`: backoffice autenticado e fluxos de conta administrativa
+- `apps/web`: fluxos públicos somente leitura do website
 
-For the current endpoint catalog, see `.specs/admin/backend-openspec-api.json`.
+Para o catálogo de endpoints atual, veja `.specs/admin/backend-openspec-api.json`.
 
-## SEO and Analytics
+## SEO e Analytics
 
-For the public website:
+Para o site público:
 
-- use the Next.js Metadata API for page title, description, Open Graph, and canonical URLs
-- generate `sitemap.xml` and `robots.txt`
-- add structured data for podcast and episode pages where useful
-- wire Google Analytics or Google Tag Manager through environment-driven configuration
+- use a API de Metadados do Next.js para título da página, descrição, Open Graph e URLs canônicas
+- gere `sitemap.xml` e `robots.txt`
+- adicione dados estruturados para páginas de podcast e episódio onde útil
+- conecte Google Analytics ou Google Tag Manager através de configuração orientada por ambiente
 
-Analytics must stay optional by environment so local and preview deployments remain clean.
+Analytics devem permanecer opcionais por ambiente para que deployments locais e de preview permaneçam limpos.
 
-## Deployment Direction
+## Direção de Deployment
 
-Production target:
+Alvo de produção:
 
 - AWS EC2
-- Docker Swarm stack
-- one reverse proxy service
-- one service for `web`
-- one service for `admin`
-- one service for `api`
+- stack Docker Swarm
+- um serviço de proxy reverso
+- um serviço para `web`
+- um serviço para `admin`
+- um serviço para `api`
 
-Recommended approach:
+Abordagem recomendada:
 
-- local development with Docker Compose only where useful
-- multi-stage Docker builds for each app
-- GitHub Actions for CI, image build, and deployment
-- environment variables managed per service
+- desenvolvimento local com Docker Compose apenas onde útil
+- builds Docker multi-estágio para cada app
+- GitHub Actions para CI, build de imagem e deployment
+- variáveis de ambiente gerenciadas por serviço
 
-### Run `apps/admin` on Your Machine
+### Executar `apps/admin` na Sua Máquina
 
-Use this section when you want to run the admin app locally as a contributor.
+Use esta seção quando quiser executar o app administrativo localmente como contribuidor.
 
-#### Prerequisites
+#### Pré-requisitos
 
-- Node.js `>= 22`
+- Node.js `>= 20`
 - pnpm `>= 10`
-- a running backend API reachable by `ADMIN_API_BASE_URL` (default `http://localhost:8080`)
+- uma API backend em execução acessível por `ADMIN_API_BASE_URL` (padrão `http://localhost:8080`)
 
-#### Backend API source (pick one)
+**Instalando o pnpm:**
 
-Host-run admin reads `ADMIN_API_BASE_URL` from `apps/admin/.env.local`. You can switch anytime — only change that URL (and TLS setting if needed).
-
-**A — Docker devstack (default, seeded test data)**
-
-Use when developing the frontend against a ready local API (MySQL/MinIO/API via Docker Compose from the backend devstack repo).
-
-1. Start the devstack (API healthy at `http://localhost:8080`).
-2. In `apps/admin/.env.local`: `ADMIN_API_BASE_URL=http://localhost:8080`
-3. Do not set `NODE_TLS_REJECT_UNAUTHORIZED`.
-
-**B — Visual Studio / IDE (backend debugging on the host)**
-
-Use when debugging or changing the API in Visual Studio (or `dotnet run`) while developing the admin UI at the same time. The API runs on the host, not in Docker — port/URL comes from your IDE launch profile (check Swagger).
-
-1. In `apps/admin/.env.local`: set `ADMIN_API_BASE_URL` to that URL (e.g. `https://localhost:7211`).
-2. HTTPS with a dev certificate: uncomment `NODE_TLS_REJECT_UNAUTHORIZED=0` in `apps/admin/.env.local` (see `.env.example`). Do not put it in `package.json` scripts.
-
-**Installing pnpm:**
-
-If you don't have pnpm installed globally, install it first:
+Se você não tem o pnpm instalado globalmente, instale-o primeiro:
 
 ```bash
 npm install -g pnpm
 ```
 
-Then verify the installation:
+Em seguida, verifique a instalação:
 
 ```bash
 pnpm --version
 ```
 
-#### 1. Install dependencies
+#### 1. Instalar dependências
 
-From repository root:
+Da raiz do repositório:
 
 ```bash
 pnpm install
 ```
 
-#### 2. Create your local environment file
+#### 2. Criar seu arquivo de ambiente local
 
-From repository root:
+Da raiz do repositório:
 
 ```bash
 cp .env.example .env
 ```
 
-If you run admin directly on host (`pnpm --filter @cafedebug/admin dev`), also create an app-local env file:
+Se você executar admin diretamente no host (`pnpm --filter @cafedebug/admin dev`), também crie um arquivo env local do app:
 
 ```bash
 cp .env.example apps/admin/.env.local
 ```
 
-Why this is needed:
+Por que isso é necessário:
 
-- Docker Compose reads the root `.env`.
-- Next.js host-run reads `apps/admin/.env.local` (app directory).
+- Docker Compose lê o `.env` da raiz.
+- Next.js executado no host lê `apps/admin/.env.local` (diretório do app).
 
-Then confirm these values for **host-run admin** (`pnpm --filter @cafedebug/admin dev`) in `apps/admin/.env.local`:
+Então confirme esses valores no `.env` para desenvolvimento local:
 
-- `ADMIN_PUBLIC_URL=http://localhost:3001` (admin dev server port)
-- `ADMIN_API_BASE_URL=http://localhost:8080` (Docker/local API on HTTP)
+- `ADMIN_PORT=3010`
+- `ADMIN_PUBLIC_URL=http://localhost:3010`
+- `ADMIN_API_BASE_URL=http://localhost:8080`
 - `ADMIN_COOKIE_DOMAIN=localhost`
 - `ADMIN_COOKIE_SAMESITE=Lax`
 - `ADMIN_COOKIE_SECURE=false`
 
-For **admin in Docker Compose**, confirm these in the root `.env`:
+Notas:
 
-- `ADMIN_PORT=3010` (host port mapped to the admin container)
-- `ADMIN_CONTAINER_PORT=3000` (port Next.js listens on inside the container)
-- `ADMIN_PUBLIC_URL=http://localhost:3010` (must align with `ADMIN_PORT`)
-- `ADMIN_API_BASE_URL_DOCKER=http://host.docker.internal:8080`
+- Se sua API executa em outra porta/host, mude `ADMIN_API_BASE_URL`.
+- Exemplo para API .NET HTTPS local: `ADMIN_API_BASE_URL=https://localhost:7211`
+- `ADMIN_API_BASE_URL_DOCKER` é apenas para execuções baseadas em Docker.
 
-Notes:
+#### 3. Iniciar admin diretamente no host (recomendado para codificação diária)
 
-- API source (Docker devstack vs Visual Studio) and TLS rules: see **Backend API source (pick one)** above. Details in `.env.example`.
-- `ADMIN_API_BASE_URL_DOCKER` is only for Docker-based admin runs.
-
-#### 3. Start admin directly on host (recommended for daily coding)
-
-From repository root:
+Da raiz do repositório:
 
 ```bash
 pnpm --filter @cafedebug/admin dev
 ```
 
-Open `http://localhost:3001`.
+Abra `http://localhost:3001`.
 
-Why `3001`?
+**Notas de Plataforma:**
+- **macOS/Linux:** Funciona com a sintaxe original de variável de ambiente
+- **Windows:** Usa `cross-env` para compatibilidade cross-platform (instalado automaticamente com `pnpm install`)
 
-- The app script is `next dev --port 3001` in `apps/admin/package.json`.
-- `ADMIN_PORT` is used by Docker Compose mapping, not by this host command.
+**Por que `3001`?**
 
-#### 4. Alternative: start all apps in the monorepo
+- O script do app é `next dev --port 3001` em `apps/admin/package.json`.
+- `ADMIN_PORT` é usado pelo mapeamento do Docker Compose, não por esse comando do host.
 
-From repository root:
+#### 4. Alternativa: iniciar todos os apps no monorepo
+
+Da raiz do repositório:
 
 ```bash
 pnpm dev
 ```
 
-This runs all workspace `dev` scripts in parallel via Turborepo.
+Isso executa todos os scripts `dev` do workspace em paralelo via Turborepo.
 
-#### 5. Run admin in Docker (if you prefer containerized local dev)
+#### 5. Executar admin no Docker (se você preferir dev local containerizado)
 
-From repository root:
+Da raiz do repositório:
 
 ```bash
 pnpm docker:admin:config
 pnpm docker:admin:dev
 ```
 
-Open `http://localhost:${ADMIN_PORT}` (default `http://localhost:3010`).
+Abra `http://localhost:${ADMIN_PORT}` (padrão `http://localhost:3010`).
 
-To stop:
+Para parar:
 
 ```bash
 pnpm docker:admin:down
 ```
 
-### Admin Docker Local + Production Strategy
+### Estratégia Docker Local + Produção do Admin
 
-The admin app Docker strategy lives under `infra/docker` and follows a dev/prod split:
+A estratégia Docker do app administrativo vive sob `infra/docker` e segue uma divisão dev/prod:
 
 - `infra/docker/admin/Dockerfile`
-  - `dev` stage: workspace-mounted local development with hot reload
-  - `production` stage: immutable runtime image (`pnpm start`)
+  - estágio `dev`: desenvolvimento local com workspace montado com hot reload
+  - estágio `production`: imagem de runtime imutável (`pnpm start`)
 - `infra/docker/docker-compose.admin.yml`
-  - local compose workflow for admin only
-  - host/container env bridging and predictable port mapping
+  - fluxo de trabalho compose local apenas para admin
+  - ponte de env host/container e mapeamento de porta previsível
 
-#### Local workflow
+#### Fluxo de trabalho local
 
-1. Copy env contract:
+1. Copiar contrato env:
    - `cp .env.example .env`
-2. Validate compose config:
+2. Validar configuração compose:
    - `pnpm docker:admin:config`
-3. Start admin dev container:
+3. Iniciar container dev admin:
    - `pnpm docker:admin:dev`
-4. Stop:
+4. Parar:
    - `pnpm docker:admin:down`
 
-#### Production image sanity build
+#### Build de sanidade de imagem de produção
 
 - `pnpm docker:admin:build`
 
-This command builds the production target from the multi-stage Dockerfile without running a container.
+Este comando constrói o alvo de produção do Dockerfile multi-estágio sem executar um container.
 
-#### Environment contract (admin-focused)
+#### Contrato de ambiente (focado em admin)
 
-Use `.env.example` as the source of truth for admin-related variables:
+Use `.env.example` como fonte da verdade para variáveis relacionadas ao admin:
 
-- `ADMIN_PORT` / `ADMIN_CONTAINER_PORT`: host/container ports and collision avoidance
-- `ADMIN_PUBLIC_URL`: browser-facing admin origin
-- `ADMIN_API_BASE_URL`: host-run API URL
-- `ADMIN_API_BASE_URL_DOCKER`: container-run API URL (`host.docker.internal` pattern)
-- cookie/session hints:
+- `ADMIN_PORT` / `ADMIN_CONTAINER_PORT`: portas host/container e prevenção de colisão
+- `ADMIN_PUBLIC_URL`: origem admin voltada ao navegador
+- `ADMIN_API_BASE_URL`: URL da API executada no host
+- `ADMIN_API_BASE_URL_DOCKER`: URL da API executada no container (padrão `host.docker.internal`)
+- dicas de cookie/sessão:
   - `ADMIN_COOKIE_DOMAIN`
   - `ADMIN_COOKIE_SAMESITE`
   - `ADMIN_COOKIE_SECURE`
 
-Dev vs prod expectations:
+Expectativas dev vs prod:
 
-- **Development (Compose):**
-  - mounted source + hot reload
-  - installs dependencies inside the container on first boot if `/app/node_modules` volume is empty
-  - Next dev server binds `0.0.0.0:${ADMIN_CONTAINER_PORT}` inside container and is published to `localhost:${ADMIN_PORT}`
-  - permissive local cookie settings are expected (usually `Secure=false` over HTTP)
-- **Production (image/runtime):**
-  - immutable container filesystem and startup command
-  - Next runtime binds `0.0.0.0:${PORT}` (default 3000), with no source bind mount
-  - cookie settings must be hardened for HTTPS deployments (`Secure=true`, appropriate `SameSite`, domain/path alignment)
-  - runtime environment should be injected by deployment platform, not baked into image layers
+- **Desenvolvimento (Compose):**
+  - fonte montada + hot reload
+  - instala dependências dentro do container na primeira inicialização se o volume `/app/node_modules` estiver vazio
+  - servidor Next dev vincula `0.0.0.0:${ADMIN_CONTAINER_PORT}` dentro do container e é publicado em `localhost:${ADMIN_PORT}`
+  - configurações de cookie locais permissivas são esperadas (geralmente `Secure=false` sobre HTTP)
+- **Produção (imagem/runtime):**
+  - sistema de arquivos de container imutável e comando de inicialização
+  - runtime Next vincula `0.0.0.0:${PORT}` (padrão 3000), sem montagem de bind de fonte
+  - configurações de cookie devem ser enrijecidas para deployments HTTPS (`Secure=true`, `SameSite` apropriado, alinhamento de domínio/caminho)
+  - ambiente de runtime deve ser injetado pela plataforma de deployment, não assado em camadas de imagem
 
-## Code Generation and Multi-Agent Coordination
+## Geração de Código e Coordenação Multi-Agente
 
-This project should be AI-friendly without becoming AI-dependent.
+Este projeto deve ser amigável à IA sem se tornar dependente de IA.
 
-1. [AGENTS.md](./AGENTS.md) defines governance, lifecycle, and handoff rules.
-2. [.github/copilot-instructions.md](./.github/copilot-instructions.md) defines executable coding constraints.
-3. [.specs/README.md](./.specs/README.md) defines the spec-driven workflow and required deliverables.
+1. [AGENTS.md](./AGENTS.md) define governança, ciclo de vida e regras de handoff.
+2. [.github/copilot-instructions.md](./.github/copilot-instructions.md) define restrições de codificação executáveis.
+3. [.specs/README.md](./.specs/README.md) define o fluxo de trabalho orientado por spec e entregáveis necessários.
 
-## Validation Gates (Root + CI)
+## Portões de Validação (Raiz + CI)
 
-CafeDebug CI now exposes a single admin-only validation workflow in `.github/workflows/validation-gates.yml`.
+Use os comandos de validação da raiz antes do merge e no CI:
 
-Use these root commands locally to match CI:
+- `pnpm gate:contract` → verifica se o cliente gerado OpenAPI está atualizado (`orval --config orval.config.ts`)
+- `pnpm gate:quality` → executa `lint`, `typecheck` e `build`
+- `pnpm gate:states` → executa verificações de cobertura de estados loading/empty/error do admin
+- `pnpm gate:validation` (ou `pnpm ci:validation`) → executa todos os portões em ordem
 
-- `pnpm ci:admin:build` → runs `@cafedebug/admin` build
-- `pnpm ci:admin:test` → runs `@cafedebug/admin` tests
-- `pnpm ci:admin:validate` → runs `@cafedebug/admin` lint, then typecheck
-- `pnpm ci:validation` → runs the full admin sequence in order: build → test → validate
+## Plano Faseado
 
-Branch protection for `main` should require the single `admin-gate` job from the `Validation Gates` workflow.
-
-`apps/web`, `packages/api-client`, and other packages are not part of this required CI gate.
-
-## Phased Plan
-
-1. Foundation
-   - finalize repo structure
-   - scaffold monorepo root
-   - create shared lint, TypeScript, and design token packages
+1. Fundação
+   - finalizar estrutura do repo
+   - estruturar raiz do monorepo
+   - criar pacotes compartilhados de lint, TypeScript e tokens de design
 
 2. Admin V1
-   - implement login, episodes CRUD, banners CRUD, media upload
-   - integrate authenticated API endpoints
+   - implementar login, CRUD de episódios, CRUD de banners, upload de mídia
+   - integrar endpoints de API autenticados
 
 3. Website V1
-   - implement shell, home page, episode listing, episode detail, SEO, analytics
-   - integrate public API endpoints
+   - implementar shell, página inicial, listagem de episódio, detalhe do episódio, SEO, analytics
+   - integrar endpoints de API públicos
 
-4. Platform Consolidation
-   - move or mirror the backend into `services/api`
-   - finalize shared deployment and CI/CD flow
-5. Production Hardening
-   - tests, observability, performance passes, and deployment automation
+4. Consolidação da Plataforma
+   - mover ou espelhar o backend para `services/api`
+   - finalizar fluxo de deployment e CI/CD compartilhado
 
-## References
+5. Enrijecimento de Produção
+   - testes, observabilidade, passes de performance e automação de deployment
 
-- live site: `https://cafedebug.com.br`
-- legacy repo: `https://github.com/JessicaNathany/cafedebug.legacy`
-- backend repo: `https://github.com/JessicaNathany/cafedebug-backend.api`
+## Referências
+
+- site ao vivo: `https://cafedebug.com.br`
+- repo legado: `https://github.com/JessicaNathany/cafedebug.legacy`
+- repo backend: `https://github.com/JessicaNathany/cafedebug-backend.api`
