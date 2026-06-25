@@ -14,7 +14,6 @@ type EpisodeEditorMode = "create" | "edit";
 type EpisodeMutationAction = "save-draft" | "archive" | "publish";
 type BannerEditorMode = "create" | "edit";
 type BannerMutationAction = "save-draft" | "publish";
-type EpisodeMutationAction = "save-draft" | "archive" | "publish";
 
 type TelemetryEventInput = {
   level: TelemetryLevel;
