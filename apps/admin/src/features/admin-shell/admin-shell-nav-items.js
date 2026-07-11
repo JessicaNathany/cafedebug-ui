@@ -34,11 +34,10 @@ export const ADMIN_SHELL_NAV_ITEMS = Object.freeze([
     disabled: false
   }),
   Object.freeze({
-    href: "/banners",
+    href: appRoutes.banners,
     label: "Banners",
     icon: "campaign",
-    disabled: true,
-    statusLabel: "Coming soon"
+    disabled: false
   }),
   Object.freeze({
     href: "/debuggers",
@@ -70,10 +69,9 @@ const ADMIN_SHELL_ROUTE_CONTEXTS = Object.freeze([
     description: "Review top-level account and content metrics."
   }),
   Object.freeze({
-    href: "/banners",
+    href: appRoutes.banners,
     title: "Banners",
-    description: "Banners area is not available yet in this milestone.",
-    disabledInV1: true
+    description: "Create and edit banner records."
   }),
   Object.freeze({
     href: "/debuggers",

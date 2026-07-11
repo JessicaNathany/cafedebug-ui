@@ -8,10 +8,10 @@ import { AppProviders } from "./providers";
 
 export const metadata: Metadata = {
   title: {
-    default: "CafeDebug Admin",
-    template: "%s | CafeDebug Admin"
+    default: "Café Debug Admin",
+    template: "%s | Café Debug Admin"
   },
-  description: "CafeDebug backoffice scaffold for authenticated admin workflows."
+  description: "Café Debug backoffice scaffold for authenticated admin workflows."
 };
 
 export default async function RootLayout({

@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title class="">Banners List</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Cabinet+Grotesk:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            background-color: #FAFAFA;
+            color: #1A1A1A;
+        }
+        h1, h2, h3, h4, h5, h6, .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shadow-soft {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+        .focus-ring {
+            transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        .focus-ring:focus-within {
+            box-shadow: 0 0 0 3px rgba(245, 110, 61, 0.2);
+            border-color: #f56e3d;
+        }
+        .table-row-hover {
+            transition: background-color 0.15s ease-in-out;
+        }
+        .table-row-hover:hover {
+            background-color: #FAFAFA;
+            cursor: pointer;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f56e3d",
+                        "background-light": "#FAFAFA",
+                        "background-dark": "#0F0F11",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#18181B",
+                        "text-light": "#1A1A1A",
+                        "text-dark": "#F4F4F5",
+                        "muted-light": "#878787",
+                        "muted-dark": "#A1A1AA",
+                        "border-light": "#EAEAEA",
+                        "border-dark": "#27272A"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Cabinet Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light text-text-light antialiased flex h-screen overflow-hidden">
+<!-- Shared SideNavBar -->
+<div class="relative flex h-full w-60 flex-col bg-surface-light border-r border-border-light z-10 shrink-0">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2 pt-2">
+<div class="bg-primary text-white flex items-center justify-center rounded-lg size-10 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">mic</span>
+</div>
+<div class="flex flex-col">
+<h1 class="font-display text-text-light text-base font-bold leading-tight">CafeDebug</h1>
+<p class="text-muted-light text-xs font-medium leading-none mt-0.5 tracking-wide uppercase">Admin</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-1"><a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-light hover:bg-gray-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted-light group-hover:text-text-light transition-colors">home</span>
+<span class="font-body text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group bg-orange-50 text-primary font-medium border-l-2 border-primary" href="#">
+<span class="material-symbols-outlined group-hover:text-text-light transition-colors text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">campaign</span>
+<span class="font-body text-sm font-semibold">Banners</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-light hover:bg-gray-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted-light group-hover:text-text-light transition-colors">bug_report</span>
+<span class="font-body text-sm font-medium">Debuggers</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-light hover:bg-gray-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted-light group-hover:text-text-light transition-colors">group</span>
+<span class="font-body text-sm font-medium">Users</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-light hover:bg-gray-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted-light group-hover:text-text-light transition-colors">settings</span>
+<span class="font-body text-sm font-medium">Settings</span>
+</a></nav>
+</div>
+<!-- User Profile Bottom -->
+<div class="mt-auto border-t border-border-light pt-4 px-2">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="size-8 rounded-full border border-border-light" data-alt="Close up portrait of a young woman with dark hair against a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4LcY3IwkilbPEDn5sfyMsRa1RYKLxjzYxJ0isEMNhL4jYSktZBYmaAichvrgqQU3T9m12yxYwddDNRN1Lxwe-4O8-DyiqSZ-i2zNFJ9czK4Tl8b6YXonDQBiYKd0N8X1HSBsR9uCgCasOiTAwb5jjDMLIPp5jqKvwWloNEdeMAI6ywnd6Goila23k4vafPwrPZMvx2Jxj_reK1r77HuzYqGjS6jLhEidtbvwUzdHSbc8iKhHuyZ65xf2kAoU84fKPSPgw1BdWLl4">
+<div class="flex flex-col overflow-hidden">
+<span class="text-sm font-medium text-text-light truncate">Alice Admin</span>
+<span class="text-xs text-muted-light truncate">alice@cafedebug.com</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-y-auto w-full relative">
+<div class="max-w-[1024px] w-full mx-auto px-8 py-10 flex flex-col gap-8">
+<!-- Header Section -->
+<header class="flex items-center justify-between w-full">
+<div class="flex flex-col gap-1">
+<h2 class="font-display text-text-light text-[32px] font-bold leading-tight">Banners</h2>
+<p class="text-muted-light font-body text-sm">Manage, edit, and publish your podcast content.</p>
+</div>
+<button class="bg-primary hover:bg-[#E55A25] text-white font-display font-semibold text-sm h-10 px-5 rounded-lg flex items-center gap-2 transition-colors shadow-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    New Banner</button>
+</header>
+<!-- Search and Filter Section -->
+<div class="flex w-full bg-surface-light rounded-lg shadow-soft border border-border-light focus-ring h-12 relative overflow-hidden items-center px-4">
+<span class="material-symbols-outlined text-muted-light mr-3">search</span>
+<input class="w-full h-full bg-transparent border-none outline-none font-body text-base text-text-light placeholder:text-muted-light focus:ring-0" placeholder="Search banners by title, guest, or keyword..." type="text">
+</div>
+<!-- Data Table Section -->
+<div class="bg-surface-light rounded-lg border border-border-light shadow-soft overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-border-light bg-gray-50/50">
+<th class="py-4 px-6 font-display font-semibold text-sm text-text-light w-16">Order</th>
+<th class="py-4 px-6 font-display font-semibold text-sm text-text-light">Name</th>
+<th class="py-4 px-6 font-display font-semibold text-sm text-text-light w-1/6">Status</th>
+<th class="py-4 px-6 font-display font-semibold text-sm text-text-light w-1/6">Start Date</th><th class="py-4 px-6 font-display font-semibold text-sm text-text-light w-1/6">End Date</th>
+</tr>
+</thead>
+<tbody class="font-body divide-y divide-border-light">
+<!-- Row 1: Published -->
+<tr class="table-row-hover group">
+<td class="py-4 px-6 text-text-light font-medium text-sm">1</td>
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-text-light font-medium group-hover:text-primary transition-colors">Livro Carreira Dev</span>
+<span class="text-muted-light text-sm mt-0.5"><br></span>
+</div>
+</td>
+<td class="py-4 px-6"><span class="inline-flex items-center px-2.5 py-1 rounded-[4px] text-xs font-semibold bg-gray-50 text-text-light border border-gray-200">Published</span></td>
+<td class="py-4 px-6 text-muted-light text-sm">Oct 24, 2023</td><td class="py-4 px-6 text-muted-light text-sm">Dec 31, 2023</td>
+</tr>
+<!-- Row 2: Draft -->
+<tr class="table-row-hover group">
+<td class="py-4 px-6 text-text-light font-medium text-sm">2</td>
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-text-light font-medium group-hover:text-primary transition-colors">Banner perfil</span>
+<span class="text-muted-light text-sm mt-0.5"><br></span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-1 rounded-[4px] text-xs font-semibold bg-orange-50 text-primary border border-orange-100">
+                                    Draft
+                                </span>
+</td>
+<td class="py-4 px-6 text-muted-light text-sm">Nov 15, 2023</td><td class="py-4 px-6 text-muted-light text-sm">Jan 15, 2024</td>
+</tr>
+<!-- Row 3: Published -->
+<tr class="table-row-hover group">
+<td class="py-4 px-6 text-text-light font-medium text-sm">3</td>
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-text-light font-medium group-hover:text-primary transition-colors">Discord do Café Debug</span>
+<span class="text-muted-light text-sm mt-0.5"><br></span>
+</div>
+</td>
+<td class="py-4 px-6"><span class="inline-flex items-center px-2.5 py-1 rounded-[4px] text-xs font-semibold bg-gray-50 text-text-light border border-gray-200">Published</span></td>
+<td class="py-4 px-6 text-muted-light text-sm">Oct 10, 2023</td><td class="py-4 px-6 text-muted-light text-sm">Dec 15, 2023</td>
+</tr>
+<!-- Row 4: Published -->
+
+<!-- Row 5: Draft -->
+
+</tbody>
+</table>
+<!-- Pagination / Footer area -->
+<div class="px-6 py-4 border-t border-border-light bg-gray-50/30 flex items-center justify-between">
+<span class="text-sm text-muted-light">Showing 1 to 3 of 3 banners</span>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded-md text-muted-light hover:text-text-light hover:bg-gray-100 disabled:opacity-50 transition-colors" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="p-1 rounded-md text-muted-light hover:text-text-light hover:bg-gray-100 transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+
+
+
+</body></html>

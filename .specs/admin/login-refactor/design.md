@@ -15,7 +15,7 @@
     ┌─ (auth)/layout.tsx ──────────────────────────┐
     │  <AuthPageShell>                              │
     │  ┌─ Top Bar (sticky, h-16) ─────────────────┐│
-    │  │  [CafeDebug] brand name          [icons] ││
+    │  │  [Café Debug] brand name          [icons] ││
     │  └──────────────────────────────────────────┘│
     │                                               │
     │  <main> (flex-grow, center, relative)         │
@@ -42,7 +42,7 @@
 - Height: `h-16`
 - Background: `bg-surface-container-lowest/50 backdrop-blur-md`
 - Border bottom: `border-b border-outline-variant`
-- Left: `<span>` "CafeDebug" — `font-display font-bold text-xl tracking-tight text-on-surface`
+- Left: `<span>` "Café Debug" — `font-display font-bold text-xl tracking-tight text-on-surface`
 - Right: icon slot area (reserved for future theme toggle + help; render nothing in V1)
 - Full width, sticky top-0, z-20
 
@@ -57,7 +57,7 @@
 
 **Page footer:**
 - Links row: Privacy Policy · Terms of Service · Support (each `text-xs text-on-surface-variant hover:text-primary underline underline-offset-4 transition-colors`)
-- Copyright: `text-xs text-on-surface-variant` — "© 2025 CafeDebug Admin. All rights reserved."
+- Copyright: `text-xs text-on-surface-variant` — "© 2025 Café Debug Admin. All rights reserved."
 - Layout: `flex flex-col items-center gap-4 py-8`
 
 ---
@@ -73,7 +73,7 @@
   - Shadow: `shadow-lg` with primary glow: not possible with pure tokens; use `shadow-float` as fallback
   - Icon: Material Symbol "mic" (filled), `text-on-primary text-2xl`
   - Note: Material Symbols must be loaded via `next/font` or a `<link>` in layout
-- `<h1>` "CafeDebug": `font-display text-2xl font-extrabold tracking-tight text-on-surface`
+- `<h1>` "Café Debug": `font-display text-2xl font-extrabold tracking-tight text-on-surface`
 - `<p>` "Admin Console Login": `text-body-sm text-on-surface-variant mt-1`
 
 **Form fields — shared label style:**

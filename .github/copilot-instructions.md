@@ -27,7 +27,7 @@ For strategic context while applying these rules:
 
 # 🧠 Architecture Rules (IMPORTANT)
 
-You are working inside the CafeDebug monorepo.
+You are working inside the Cafe Debug monorepo.
 
 Before generating ANY code, you MUST follow these architectural rules strictly.
 

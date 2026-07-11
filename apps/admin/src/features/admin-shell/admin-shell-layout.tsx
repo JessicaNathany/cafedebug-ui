@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { appRoutes } from "@/lib/routes";
+
 import { AdminShellHeader } from "./admin-shell-header";
 import { AdminShellSidebar } from "./admin-shell-sidebar";
 
@@ -13,10 +15,10 @@ type AdminShellLayoutProps = {
 
 export function AdminShellLayout({ children, currentTheme }: AdminShellLayoutProps) {
   const pathname = usePathname() ?? "/";
-  const isEpisodeEditorRoute =
-    pathname === "/episodes/new" || /^\/episodes\/[^/]+\/edit$/.test(pathname);
-  const showShellHeader = !(pathname === "/episodes" || pathname.startsWith("/episodes/"));
-  const contentClassName = isEpisodeEditorRoute
+  const isEpisodeEditorRoute = pathname === appRoutes.newEpisode || /^\/episodes\/[^/]+\/edit$/.test(pathname);
+  const isBannerEditorRoute = pathname === appRoutes.newBanner || /^\/banners\/[^/]+\/edit$/.test(pathname);
+  const showShellHeader = !(pathname === appRoutes.episodes || pathname.startsWith("/episodes/") || isBannerEditorRoute);
+  const contentClassName = isEpisodeEditorRoute || isBannerEditorRoute
     ? "flex min-h-screen w-full flex-col"
     : "mx-auto flex w-full max-w-[1024px] flex-col gap-8 px-6 py-8 lg:px-8 lg:py-10";
 
