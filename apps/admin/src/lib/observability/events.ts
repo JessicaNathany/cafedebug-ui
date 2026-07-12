@@ -17,5 +17,7 @@ export const observabilityEvents = Object.freeze({
   imagesActionExecuted: "images.action.executed",
   categoriesFetchFailed: "categories.fetch.failed",
   bannersActionExecuted: "banners.action.executed",
+  teamMembersFetchFailed: "team_members.fetch.failed",
+  teamMembersActionExecuted: "team_members.action.executed",
   errorBoundaryTriggered: "ui.error_boundary.triggered"
 });

@@ -76,6 +76,7 @@ Implementation must follow:
 | Episode Category Selector | `Implemented` | `.specs/admin/episode-category-selector/` | Replaces hardcoded category options in the episode editor with a dynamic list fetched from the backend categories API |
 | Episode List Search | `Draft` | `.specs/admin/episode-search/` | Replaces client-side filtering with server-side search via `GET /api/v1/admin/episodes?search=` |
 | Episode List Number Display | `Implemented` | `.specs/admin/episode-list-number-display/` | Removes the `#` prefix from the episodes list number column while keeping the same numeric content and table behavior |
+| Team Members List Refactor | `Implemented` | `.specs/admin/team-member-list-refactor/` | Replaces the `/team-members` placeholder with the real admin team members list flow backed by the backend list endpoint. |
 
 ### `platform`
 
@@ -84,3 +85,4 @@ Implementation must follow:
 | Next.js 16 Migration | `Implemented` | `.specs/platform/nextjs-16-migration/` | Framework upgrade from Next.js 15 to 16 with middleware-to-proxy migration |
 | Node.js & TypeScript Upgrade | `Implemented` | `.specs/platform/node-ts-upgrade/` | Node.js 20 to 22, TypeScript 5.9 to 6.0 with tsconfig and CI updates |
 | GitHub Actions CI Validation Redesign | `Implemented` | `.specs/platform/ci-validation-redesign/` | Revises CI to one admin-only validation job with sequential build, test, and validate steps |
+

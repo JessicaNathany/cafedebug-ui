@@ -40,11 +40,10 @@ export const ADMIN_SHELL_NAV_ITEMS = Object.freeze([
     disabled: false
   }),
   Object.freeze({
-    href: "/debuggers",
-    label: "Debuggers",
-    icon: "bug_report",
-    disabled: true,
-    statusLabel: "Coming soon"
+    href: appRoutes.teamMembers,
+    label: "Team Members",
+    icon: "group",
+    disabled: false
   }),
   Object.freeze({
     href: appRoutes.settings,
@@ -74,10 +73,9 @@ const ADMIN_SHELL_ROUTE_CONTEXTS = Object.freeze([
     description: "Create and edit banner records."
   }),
   Object.freeze({
-    href: "/debuggers",
-    title: "Debuggers",
-    description: "Debuggers area is not available yet in this milestone.",
-    disabledInV1: true
+    href: appRoutes.teamMembers,
+    title: "Team Members",
+    description: "Browse, search, and reopen team member records."
   }),
   Object.freeze({
     href: appRoutes.settings,
