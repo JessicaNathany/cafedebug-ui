@@ -235,25 +235,6 @@ Use this section when you want to run the admin app locally as a contributor.
 - pnpm `>= 10`
 - a running backend API reachable by `ADMIN_API_BASE_URL` (default `http://localhost:8080`)
 
-#### Backend API source (pick one)
-
-Host-run admin reads `ADMIN_API_BASE_URL` from `apps/admin/.env.local`. You can switch anytime — only change that URL (and TLS setting if needed).
-
-**A — Docker devstack (default, seeded test data)**
-
-Use when developing the frontend against a ready local API (MySQL/MinIO/API via Docker Compose from the backend devstack repo).
-
-1. Start the devstack (API healthy at `http://localhost:8080`).
-2. In `apps/admin/.env.local`: `ADMIN_API_BASE_URL=http://localhost:8080`
-3. Do not set `NODE_TLS_REJECT_UNAUTHORIZED`.
-
-**B — Visual Studio / IDE (backend debugging on the host)**
-
-Use when debugging or changing the API in Visual Studio (or `dotnet run`) while developing the admin UI at the same time. The API runs on the host, not in Docker — port/URL comes from your IDE launch profile (check Swagger).
-
-1. In `apps/admin/.env.local`: set `ADMIN_API_BASE_URL` to that URL (e.g. `https://localhost:7211`).
-2. HTTPS with a dev certificate: uncomment `NODE_TLS_REJECT_UNAUTHORIZED=0` in `apps/admin/.env.local` (see `.env.example`). Do not put it in `package.json` scripts.
-
 #### 1. Install dependencies
 
 From repository root:
@@ -281,25 +262,20 @@ Why this is needed:
 - Docker Compose reads the root `.env`.
 - Next.js host-run reads `apps/admin/.env.local` (app directory).
 
-Then confirm these values for **host-run admin** (`pnpm --filter @cafedebug/admin dev`) in `apps/admin/.env.local`:
+Then confirm these values in `.env` for local development:
 
-- `ADMIN_PUBLIC_URL=http://localhost:3001` (admin dev server port)
-- `ADMIN_API_BASE_URL=http://localhost:8080` (Docker/local API on HTTP)
+- `ADMIN_PORT=3010`
+- `ADMIN_PUBLIC_URL=http://localhost:3010`
+- `ADMIN_API_BASE_URL=http://localhost:8080`
 - `ADMIN_COOKIE_DOMAIN=localhost`
 - `ADMIN_COOKIE_SAMESITE=Lax`
 - `ADMIN_COOKIE_SECURE=false`
 
-For **admin in Docker Compose**, confirm these in the root `.env`:
-
-- `ADMIN_PORT=3010` (host port mapped to the admin container)
-- `ADMIN_CONTAINER_PORT=3000` (port Next.js listens on inside the container)
-- `ADMIN_PUBLIC_URL=http://localhost:3010` (must align with `ADMIN_PORT`)
-- `ADMIN_API_BASE_URL_DOCKER=http://host.docker.internal:8080`
-
 Notes:
 
-- API source (Docker devstack vs Visual Studio) and TLS rules: see **Backend API source (pick one)** above. Details in `.env.example`.
-- `ADMIN_API_BASE_URL_DOCKER` is only for Docker-based admin runs.
+- If your API runs on another port/host, change `ADMIN_API_BASE_URL`.
+- Example for local .NET HTTPS API: `ADMIN_API_BASE_URL=https://localhost:7211`
+- `ADMIN_API_BASE_URL_DOCKER` is only for Docker-based runs.
 
 #### 3. Start admin directly on host (recommended for daily coding)
 
