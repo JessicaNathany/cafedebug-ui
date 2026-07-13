@@ -8,6 +8,7 @@
 | **Affected app** | `apps/web` |
 | **Strategy source** | `.specs/web/cafedebug-web-foundation-v2.md` (web source-of-truth) |
 | **Related specs** | `.specs/admin/login/` (structural reference), `.specs/platform/nextjs-16-migration/` (platform baseline) |
+| **Design reference** | `.specs/web/foundation/ux-design-reference.md` (from `cafedebug.pen`) — authoritative visual/UX source for the whole site |
 | **Created** | 2026-07-12 |
 | **Phase** | Phase 1 (Foundation) — first slice only |
 
@@ -114,9 +115,12 @@ hardcoded hex/named-color values in components.
 ### FR-3 — Light/dark theme with no FOUC
 Theme switching uses `next-themes` (`attribute="class"`, `defaultTheme="dark"`,
 `enableSystem`, `disableTransitionOnChange`). The chosen theme is persisted in a cookie so the
-**server** root layout can render the correct initial `<html>` class on first paint. The
-header/footer remain charcoal in **both** themes (brand requirement). A client theme toggle
-switches theme and keeps the cookie in sync.
+**server** root layout can render the correct initial `<html>` class on first paint. Verified
+against both Slice-1 design frames, the invariant is that the **header and footer are locked dark
+in both themes** (brand chrome). Page bodies differ: **Episode Detail** is a plain whole-page flip,
+while **Home** is **dark-first** (hero + newsletter also locked dark; only the episode/news content
+bands flip) — see `ux-design-reference.md` §1.5 and `design.md` §3.3. A client theme toggle switches
+theme and keeps the cookie in sync.
 
 ### FR-4 — Thin routes, RSC by default
 Files under `src/app/` contain routing/layout/metadata only. No business logic, no direct

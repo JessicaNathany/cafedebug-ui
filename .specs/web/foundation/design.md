@@ -6,7 +6,17 @@
 | **Domain** | `web/foundation` |
 | **Spec** | `.specs/web/foundation/spec.md` |
 | **Strategy source** | `.specs/web/cafedebug-web-foundation-v2.md` |
+| **Visual/UX source** | `.specs/web/foundation/ux-design-reference.md` (from `cafedebug.pen`) |
 | **Affected app** | `apps/web` |
+
+---
+
+> ⚠️ **Token reconciliation.** The finished Pencil design (`cafedebug.pen`) defines the
+> **authoritative** color palette, typography, radii, and per-page layouts. Where §2.2 below
+> diverges from it, the design file wins — see `ux-design-reference.md` §1 (hex palette,
+> **JetBrains Mono + Geist** fonts, pill buttons, and the header/footer chrome decision). Update
+> §2.2's illustrative oklch/font values to those before building; keep the Tailwind v4 `@theme`
+> mapping mechanism (§2.3) unchanged.
 
 ---
 
@@ -133,57 +143,99 @@ user chose to follow.
 body { @apply bg-background text-foreground font-sans antialiased; }
 ```
 
-### 2.2 Tokens (`styles/tokens.css`) — condensed from strategy §3.2
-`:root` holds brand primitives (the only place raw color lives) and light-theme semantic
-tokens; `.dark` overrides the semantic layer. Header/footer stay charcoal in both themes.
+### 2.2 Tokens (`styles/tokens.css`) — reconciled to `cafedebug.pen`
+`:root` holds brand primitives (the only place raw color lives) and light-theme semantic tokens;
+`.dark` overrides the semantic layer. Values are the **authoritative hex tokens** from the design
+file (see `ux-design-reference.md` §1) — orange `--primary` is constant across themes.
+
+> **Header/footer chrome (resolved — always dark).** Both Homepage frames render the header and
+> footer **dark** (see `ux-design-reference.md` §1.5), matching FR-3's "charcoal in both themes."
+> `--header`/`--footer` below are therefore **fixed dark in both `:root` and `.dark`**. The hero
+> and newsletter are also **always-dark brand bands** — they use `--background`/`--card` surfaces
+> and must be wrapped in a forced `.dark` scope (see §3.3), not given their own tokens.
 
 ```css
 :root {
   /* brand primitives */
-  --brand-charcoal-900: oklch(0.18 0.01 270);
-  --brand-charcoal-800: oklch(0.22 0.01 270);   /* header/footer (both themes) */
-  --brand-cream-50:     oklch(0.98 0.01 80);
-  --brand-orange-500:   oklch(0.74 0.17 50);     /* primary accent */
-  --brand-orange-600:   oklch(0.66 0.20 45);
+  --brand-orange: #FF8400;   /* primary accent — identical in both themes */
+  --brand-ink:    #111111;
+  --brand-white:  #FFFFFF;
+  --brand-paper:  #F2F3F0;
 
   /* semantic — light */
-  --background: var(--brand-cream-50);
-  --foreground: oklch(0.15 0.01 270);
-  --card: oklch(0.96 0.012 80);
-  --card-foreground: oklch(0.15 0.01 270);
-  --muted: oklch(0.92 0.008 80);
-  --muted-foreground: oklch(0.45 0.01 270);
-  --border: oklch(0.88 0.01 80);
-  --primary: var(--brand-orange-500);
-  --primary-foreground: oklch(0.12 0.01 270);
-  --accent: oklch(0.92 0.07 60);
+  --background: #F2F3F0;
+  --foreground: #111111;
+  --card: #FFFFFF;
+  --card-foreground: #111111;
+  --popover: #FFFFFF;
+  --popover-foreground: #111111;
+  --primary: var(--brand-orange);
+  --primary-foreground: #111111;
+  --secondary: #E7E8E5;
+  --secondary-foreground: #111111;
+  --muted: #F2F3F0;
+  --muted-foreground: #666666;
+  --accent: #F2F3F0;
+  --accent-foreground: #111111;
+  --destructive: #D93C15;
+  --border: #CBCCC9;
+  --input: #CBCCC9;
+  --ring: #666666;
 
-  --header: var(--brand-charcoal-800);
-  --header-foreground: var(--brand-cream-50);
+  /* status (surface / foreground) */
+  --success: #DFE6E1;  --success-foreground: #004D1A;
+  --warning: #E9E3D8;  --warning-foreground: #804200;
+  --error:   #E5DCDA;  --error-foreground:   #8C1C00;
+  --info:    #DFDFE6;  --info-foreground:    #000066;
 
-  --font-display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* chrome surfaces — always dark in both themes (see note above + §3.3) */
+  --header: #111111;             /* Site Header — dark in both themes */
+  --header-foreground: #FFFFFF;
+  --footer: #1A1A1A;             /* Site Footer — dark in both themes */
+  --footer-foreground: #FFFFFF;
 
-  --radius-button: 0.5rem;
-  --radius-card: 1rem;
-  --shadow-card: 0 1px 2px oklch(0.15 0.01 270 / 0.06), 0 8px 24px oklch(0.15 0.01 270 / 0.08);
-  --shadow-float: 0 12px 40px oklch(0.15 0.01 270 / 0.18);
+  /* fonts */
+  --font-sans: "Geist", system-ui, sans-serif;             /* nav, headings, body, buttons */
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;  /* wordmark, eyebrows, labels, stats, dates, code */
+
+  /* radii + elevation */
+  --radius-m:    16px;    /* cards, panels, inputs, images */
+  --radius-pill: 999px;   /* buttons, chips, avatars, tags */
+  --shadow-card:  0 1px 2px #11111110, 0 8px 24px #11111114;
+  --shadow-float: 0 12px 40px #11111129;
 }
 
 .dark {
-  --background: var(--brand-charcoal-900);
-  --foreground: var(--brand-cream-50);
-  --card: var(--brand-charcoal-800);
-  --card-foreground: var(--brand-cream-50);
-  --muted: oklch(0.28 0.01 270);
-  --muted-foreground: oklch(0.70 0.01 80);
-  --border: oklch(0.32 0.01 270);
-  --primary: var(--brand-orange-500);
-  --primary-foreground: oklch(0.10 0.01 270);
-  --accent: oklch(0.30 0.05 50);
-  --shadow-card: 0 1px 2px oklch(0 0 0 / 0.3), 0 8px 24px oklch(0 0 0 / 0.4);
-  --shadow-float: 0 12px 40px oklch(0 0 0 / 0.6);
+  --background: #111111;
+  --foreground: #FFFFFF;
+  --card: #1A1A1A;
+  --card-foreground: #FFFFFF;
+  --popover: #1A1A1A;
+  --popover-foreground: #FFFFFF;
+  --primary: var(--brand-orange);       /* orange is constant */
+  --primary-foreground: #111111;
+  --secondary: #2E2E2E;
+  --secondary-foreground: #FFFFFF;
+  --muted: #2E2E2E;
+  --muted-foreground: #B8B9B6;
+  --accent: #111111;
+  --accent-foreground: #F2F3F0;
+  --destructive: #FF5C33;
+  --border: #2E2E2E;
+  --input: #2E2E2E;
+  --ring: #666666;
+
+  --success: #222924;  --success-foreground: #B6FFCE;
+  --warning: #291C0F;  --warning-foreground: #FF8400;
+  --error:   #24100B;  --error-foreground:   #FF5C33;
+  --info:    #222229;  --info-foreground:    #B2B2FF;
+
+  /* chrome unchanged — header/footer stay dark */
+  --header: #111111;  --header-foreground: #FFFFFF;
+  --footer: #1A1A1A;  --footer-foreground: #FFFFFF;
+
+  --shadow-card:  0 1px 2px #00000050, 0 8px 24px #00000066;
+  --shadow-float: 0 12px 40px #00000099;
 }
 ```
 
@@ -197,33 +249,53 @@ tokens; `.dark` overrides the semantic layer. Header/footer stay charcoal in bot
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
   --color-header: var(--header);
   --color-header-foreground: var(--header-foreground);
+  --color-footer: var(--footer);
+  --color-footer-foreground: var(--footer-foreground);
 
-  --font-display: var(--font-display);
-  --font-sans: var(--font-body);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
 
-  --radius-button: var(--radius-button);
-  --radius-card: var(--radius-card);
+  --radius-m: var(--radius-m);
+  --radius-pill: var(--radius-pill);
   --shadow-card: var(--shadow-card);
   --shadow-float: var(--shadow-float);
 }
 ```
-Result: `bg-background`, `text-foreground`, `bg-header`, `text-primary`, `rounded-card`,
-`shadow-float`, `font-display` resolve to web-specific values. Admin knows nothing about them.
+Result: `bg-background`, `text-foreground`, `bg-header`, `bg-footer`, `text-primary`,
+`bg-secondary`, `rounded-[--radius-m]`, `rounded-pill`, `shadow-float`, `font-sans`, `font-mono`
+resolve to web-specific values. Admin knows nothing about them.
 
 **Contrast with admin (why the split is intentional):** admin is light-first, neutral grays,
-sparing orange, compact radii (v3, `@cafedebug/design-tokens`); web is dark-first, warm
-charcoal + cream, dominant orange, generous radii (v4, app-local). Same names (`Card`,
-`Button`) can render differently per app — that is the design-system independence the strategy
-doc locks in.
+sparing orange, compact radii (v3, `@cafedebug/design-tokens`); web is a dark-first, theme-flipping
+palette (`#111111`/`#F2F3F0`) with a constant `#FF8400` orange, a mono/humanist type pairing
+(**JetBrains Mono** + **Geist**), and pill controls + 16px card radii (v4, app-local). Same names
+(`Card`, `Button`) can render differently per app — that is the design-system independence the
+strategy doc locks in.
 
 ---
 
@@ -266,6 +338,30 @@ export function resolveInitialThemeClass(pref: ThemePref): "" | "dark" {
 Rationale for `next-themes` over admin's server-action approach: the strategy doc locks
 `next-themes` for web, and its pre-hydration script plus `enableSystem` gives system-preference
 support with less bespoke code. The cookie hint preserves admin's FOUC-free server render.
+
+### 3.3 Locked-dark chrome + per-page theming
+
+Verified against both Slice-1 pages (`ux-design-reference.md` §1.5), the **one invariant is that
+the Site Header and Site Footer are dark in both themes**. The two pages otherwise theme
+differently:
+
+- **Episode Detail** (`VkDts` dark / `Oh9Bv` light) — a **conventional whole-page flip**: root is
+  `Mode: Light`/`Dark`, and the hero, audio player, and all content follow the theme. Only the
+  header/footer instances carry an explicit dark pin.
+- **Home** (`tWWON` dark / `k71CIc` light) — **dark-first**: the page baseline stays dark and only
+  the **Recent Episodes** and **News & Events** bands flip to light; the **hero and newsletter also
+  stay dark** alongside the chrome.
+
+Implementation:
+- `next-themes` sets the document `.dark`/light class → most sections follow it automatically.
+- **Header/Footer (both pages):** dedicated `--header`/`--footer` tokens that are dark in both
+  themes (`bg-header text-header-foreground`, `bg-footer text-footer-foreground`) — no scope needed.
+- **Home hero + newsletter (Home only):** they use `--background`/`--card` surfaces, so wrap those
+  subtrees in a forced `<div className="dark">…</div>`. The Tailwind v4 `dark` variant
+  (`@custom-variant dark (&:where(.dark, .dark *))`) resolves against the nearest `.dark` ancestor,
+  so they render dark even under a light document class.
+- Episode Detail needs no forced-dark regions beyond the chrome.
+- This settles the header/footer chrome question: **dark/charcoal in both themes** (FR-3).
 
 ---
 

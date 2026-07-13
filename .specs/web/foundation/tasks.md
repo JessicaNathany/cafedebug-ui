@@ -5,6 +5,7 @@
 | **Status** | `Draft` |
 | **Spec** | `.specs/web/foundation/spec.md` |
 | **Design** | `.specs/web/foundation/design.md` |
+| **UX design reference** | `.specs/web/foundation/ux-design-reference.md` (from `cafedebug.pen`) — visual source of truth; §8 is the Slice-1 build checklist |
 | **Affected app** | `apps/web` |
 | **Execution order** | Phases are sequential; validate each phase before starting the next |
 
@@ -18,6 +19,9 @@
   `features/<domain>`, infra in `lib/`, no hardcoded colors, no `fetch` in components/pages.
 - Server Components by default; add `"use client"` **only** to the theme and player files
   listed in `design.md` §1.2.
+- Match the finished design in `ux-design-reference.md` (extracted from `cafedebug.pen`): use its
+  token values (§1), site components (§3), and per-page/player guidance (§4–§5). Slice-1 scope is
+  its §8 checklist; pages tagged `[Deferred]` are reference-only.
 - Do **not** implement anything in spec §3 "Out of scope."
 - Do **not** modify `apps/admin`, `packages/*`, or other repo files except the single
   `.specs/README.md` index row (Phase 11).
@@ -114,11 +118,15 @@ temporary `page.tsx` to prove the build.
 | **Layer** | styles |
 | **Change type** | Addition |
 
-**Steps:** `:root` (brand primitives + light semantic) and `.dark` overrides per `design.md`
-§2.2, header/footer charcoal in both themes.
+**Steps:** `:root` (brand primitives + light semantic) and `.dark` overrides. Use the
+**authoritative token values from `ux-design-reference.md` §1** (hex palette, `--primary`
+`#FF8400` in both themes, **JetBrains Mono** + **Geist** fonts, `--radius-m` 16px cards +
+`--radius-pill` buttons), which supersede `design.md` §2.2. **Resolve the header/footer chrome
+decision** (`ux-design-reference.md` §1.4: design has header `--background` / footer `--card`,
+not fixed charcoal) with design/PM before finalizing.
 
 **Validation:** no raw colors outside this file (grep components later); file imported by
-`globals.css`.
+`globals.css`; values match `ux-design-reference.md` §1.
 
 ### Task 2.2 — `styles/theme.css` (+ dark variant) and `styles/typography.css`
 | Field | Value |
