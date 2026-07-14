@@ -252,7 +252,7 @@ Use when developing the frontend against a ready local API (MySQL/MinIO/API via 
 Use when debugging or changing the API in Visual Studio (or `dotnet run`) while developing the admin UI at the same time. The API runs on the host, not in Docker — port/URL comes from your IDE launch profile (check Swagger).
 
 1. In `apps/admin/.env.local`: set `ADMIN_API_BASE_URL` to that URL (e.g. `https://localhost:7211`).
-2. HTTPS with a dev certificate: uncomment `NODE_TLS_REJECT_UNAUTHORIZED=0` in `apps/admin/.env.local` (see `.env.example`). Do not put it in `package.json` scripts.
+2. HTTPS with a dev certificate: uncomment `NODE_TLS_REJECT_UNAUTHORIZED=0` in `apps/admin/.env.local` (see `apps/admin/.env.example`) or run `pnpm --filter @cafedebug/admin dev:insecure-tls` for an explicit, temporary bypass.
 
 **Installing pnpm:**
 
@@ -287,7 +287,7 @@ cp .env.example .env
 If you run admin directly on host (`pnpm --filter @cafedebug/admin dev`), also create an app-local env file:
 
 ```bash
-cp .env.example apps/admin/.env.local
+cp apps/admin/.env.example apps/admin/.env.local
 ```
 
 Why this is needed:
@@ -312,7 +312,7 @@ For **admin in Docker Compose**, confirm these in the root `.env`:
 
 Notes:
 
-- API source (Docker devstack vs Visual Studio) and TLS rules: see **Backend API source (pick one)** above. Details in `.env.example`.
+- API source (Docker devstack vs Visual Studio) and TLS rules: see **Backend API source (pick one)** above. Details in `apps/admin/.env.example`.
 - `ADMIN_API_BASE_URL_DOCKER` is only for Docker-based admin runs.
 
 #### 3. Start admin directly on host (recommended for daily coding)
@@ -324,6 +324,11 @@ pnpm --filter @cafedebug/admin dev
 ```
 
 Open `http://localhost:3001`.
+
+Platform notes:
+
+- macOS/Linux/Windows: `pnpm --filter @cafedebug/admin dev` works as the default cross-platform flow.
+- If your local backend uses HTTPS with a self-signed/dev cert, use `pnpm --filter @cafedebug/admin dev:insecure-tls` (opt-in).
 
 Why `3001`?
 
