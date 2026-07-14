@@ -5,6 +5,9 @@ let formatHtmlSourceFormatterPromise:
   | Promise<(source: string) => Promise<string>>
   | null = null;
 
+const applyFallbackPrettyPrint = (source: string): string =>
+  source.replace(/>\s*</g, ">\n<");
+
 export const getEditorHtml = (editor: Editor): string => {
   return editor.getHTML();
 };
@@ -49,9 +52,15 @@ export const formatHtmlSourceForDisplay = async (html: string): Promise<string> 
   try {
     const formatter = await loadHtmlSourceFormatter();
     const formatted = await formatter(source);
-    return formatted.trimEnd();
+    const trimmedFormatted = formatted.trimEnd();
+
+    if (trimmedFormatted.includes("\n")) {
+      return trimmedFormatted;
+    }
+
+    return applyFallbackPrettyPrint(trimmedFormatted);
   } catch {
-    return html;
+    return applyFallbackPrettyPrint(html.trim());
   }
 };
 

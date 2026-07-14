@@ -49,9 +49,11 @@ test("auth route rules enforce episodes-first redirects", () => {
   assert.equal(AUTH_ROUTE_RULES.postLogin, "/episodes");
 });
 
-test("protected admin routes include episodes/dashboard/settings paths", () => {
+test("protected admin routes include episodes/banners/dashboard/settings paths", () => {
   assert.equal(isProtectedAdminPath("/episodes"), true);
   assert.equal(isProtectedAdminPath("/episodes/new"), true);
+  assert.equal(isProtectedAdminPath("/banners"), true);
+  assert.equal(isProtectedAdminPath("/banners/new"), true);
   assert.equal(isProtectedAdminPath("/dashboard"), true);
   assert.equal(isProtectedAdminPath("/settings"), true);
   assert.equal(isProtectedAdminPath("/login"), false);
@@ -70,6 +72,14 @@ test("route protection redirects anonymous and authenticated users correctly", (
   assert.equal(
     getRouteProtectionRedirect({
       pathname: "/episodes/new",
+      isAuthenticated: false
+    }),
+    "/login"
+  );
+
+  assert.equal(
+    getRouteProtectionRedirect({
+      pathname: "/banners/new",
       isAuthenticated: false
     }),
     "/login"

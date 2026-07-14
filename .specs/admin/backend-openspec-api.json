@@ -2,9 +2,9 @@
   "openapi": "3.0.4",
   "info": {
     "title": "Café Debug API",
-    "description": "API for CafeDebug",
+    "description": "API for Cafe Debug",
     "contact": {
-      "name": "CafeDebug",
+      "name": "Cafe Debug",
       "url": "https://cafedebug.example"
     },
     "license": {
