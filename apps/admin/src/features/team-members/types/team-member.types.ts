@@ -1,4 +1,4 @@
-import type { NormalizedApiError } from "@cafedebug/api-client";
+import type { NormalizedApiError, TeamMemberRequest } from "@cafedebug/api-client";
 
 export type TeamMembersQueryParams = {
   page: number;
@@ -32,4 +32,25 @@ export type TeamMembersPageData = {
   descending: boolean;
 };
 
+/** Editor-only view of a TeamMemberResponse after nullable fields are made control-safe. */
+export type TeamMemberRecord = {
+  id: number;
+  name: string;
+  podcastRole: string;
+  nickname: string;
+  email: string;
+  bio: string;
+  jobTitle: string;
+  gitHubUrl: string;
+  linkedInUrl: string;
+  instagramUrl: string;
+  profilePhotoUrl: string;
+  joinedAt: string;
+  isActive?: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TeamMemberRequestPayload = TeamMemberRequest;
+export type TeamMemberMutationResult = TeamMemberRecord;
 export type TeamMembersRouteError = NormalizedApiError;

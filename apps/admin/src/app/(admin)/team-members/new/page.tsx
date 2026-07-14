@@ -1,11 +1,5 @@
-import { ComingSoonPage } from "@/features/placeholders";
+import { TeamMemberEditorPage } from "@/features/team-members/team-member-editor-page";
 
 export default function NewTeamMemberPage() {
-  return (
-    <ComingSoonPage
-      route="/team-members/new"
-      summary="The Team Member editor is planned separately, but this route remains available as the create destination from the list."
-      title="New Team Member"
-    />
-  );
+  return <TeamMemberEditorPage mode="new" />;
 }
