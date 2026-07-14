@@ -1,0 +1,19 @@
+{
+  "name": "@cafedebug/admin-design-tokens",
+  "private": true,
+  "version": "0.1.0",
+  "files": [
+    "styles.css"
+  ],
+  "exports": {
+    "./styles.css": "./styles.css"
+  },
+  "style": "./styles.css",
+  "scripts": {
+    "build": "node -e \"console.log('@cafedebug/admin-design-tokens build placeholder')\"",
+    "lint": "node -e \"console.log('@cafedebug/admin-design-tokens lint placeholder')\"",
+    "test": "node -e \"console.log('@cafedebug/admin-design-tokens test placeholder')\"",
+    "typecheck": "node -e \"console.log('@cafedebug/admin-design-tokens typecheck placeholder')\"",
+    "clean": "node -e \"console.log('@cafedebug/admin-design-tokens clean placeholder')\""
+  }
+}

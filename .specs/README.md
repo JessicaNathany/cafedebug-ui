@@ -87,4 +87,4 @@ Implementation must follow:
 
 | Feature | Status | Path | Description |
 |---|---|---|---|
-| Web Foundation (Slice 1) | `Draft` | `.specs/web/foundation/` | Next.js 16 App Router scaffold: app-local Tailwind v4 tokens, next-themes, shell, mocked Home + episode detail, persistent audio player skeleton, SEO basics. Includes `ux-design-reference.md` — full visual/UX guidance for all designed pages (from `cafedebug.pen`) |
+| Web Foundation (Slice 1) | `Ready for implementation` | `.specs/web/foundation/` | Next.js 16 App Router scaffold: independent web token package, Tailwind v4, next-themes, shell, mocked Home + episode detail, persistent audio player skeleton, and SEO basics. Includes `ux-design-reference.md` — full visual/UX guidance for all designed pages (from `cafedebug.pen`) |

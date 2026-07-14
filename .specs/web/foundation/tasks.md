@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `Draft` |
+| **Status** | `Ready for implementation` |
 | **Spec** | `.specs/web/foundation/spec.md` |
 | **Design** | `.specs/web/foundation/design.md` |
 | **UX design reference** | `.specs/web/foundation/ux-design-reference.md` (from `cafedebug.pen`) — visual source of truth; §8 is the Slice-1 build checklist |
@@ -23,8 +23,7 @@
   token values (§1), site components (§3), and per-page/player guidance (§4–§5). Slice-1 scope is
   its §8 checklist; pages tagged `[Deferred]` are reference-only.
 - Do **not** implement anything in spec §3 "Out of scope."
-- Do **not** modify `apps/admin`, `packages/*`, or other repo files except the single
-  `.specs/README.md` index row (Phase 11).
+ - Modify `packages/design-tokens` only for the approved atomic rename to `packages/admin-design-tokens`, add `packages/web-design-tokens`, and update the required admin package references. Do not change admin token CSS values, selectors, or UI behavior.
 
 ---
 
@@ -47,6 +46,32 @@
 
 ---
 
+## Phase 0.5 — Token Package Split & Admin Compatibility
+
+> **Goal:** establish independent token ownership without changing admin behavior.
+
+### Task 0.2 — Rename the admin token package and add the web token package
+
+**Files:** `packages/design-tokens/` → `packages/admin-design-tokens/`; `packages/web-design-tokens/{package.json,styles.css}`
+**Layer:** packages
+**Change type:** Rename / Addition
+
+**Steps:** rename the existing package to `@cafedebug/admin-design-tokens` without changing `styles.css`; create `@cafedebug/web-design-tokens` with the authoritative web token contract from `ux-design-reference.md` §1.
+
+**Validation:** the two package names and CSS exports are distinct; web values do not appear in the admin package.
+
+### Task 0.3 — Migrate admin token-package references
+
+**Files:** `apps/admin/package.json`, `apps/admin/src/app/layout.tsx`, `apps/admin/next.config.ts`, `infra/docker/admin/Dockerfile`, `pnpm-lock.yaml`
+**Layer:** config / infrastructure
+**Change type:** Modification / Regeneration
+
+**Steps:** update every package name, CSS import, transpilation entry, and Docker manifest-copy path; regenerate the lockfile.
+
+**Validation:** no old package references remain; admin imports the renamed CSS package and its existing checks remain green.
+
+---
+
 ## Phase 1 — Scaffold & Config
 
 > **Goal:** replace the placeholder package with a buildable (empty) Next.js 16 app.
@@ -59,8 +84,7 @@
 | **Change type** | Replacement |
 
 **Steps:** set real scripts and deps per `design.md` §9.1 (name stays `@cafedebug/web`, keep
-`private`, `type: module`, `version 0.1.0`). Keep `@cafedebug/eslint-config` and
-`@cafedebug/tsconfig` as `workspace:*` devDeps.
+`private`, `type: module`, `version 0.1.0`). Add `@cafedebug/web-design-tokens` as a `workspace:*` dependency; keep `@cafedebug/eslint-config` and `@cafedebug/tsconfig` as `workspace:*` devDependencies.
 
 **Validation:** `pnpm install` from repo root resolves with no errors; `@cafedebug/web` shows
 the new deps.
@@ -107,35 +131,30 @@ temporary `page.tsx` to prove the build.
 
 ---
 
-## Phase 2 — App-Local Design System
+## Phase 2 — Web Design System
 
-> **Goal:** web-only tokens + Tailwind v4 mapping. Depends on Phase 1.
+> **Goal:** web-only tokens + Tailwind v4 mapping. Depends on Phase 0.5 and Phase 1.
 
-### Task 2.1 — `styles/tokens.css`
-| Field | Value | 
+### Task 2.1 — `packages/web-design-tokens/styles.css`
+| Field | Value |
 |---|---|
-| **File** | `apps/web/src/styles/tokens.css` |
+| **File** | `packages/web-design-tokens/styles.css` |
 | **Layer** | styles |
 | **Change type** | Addition |
 
-**Steps:** `:root` (brand primitives + light semantic) and `.dark` overrides. Use the
-**authoritative token values from `ux-design-reference.md` §1** (hex palette, `--primary`
-`#FF8400` in both themes, **JetBrains Mono** + **Geist** fonts, `--radius-m` 16px cards +
-`--radius-pill` buttons), which supersede `design.md` §2.2. **Resolve the header/footer chrome
-decision** (`ux-design-reference.md` §1.4: design has header `--background` / footer `--card`,
-not fixed charcoal) with design/PM before finalizing.
+**Steps:** define `:root` and `.dark` semantic variables using the **authoritative values from `ux-design-reference.md` §1**: constant `#FF8400` primary, JetBrains Mono + Geist, 16px cards, pill controls, and always-dark header/footer tokens. The decision is final; do not re-open it.
 
 **Validation:** no raw colors outside this file (grep components later); file imported by
 `globals.css`; values match `ux-design-reference.md` §1.
 
-### Task 2.2 — `styles/theme.css` (+ dark variant) and `styles/typography.css`
+### Task 2.2 — `apps/web/src/styles/theme.css` (+ dark variant) and `typography.css`
 | Field | Value |
 |---|---|
-| **Files** | `apps/web/src/styles/{theme.css,typography.css}` |
+| **Files** | `apps/web/src/styles/{theme.css,typography.css}`, `apps/web/src/app/globals.css` |
 | **Layer** | styles |
 | **Change type** | Addition |
 
-**Steps:** `@custom-variant dark (&:where(.dark, .dark *));` + `@theme inline` mapping per
+**Steps:** import `@cafedebug/web-design-tokens/styles.css` from `globals.css`; add `@custom-variant dark (&:where(.dark, .dark *));` + `@theme inline` mapping per
 `design.md` §2.3; typography `@font-face`/prose (system-font fallbacks acceptable for skeleton).
 
 **Validation:** `build` succeeds; a probe element using `bg-header`, `text-primary`,
@@ -513,7 +532,7 @@ validate one episode's JSON-LD in the Schema Markup Validator (AC-13); confirm `
 
 | Feature | Status | Path | Description |
 |---|---|---|---|
-| Web Foundation (Slice 1) | `Draft` | `.specs/web/foundation/` | Next.js 16 App Router scaffold: app-local Tailwind v4 tokens, next-themes, shell, mocked Home + episode detail, persistent player skeleton, SEO basics |
+| Web Foundation (Slice 1) | `Ready for implementation` | `.specs/web/foundation/` | Next.js 16 App Router scaffold: independent web token package, Tailwind v4, next-themes, shell, mocked Home + episode detail, persistent player skeleton, SEO basics |
 ```
 
 **Validation (AC-18):** row present under a `web` section.
@@ -527,7 +546,7 @@ validate one episode's JSON-LD in the Schema Markup Validator (AC-13); confirm `
 
 **Deferred to later slices / specs (do NOT implement here):**
 - **`.specs/platform/tailwind-v4-migration/`** — migrate `apps/admin` Tailwind v3 → v4 (R-2);
-  align token model, PostCSS plugin, dark variant; decide `packages/design-tokens` fate.
+  align token model and PostCSS plugin while retaining `@cafedebug/admin-design-tokens` ownership.
 - Real API integration slice — swap mock `server/*` for `@cafedebug/api-client` + `"use cache"`/
   `cacheTag`; add `NEXT_PUBLIC_API_URL`, `images.remotePatterns`.
 - RSS `/feed.xml`; dynamic per-episode OG via `next/og`.

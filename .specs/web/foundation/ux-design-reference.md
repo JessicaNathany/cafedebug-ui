@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `Draft` |
+| **Status** | `Ready for implementation` |
 | **Domain** | `web/foundation` |
 | **Audience** | UX Team + `apps/web` implementers |
 | **Design source** | `cafedebug.pen` (Pencil file, repo root) |
@@ -511,7 +511,7 @@ stacked rows:
 From this reference, Slice 1 (`spec.md` §3, `tasks.md`) builds:
 
 - [ ] **Tokens** — reconcile `design.md` §2.2 to §1 above (hex palette, JetBrains Mono + Geist,
-      pill buttons, `--radius-m` cards). Resolve the header/footer chrome decision (§1.4).
+      pill buttons, `--radius-m` cards). Header and footer are always-dark chrome in both themes; the decision is final.
 - [ ] **Site Header** (`m9zV96`) with the 7-item nav (only `Início`/`#episodios` live).
 - [ ] **Site Footer** (`LSgoB`) with placeholder links + copy-only newsletter mini.
 - [ ] **Episode Card** (`FGSFI`) with a working Play control → player store.

@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `Draft` |
+| **Status** | `Ready for implementation` |
 | **Domain** | `web/foundation` |
 | **Spec** | `.specs/web/foundation/spec.md` |
 | **Strategy source** | `.specs/web/cafedebug-web-foundation-v2.md` |
@@ -11,12 +11,7 @@
 
 ---
 
-> ⚠️ **Token reconciliation.** The finished Pencil design (`cafedebug.pen`) defines the
-> **authoritative** color palette, typography, radii, and per-page layouts. Where §2.2 below
-> diverges from it, the design file wins — see `ux-design-reference.md` §1 (hex palette,
-> **JetBrains Mono + Geist** fonts, pill buttons, and the header/footer chrome decision). Update
-> §2.2's illustrative oklch/font values to those before building; keep the Tailwind v4 `@theme`
-> mapping mechanism (§2.3) unchanged.
+> **Token source of truth.** `ux-design-reference.md` §1 defines the web token values and behavior. Those values are exported by `packages/web-design-tokens`; `apps/web` maps the semantic variables to Tailwind v4 utilities locally. The existing admin CSS contract moves unchanged to `packages/admin-design-tokens`.
 
 ---
 
@@ -52,8 +47,7 @@ apps/web/
 │  │     └─ [slug]/
 │  │        ├─ page.tsx                ★    # Episode detail (RSC) + generateMetadata + generateStaticParams
 │  │        └─ loading.tsx             ★    # Segment skeleton
-│  ├─ styles/                               # WEB-ONLY design system (not shared)
-│  │  ├─ tokens.css                    ★    # :root (light) + .dark — raw CSS variables
+│  ├─ styles/                               # Web Tailwind aliases and typography
 │  │  ├─ theme.css                     ★    # @theme inline → maps tokens to Tailwind utilities + dark variant
 │  │  └─ typography.css                ★    # font-face declarations + prose
 │  ├─ components/
@@ -131,22 +125,20 @@ user chose to follow.
 
 ---
 
-## 2. Styling & Tokens (Tailwind v4, app-local)
+## 2. Styling & Tokens (Tailwind v4, web token package)
 
 ### 2.1 Import order (`app/globals.css`)
 ```css
 @import "tailwindcss";
-@import "../styles/tokens.css";     /* :root + .dark raw variables */
+@import "@cafedebug/web-design-tokens/styles.css"; /* web semantic variables */
 @import "../styles/theme.css";      /* @theme inline mapping + dark variant */
 @import "../styles/typography.css"; /* @font-face + prose */
 
 body { @apply bg-background text-foreground font-sans antialiased; }
 ```
 
-### 2.2 Tokens (`styles/tokens.css`) — reconciled to `cafedebug.pen`
-`:root` holds brand primitives (the only place raw color lives) and light-theme semantic tokens;
-`.dark` overrides the semantic layer. Values are the **authoritative hex tokens** from the design
-file (see `ux-design-reference.md` §1) — orange `--primary` is constant across themes.
+### 2.2 Token package (`packages/web-design-tokens/styles.css`)
+The web token package owns the brand primitives and light/dark semantic variables. Values are authoritative from `ux-design-reference.md` §1, and `apps/web` must not redefine them.
 
 > **Header/footer chrome (resolved — always dark).** Both Homepage frames render the header and
 > footer **dark** (see `ux-design-reference.md` §1.5), matching FR-3's "charcoal in both themes."
@@ -293,7 +285,7 @@ resolve to web-specific values. Admin knows nothing about them.
 **Contrast with admin (why the split is intentional):** admin is light-first, neutral grays,
 sparing orange, compact radii (v3, `@cafedebug/design-tokens`); web is a dark-first, theme-flipping
 palette (`#111111`/`#F2F3F0`) with a constant `#FF8400` orange, a mono/humanist type pairing
-(**JetBrains Mono** + **Geist**), and pill controls + 16px card radii (v4, app-local). Same names
+(**JetBrains Mono** + **Geist**), and pill controls + 16px card radii (v4, package-owned). Same names
 (`Card`, `Button`) can render differently per app — that is the design-system independence the
 strategy doc locks in.
 
@@ -599,6 +591,7 @@ Deferred: dynamic `next/og` per episode, `/feed.xml` RSS (spec §3).
 | Dependency | Purpose |
 |---|---|
 | `next` `^16.2.3`, `react` `^19.1.0`, `react-dom` `^19.1.0` | Framework (repo majors) |
+| `@cafedebug/web-design-tokens` `workspace:*` | Web semantic-token CSS contract |
 | `next-themes` | Theme switching (strategy §2.2) |
 | `zustand` | Player store (strategy §2.8) |
 | `zod` `^4.3.6` | Schemas (repo version) |
@@ -654,13 +647,9 @@ are added when real integration lands.)
 
 ## 10. Monorepo Tailwind Version Strategy
 
-**Current state:** `apps/admin` = Tailwind **v3** (`tailwind.config.ts`, `@tailwind`
-directives, `autoprefixer`, tokens via `@cafedebug/design-tokens`). This slice introduces
-`apps/web` = Tailwind **v4** (`@theme inline`, `@tailwindcss/postcss`, app-local tokens).
+**Current state:** `apps/admin` = Tailwind **v3** (`tailwind.config.ts`, `@tailwind` directives, `autoprefixer`, tokens via `@cafedebug/admin-design-tokens`). This slice introduces `apps/web` = Tailwind **v4** (`@theme inline`, `@tailwindcss/postcss`, tokens via `@cafedebug/web-design-tokens`).
 
-**Why coexistence is safe:** Tailwind config + PostCSS are resolved **per app** (each app has
-its own `postcss.config.mjs` and CSS entry). There is **no shared styling surface** between the
-apps (web does not use `packages/design-tokens`). `turbo run build` compiles each app with its
+**Why coexistence is safe:** Tailwind config + PostCSS are resolved **per app** (each app has its own `postcss.config.mjs` and CSS entry); each app imports only its own token package. `turbo run build` compiles each app with its
 own toolchain (AC-16 verifies).
 
 **Planned admin migration (R-2, docs-only here):** align admin to v4 under a dedicated platform

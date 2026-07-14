@@ -13,7 +13,7 @@ COPY apps/web/package.json apps/web/package.json
 COPY packages/eslint-config/package.json packages/eslint-config/package.json
 COPY packages/tsconfig/package.json packages/tsconfig/package.json
 COPY packages/api-client/package.json packages/api-client/package.json
-COPY packages/design-tokens/package.json packages/design-tokens/package.json
+COPY packages/admin-design-tokens/package.json packages/admin-design-tokens/package.json
 RUN pnpm install --frozen-lockfile
 
 FROM deps AS dev

@@ -21,7 +21,7 @@ For strategic context while applying these rules:
 - Prefer `TanStack Query` for async state in `apps/admin`.
 - Use generated API contracts from the backend OpenAPI schema.
 - Do not hardcode colors, logos, or API base URLs in components.
-- Use the design tokens from `packages/design-tokens`.
+- Use the app-specific design tokens from `packages/admin-design-tokens` or `packages/web-design-tokens`.
 - Update the spec when behavior changes.
 
 
@@ -156,7 +156,7 @@ export async function POST(req: Request) {
 ## 🎨 6. Design System Rules
 
 - NEVER use hardcoded colors
-- ALWAYS use tokens from `packages/design-tokens`
+- ALWAYS use tokens from the relevant app-specific package
 - Use shared components from `packages/ui`
 
 ---

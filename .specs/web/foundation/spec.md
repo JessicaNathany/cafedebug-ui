@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `Draft` |
+| **Status** | `Ready for implementation` |
 | **Domain** | `web/foundation` |
 | **Spec path** | `.specs/web/foundation/` |
 | **Affected app** | `apps/web` |
@@ -27,7 +27,7 @@ navigable, SEO-aware shell containing a **mocked** Home page and a **mocked** ep
 page, plus a **persistent audio player skeleton** that survives client-side navigation.
 
 The slice deliberately stops short of real backend integration and all downstream community
-features. It establishes the **architectural spine** (feature-based structure, app-local
+features. It establishes the **architectural spine** (feature-based structure, app-specific
 design system, Server-Components-first rendering, one client island for theme and one for the
 player) so that later slices add capability without re-litigating structure.
 
@@ -62,7 +62,7 @@ change** — only the body of the feature `server/` data functions changes.
 | # | Area | Detail |
 |---|---|---|
 | S-1 | App scaffold | Convert `@cafedebug/web` placeholder into a real Next.js 16 App Router app with real `dev`/`build`/`lint`/`typecheck`/`test`/`clean` scripts, extending shared `@cafedebug/tsconfig` and `@cafedebug/eslint-config` |
-| S-2 | App-local design system | Tailwind v4 (`@theme inline`) with **web-only** tokens under `apps/web/src/styles/` (`tokens.css`, `theme.css`, `typography.css`). **Not** `packages/design-tokens` |
+| S-2 | Web design-token package | `packages/web-design-tokens` exports the web-only semantic tokens; `apps/web` consumes that CSS package and maps it to Tailwind v4 (`@theme inline`) aliases in `src/styles/` |
 | S-3 | Theme provider | `next-themes`, cookie-backed for FOUC-free SSR, `attribute="class"`, `defaultTheme="dark"`, `enableSystem`; a client theme toggle |
 | S-4 | Root layout | Server root layout: fonts, metadata defaults, `ThemeProvider`, `PlayerProvider`, header, footer, persistent mini-player |
 | S-5 | Header / footer / nav | Web-specific layout chrome (charcoal in both themes), responsive, no dead links |
@@ -105,12 +105,8 @@ on a port distinct from admin's `3001`), `build` (`next build`), `start`, `lint`
 extend `@cafedebug/tsconfig/nextjs` and `@cafedebug/eslint-config/next`, and depend on
 `next`, `react`, `react-dom` at the repo's pinned majors (Next 16, React 19).
 
-### FR-2 — App-local, web-only design tokens
-Tokens live in `apps/web/src/styles/tokens.css` (`:root` + `.dark`), mapped to Tailwind
-utilities in `theme.css` via `@theme inline`, with `typography.css` for fonts/prose.
-`globals.css` imports Tailwind then the three token files. **No import of
-`@cafedebug/design-tokens`.** Every visual value used by components resolves to a token; no
-hardcoded hex/named-color values in components.
+### FR-2 — Web-specific design-token package
+`packages/web-design-tokens` exports the web CSS contract (`:root` + `.dark`) using the authoritative palette, typography, radii, and elevation from `ux-design-reference.md` §1. `apps/web` depends only on `@cafedebug/web-design-tokens`, imports its stylesheet from `globals.css`, and maps semantic variables to Tailwind utilities through local `theme.css` `@theme inline` aliases. The existing package is renamed to `@cafedebug/admin-design-tokens` without changing its CSS contract. Every component visual value resolves to a semantic token; no hardcoded hex or named colors are permitted.
 
 ### FR-3 — Light/dark theme with no FOUC
 Theme switching uses `next-themes` (`attribute="class"`, `defaultTheme="dark"`,
@@ -199,12 +195,12 @@ cookie resolver maps values correctly.
 |---|---|
 | **Architecture** | Feature-based; `app/` is routing-only; feature logic in `features/<domain>/{server,components,schemas,types}`; infra in `lib/` (`.github/copilot-instructions.md`) |
 | **Rendering** | Server Components by default; `"use client"` only for theme toggle/provider and player provider/UI/play-button |
-| **Design tokens** | No hardcoded colors; all color/spacing/radius/shadow via tokens; light/dark parity (identical layout, preserved hierarchy/contrast/interaction states) |
+| **Design tokens** | No hardcoded colors; web components consume semantic values from `@cafedebug/web-design-tokens` through local Tailwind aliases; light/dark parity (identical layout, preserved hierarchy/contrast/interaction states) |
 | **Theme** | Applies instantly, persists (cookie), server-readable (no hydration flash) |
 | **Accessibility** | Keyboard-reachable controls with visible focus; ARIA labels in pt-BR; player controls keyboard-operable; images have alt text |
 | **SEO** | Valid metadata + canonical on every route; `PodcastEpisode` JSON-LD validates; `robots.txt`/`sitemap.xml` served |
 | **Performance** | No layout shift from theme swap; player island kept small; images use `next/image` where applicable |
-| **Isolation** | Web tokens/toolchain do not touch admin; adding Tailwind v4 to web must not break admin's v3 build (`turbo run build` green for both) |
+| **Isolation** | `@cafedebug/admin-design-tokens` and `@cafedebug/web-design-tokens` have no cross-app consumers; Tailwind v4 in web must not break admin's v3 build (`turbo run build` green for both) |
 | **Consistency** | Folder shapes and config-extension patterns mirror `apps/admin` |
 | **No real network** | No calls to the .NET API or `@cafedebug/api-client` in this slice |
 
@@ -250,8 +246,8 @@ without cross-interference.
 |---|---|
 | AC-01 | `pnpm --filter @cafedebug/web run build` succeeds and produces a Next.js production build |
 | AC-02 | `pnpm --filter @cafedebug/web run lint`, `typecheck`, and `test` all exit 0 |
-| AC-03 | `apps/web/package.json` extends `@cafedebug/tsconfig` and `@cafedebug/eslint-config`; no `@cafedebug/design-tokens` dependency |
-| AC-04 | Web tokens live only in `apps/web/src/styles/`; no component contains a hardcoded hex/named color |
+| AC-03 | `apps/web/package.json` extends `@cafedebug/tsconfig` and `@cafedebug/eslint-config`, depends on `@cafedebug/web-design-tokens`, and never imports `@cafedebug/admin-design-tokens` |
+| AC-04 | Web token values live in `packages/web-design-tokens`; `apps/web/src/styles` contains only imports, Tailwind aliases, and typography rules; no component contains a hardcoded hex/named color |
 | AC-05 | Home (`/`) renders hero, recent-episodes grid, news placeholder, newsletter placeholder, and socials from mock data |
 | AC-06 | `/episodes/[slug]` renders for every mock slug and calls `notFound()` for unknown slugs |
 | AC-07 | Clicking Play on Home starts audio; navigating to the episode detail keeps the same audio playing (persistent player) |
@@ -265,19 +261,14 @@ without cross-interference.
 | AC-15 | Default + per-episode metadata (title template, canonical, OG, Twitter card) are emitted |
 | AC-16 | `turbo run build` builds both `@cafedebug/web` and `@cafedebug/admin` successfully (v4/v3 isolation holds) |
 | AC-17 | No navigation link points to a route that does not exist in this slice |
-| AC-18 | `.specs/README.md` index includes a `web/foundation` row; a follow-up pointer for the admin Tailwind v4 migration is recorded |
+| AC-18 | `.specs/README.md` index identifies the foundation as implementation-ready; package ownership and the deferred admin Tailwind v4 migration are recorded |
 
 ---
 
 ## 8. Assumptions, Reconciliations, and Risks
 
-### R-1 — Tailwind v4 (web) vs v3 (admin) coexistence
-**Decision:** `apps/web` adopts Tailwind **v4** per the v2 strategy doc; `apps/admin` stays on
-**v3** for now. Tailwind config and PostCSS are **app-local** (each app has its own
-`postcss.config.mjs`), and web tokens are app-local, so the two versions coexist without a
-shared styling surface. **Risk:** a future contributor may assume one Tailwind version repo-
-wide. **Mitigation:** document the split in `design.md` §10 and register the admin migration as
-its own platform spec (below). **Verify** with `turbo run build` across both apps (AC-16).
+### R-1 — Token-package split and Tailwind coexistence
+**Decision:** rename `packages/design-tokens` to `packages/admin-design-tokens` and add `packages/web-design-tokens`. The admin package preserves its existing CSS contract; web owns an independent semantic contract. `apps/web` uses Tailwind **v4** and `apps/admin` stays on **v3**. Each app resolves its own PostCSS and CSS entry point, so versions and token packages coexist without a shared styling surface. **Risk:** stale workspace or Docker references can break admin installs. **Mitigation:** migrate the admin dependency, stylesheet import, Next transpilation list, Docker manifest-copy path, and lockfile atomically; verify with `turbo run build` (AC-16).
 
 ### R-2 — Planned `apps/admin` Tailwind v3→v4 migration
 Per the request to "also plan to update the Tw v3," this slice **records** the follow-up but

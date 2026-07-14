@@ -81,7 +81,8 @@ apps/
 packages/
   ui/                     # Shared components and primitives
   api-client/             # Generated API types + fetch client
-  design-tokens/          # Brand tokens, theme CSS, logos metadata
+  admin-design-tokens/    # Admin tokens and theme CSS
+  web-design-tokens/      # Public-web tokens and theme CSS
   config/                 # Shared site/admin runtime config
   eslint-config/          # Shared lint config
   tsconfig/               # Shared TS config
@@ -140,7 +141,7 @@ The new website should preserve the recognizable Cafe Debug feel while modernizi
 
 ## Design System Rules
 
-- never hardcode visual values in feature components; use tokens from `packages/design-tokens`
+- never hardcode visual values in feature components; use the app-specific token package from `packages/admin-design-tokens` or `packages/web-design-tokens`
 - preserve the dark header/footer and warm orange accent palette unless design tokens are intentionally updated
 - prefer `packages/ui` primitives before creating new feature-level components
 - modernize via spacing, hierarchy, accessibility, and responsiveness while preserving brand identity
@@ -152,7 +153,7 @@ For admin visual implementation references, use `.specs/admin/DESIGN_SYSTEM.md` 
 
 White-label support should be based on configuration, not branching:
 
-- brand tokens in `packages/design-tokens`
+- brand tokens in the app-specific token package
 - logo and site metadata in a brand config file
 - Tailwind theme aliases that resolve to CSS variables
 - no app component should hardcode a Cafe Debug-specific color or logo path

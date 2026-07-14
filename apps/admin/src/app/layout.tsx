@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
-import "@cafedebug/design-tokens/styles.css";
+import "@cafedebug/admin-design-tokens/styles.css";
 import "./globals.css";
 import { getThemeCookie, resolveDataTheme } from "@/lib/auth/theme";
 import { AppProviders } from "./providers";

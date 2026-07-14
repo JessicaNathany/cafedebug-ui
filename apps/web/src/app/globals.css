@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@import "@cafedebug/web-design-tokens/styles.css";
+@import "../styles/theme.css";
+@import "../styles/typography.css";
+
+body {
+  @apply bg-background text-foreground font-sans antialiased;
+}
