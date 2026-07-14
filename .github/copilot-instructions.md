@@ -257,6 +257,21 @@ If it does not work correctly in both light and dark, it is not done.
 
 ---
 
+## 🖊️ 6.2 Web Pencil Design Workflow — MANDATORY
+
+This applies to every visual or UX change in `apps/web` and `packages/web-design-tokens`. `cafedebug.pen` at the repository root is the authoritative visual source; `.specs/web/foundation/ux-design-reference.md` supplies the node IDs and documented interpretation.
+
+Before implementing web UI:
+
+1. Read the relevant section of `ux-design-reference.md` and identify the target Pencil node ID.
+2. Use Pencil MCP — never a text editor — to call `get_editor_state({ include_schema: true })`, then inspect the target with `get_screenshot` and `batch_get`.
+3. Implement the inspected layout, component anatomy, tokens, responsive behavior, and light/dark treatment. Do not invent substitutes for a designed component.
+4. Validate the delivered UI against the Pencil screen in both themes and relevant breakpoints.
+
+If a requested web UI has no Pencil design, stop implementation and update the spec/design reference before proceeding.
+
+---
+
 ## 🔐 7. Auth Rules
 
 - Auth logic lives in `features/auth`
