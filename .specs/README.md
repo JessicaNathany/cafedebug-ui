@@ -84,3 +84,9 @@ Implementation must follow:
 | Next.js 16 Migration | `Implemented` | `.specs/platform/nextjs-16-migration/` | Framework upgrade from Next.js 15 to 16 with middleware-to-proxy migration |
 | Node.js & TypeScript Upgrade | `Implemented` | `.specs/platform/node-ts-upgrade/` | Node.js 20 to 22, TypeScript 5.9 to 6.0 with tsconfig and CI updates |
 | GitHub Actions CI Validation Redesign | `Implemented` | `.specs/platform/ci-validation-redesign/` | Revises CI to one admin-only validation job with sequential build, test, and validate steps |
+
+### `web`
+
+| Feature | Status | Path | Description |
+|---|---|---|---|
+| Web Foundation (Slice 1) | `Ready for implementation` | `.specs/web/foundation/` | Next.js 16 App Router scaffold: independent web token package, Tailwind v4, next-themes, shell, mocked Home + episode detail, persistent audio player skeleton, and SEO basics. Includes `ux-design-reference.md` — full visual/UX guidance for all designed pages (from `cafedebug.pen`) |
