@@ -76,12 +76,14 @@ apps/
   admin/                  # Backoffice administrativo
 
 packages/
-  ui/                     # Componentes compartilhados e primitivos
-  api-client/             # Tipos de API gerados + cliente fetch
-  design-tokens/          # Tokens da marca, CSS de tema, metadados de logos
-  config/                 # Configuração de runtime compartilhada site/admin
-  eslint-config/          # Configuração de lint compartilhada
-  tsconfig/               # Configuração TS compartilhada
+  ui/                     # Shared components and primitives
+  api-client/             # Generated API types + fetch client
+  admin-design-tokens/    # Admin tokens and theme CSS
+  web-design-tokens/      # Public-web tokens and theme CSS
+  config/                 # Shared site/admin runtime config
+  eslint-config/          # Shared lint config
+  tsconfig/               # Shared TS config
+
 
 infra/
   docker/                 # Dockerfiles e helpers de compose local
@@ -137,10 +139,10 @@ O novo site deve preservar a sensação reconhecível do CafeDebug enquanto mode
 
 ## Regras do Design System
 
-- nunca hardcodar valores visuais em componentes de feature; use tokens de `packages/design-tokens`
-- preservar o cabeçalho/rodapé escuro e paleta de acentos laranja quente a menos que os tokens de design sejam intencionalmente atualizados
-- preferir primitivos de `packages/ui` antes de criar novos componentes a nível de feature
-- modernizar via espaçamento, hierarquia, acessibilidade e responsividade preservando a identidade da marca
+- never hardcode visual values in feature components; use the app-specific token package from `packages/admin-design-tokens` or `packages/web-design-tokens`
+- preserve the dark header/footer and warm orange accent palette unless design tokens are intentionally updated
+- prefer `packages/ui` primitives before creating new feature-level components
+- modernize via spacing, hierarchy, accessibility, and responsiveness while preserving brand identity
 
 Para imposição a nível de execução e anti-padrões, use `.github/copilot-instructions.md`.
 Para referências de implementação visual admin, use `.specs/admin/DESIGN_SYSTEM.md` e `.specs/admin/stitch/cafedebug-admin/*`.
@@ -149,10 +151,10 @@ Para referências de implementação visual admin, use `.specs/admin/DESIGN_SYST
 
 O suporte white-label deve ser baseado em configuração, não ramificação:
 
-- tokens da marca em `packages/design-tokens`
-- logo e metadados do site em um arquivo de configuração da marca
-- aliases de tema Tailwind que resolvem para variáveis CSS
-- nenhum componente do app deve hardcodar uma cor específica do CafeDebug ou caminho de logo
+- brand tokens in the app-specific token package
+- logo and site metadata in a brand config file
+- Tailwind theme aliases that resolve to CSS variables
+- no app component should hardcode a Cafe Debug-specific color or logo path
 
 ## Escopo do Website e Admin
 
@@ -232,23 +234,9 @@ Use esta seção quando quiser executar o app administrativo localmente como con
 - pnpm `>= 10`
 - uma API backend em execução acessível por `ADMIN_API_BASE_URL` (padrão `http://localhost:8080`)
 
-**Instalando o pnpm:**
+#### 1. Install dependencies
 
-Se você não tem o pnpm instalado globalmente, instale-o primeiro:
-
-```bash
-npm install -g pnpm
-```
-
-Em seguida, verifique a instalação:
-
-```bash
-pnpm --version
-```
-
-#### 1. Instalar dependências
-
-Da raiz do repositório:
+From repository root:
 
 ```bash
 pnpm install
@@ -273,7 +261,7 @@ Por que isso é necessário:
 - Docker Compose lê o `.env` da raiz.
 - Next.js executado no host lê `apps/admin/.env.local` (diretório do app).
 
-Então confirme esses valores no `.env` para desenvolvimento local:
+Then confirm these values in `.env` for local development:
 
 - `ADMIN_PORT=3010`
 - `ADMIN_PUBLIC_URL=http://localhost:3010`
@@ -282,15 +270,15 @@ Então confirme esses valores no `.env` para desenvolvimento local:
 - `ADMIN_COOKIE_SAMESITE=Lax`
 - `ADMIN_COOKIE_SECURE=false`
 
-Notas:
+Notes:
 
-- Se sua API executa em outra porta/host, mude `ADMIN_API_BASE_URL`.
-- Exemplo para API .NET HTTPS local: `ADMIN_API_BASE_URL=https://localhost:7211`
-- `ADMIN_API_BASE_URL_DOCKER` é apenas para execuções baseadas em Docker.
+- If your API runs on another port/host, change `ADMIN_API_BASE_URL`.
+- Example for local .NET HTTPS API: `ADMIN_API_BASE_URL=https://localhost:7211`
+- `ADMIN_API_BASE_URL_DOCKER` is only for Docker-based runs.
 
-#### 3. Iniciar admin diretamente no host (recomendado para codificação diária)
+#### 3. Start admin directly on host (recommended for daily coding)
 
-Da raiz do repositório:
+From repository root:
 
 ```bash
 pnpm --filter @cafedebug/admin dev

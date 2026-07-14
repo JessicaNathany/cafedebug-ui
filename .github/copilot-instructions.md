@@ -21,7 +21,7 @@ For strategic context while applying these rules:
 - Prefer `TanStack Query` for async state in `apps/admin`.
 - Use generated API contracts from the backend OpenAPI schema.
 - Do not hardcode colors, logos, or API base URLs in components.
-- Use the design tokens from `packages/design-tokens`.
+- Use the app-specific design tokens from `packages/admin-design-tokens` or `packages/web-design-tokens`.
 - Update the spec when behavior changes.
 
 
@@ -156,7 +156,7 @@ export async function POST(req: Request) {
 ## 🎨 6. Design System Rules
 
 - NEVER use hardcoded colors
-- ALWAYS use tokens from `packages/design-tokens`
+- ALWAYS use tokens from the relevant app-specific package
 - Use shared components from `packages/ui`
 
 ---
@@ -254,6 +254,21 @@ If code violates theme rules:
 Final Rule
 
 If it does not work correctly in both light and dark, it is not done.
+
+---
+
+## 🖊️ 6.2 Web Pencil Design Workflow — MANDATORY
+
+This applies to every visual or UX change in `apps/web` and `packages/web-design-tokens`. `cafedebug.pen` at the repository root is the authoritative visual source; `.specs/web/foundation/ux-design-reference.md` supplies the node IDs and documented interpretation.
+
+Before implementing web UI:
+
+1. Read the relevant section of `ux-design-reference.md` and identify the target Pencil node ID.
+2. Use Pencil MCP — never a text editor — to call `get_editor_state({ include_schema: true })`, then inspect the target with `get_screenshot` and `batch_get`.
+3. Implement the inspected layout, component anatomy, tokens, responsive behavior, and light/dark treatment. Do not invent substitutes for a designed component.
+4. Validate the delivered UI against the Pencil screen in both themes and relevant breakpoints.
+
+If a requested web UI has no Pencil design, stop implementation and update the spec/design reference before proceeding.
 
 ---
 

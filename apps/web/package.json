@@ -4,15 +4,38 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "node -e \"console.log('apps/web scaffold pending')\"",
-    "build": "node -e \"console.log('apps/web build placeholder')\"",
-    "lint": "node -e \"console.log('apps/web lint placeholder')\"",
-    "test": "node -e \"console.log('apps/web test placeholder')\"",
-    "typecheck": "node -e \"console.log('apps/web typecheck placeholder')\"",
-    "clean": "node -e \"console.log('apps/web clean placeholder')\""
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start --port 3000",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/**/*.test.mjs",
+    "clean": "rm -rf .next .turbo tsconfig.tsbuildinfo"
   },
   "devDependencies": {
     "@cafedebug/eslint-config": "workspace:*",
-    "@cafedebug/tsconfig": "workspace:*"
+    "@cafedebug/tsconfig": "workspace:*",
+    "@next/eslint-plugin-next": "^16.2.3",
+    "@tailwindcss/postcss": "^4.3.2",
+    "@types/node": "^22.19.15",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.3.2",
+    "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "@cafedebug/web-design-tokens": "workspace:*",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.24.0",
+    "next": "^16.2.3",
+    "next-themes": "^0.4.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "schema-dts": "^2.0.0",
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.3.6",
+    "zustand": "^5.0.14"
   }
 }
