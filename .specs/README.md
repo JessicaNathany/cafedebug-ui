@@ -65,7 +65,7 @@ Implementation must follow:
 ### `admin`
 
 | Feature | Status | Path | Description |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Admin Login | `Implemented` | `.specs/admin/login/` | Full feature spec for admin login flow against POST /api/v1/admin/auth/token |
 | Login Page Refactor | `Implemented` | `.specs/admin/login-refactor/` | Aligns the login page UI to the Stitch theme design reference |
 | Auth Handler Error Normalization | `Draft` | `.specs/admin/auth-error-normalization/` | Extracts shared error response building and normalizes error shapes across all auth API routes |
@@ -80,7 +80,7 @@ Implementation must follow:
 ### `platform`
 
 | Feature | Status | Path | Description |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Next.js 16 Migration | `Implemented` | `.specs/platform/nextjs-16-migration/` | Framework upgrade from Next.js 15 to 16 with middleware-to-proxy migration |
 | Node.js & TypeScript Upgrade | `Implemented` | `.specs/platform/node-ts-upgrade/` | Node.js 20 to 22, TypeScript 5.9 to 6.0 with tsconfig and CI updates |
 | GitHub Actions CI Validation Redesign | `Implemented` | `.specs/platform/ci-validation-redesign/` | Revises CI to one admin-only validation job with sequential build, test, and validate steps |
@@ -88,5 +88,6 @@ Implementation must follow:
 ### `web`
 
 | Feature | Status | Path | Description |
-|---|---|---|---|
-| Web Foundation (Slice 1) | `Ready for implementation` | `.specs/web/foundation/` | Next.js 16 App Router scaffold: independent web token package, Tailwind v4, next-themes, shell, mocked Home + episode detail, persistent audio player skeleton, and SEO basics. Includes `ux-design-reference.md` — full visual/UX guidance for all designed pages (from `cafedebug.pen`) |
+| --- | --- | --- | --- |
+| Web Foundation (Slice 1) | `Implemented` | `.specs/web/foundation/` | Next.js 16 App Router scaffold: independent web token package, Tailwind v4, next-themes, shell, mocked Home + episode detail, persistent audio player skeleton, and SEO basics. Includes `ux-design-reference.md` — full visual/UX guidance for all designed pages (from `cafedebug.pen`) |
+| Homepage Visual Parity with Pencil | `Implemented` | `.specs/web/homepage-visual-parity/` | Enforces full homepage visual parity with Pencil for Hero, Recent Episodes, News & Events, and Newsletter using mandatory node references `tWWON`, `k71CIc`, `m9zV96`, `LSgoB`, and `FGSFI`. |

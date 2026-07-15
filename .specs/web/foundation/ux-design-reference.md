@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `Ready for implementation` |
+| **Status** | `Implemented` |
 | **Domain** | `web/foundation` |
 | **Audience** | UX Team + `apps/web` implementers |
 | **Design source** | `cafedebug.pen` (Pencil file, repo root) |

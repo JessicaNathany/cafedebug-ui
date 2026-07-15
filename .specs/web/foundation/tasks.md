@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `Ready for implementation` |
+| **Status** | `Implemented` |
 | **Spec** | `.specs/web/foundation/spec.md` |
 | **Design** | `.specs/web/foundation/design.md` |
 | **UX design reference** | `.specs/web/foundation/ux-design-reference.md` (from `cafedebug.pen`) — visual source of truth; §8 is the Slice-1 build checklist |
@@ -532,7 +532,7 @@ validate one episode's JSON-LD in the Schema Markup Validator (AC-13); confirm `
 
 | Feature | Status | Path | Description |
 |---|---|---|---|
-| Web Foundation (Slice 1) | `Ready for implementation` | `.specs/web/foundation/` | Next.js 16 App Router scaffold: independent web token package, Tailwind v4, next-themes, shell, mocked Home + episode detail, persistent player skeleton, SEO basics |
+| Web Foundation (Slice 1) | `Implemented` | `.specs/web/foundation/` | Next.js 16 App Router scaffold: independent web token package, Tailwind v4, next-themes, shell, mocked Home + episode detail, persistent player skeleton, SEO basics |
 ```
 
 **Validation (AC-18):** row present under a `web` section.

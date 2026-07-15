@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `Ready for implementation` |
+| **Status** | `Implemented` |
 | **Domain** | `web/foundation` |
 | **Spec** | `.specs/web/foundation/spec.md` |
 | **Strategy source** | `.specs/web/cafedebug-web-foundation-v2.md` |
