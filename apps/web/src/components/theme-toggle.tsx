@@ -4,6 +4,7 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import { THEME_COOKIE } from "@/lib/theme-constants";
 
 export function ThemeToggle() {
@@ -13,6 +14,7 @@ export function ThemeToggle() {
   useEffect(() => setMounted(true), []);
 
   const isDark = mounted && resolvedTheme === "dark";
+
   function toggleTheme() {
     const nextTheme = isDark ? "light" : "dark";
     document.cookie = `${THEME_COOKIE}=${nextTheme}; Path=/; Max-Age=31536000; SameSite=Lax`;
@@ -20,8 +22,8 @@ export function ThemeToggle() {
   }
 
   return (
-    <button aria-label={isDark ? "Ativar tema claro" : "Ativar tema escuro"} className="rounded-pill bg-secondary p-2 text-secondary-foreground focus-visible:outline-2 focus-visible:outline-ring" onClick={toggleTheme} type="button">
+    <Button aria-label={isDark ? "Ativar tema claro" : "Ativar tema escuro"} onClick={toggleTheme} size="icon" variant="secondary">
       {isDark ? <Sun aria-hidden size={18} /> : <Moon aria-hidden size={18} />}
-    </button>
+    </Button>
   );
 }

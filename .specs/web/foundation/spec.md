@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | `Ready for implementation` |
+| **Status** | `Implemented` |
 | **Domain** | `web/foundation` |
 | **Spec path** | `.specs/web/foundation/` |
 | **Affected app** | `apps/web` |
