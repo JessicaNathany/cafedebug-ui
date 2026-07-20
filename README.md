@@ -253,7 +253,7 @@ cp .env.example .env
 Se você executar admin diretamente no host (`pnpm --filter @cafedebug/admin dev`), também crie um arquivo env local do app:
 
 ```bash
-cp .env.example apps/admin/.env.local
+cp apps/admin/.env.example apps/admin/.env.local
 ```
 
 Por que isso é necessário:
@@ -261,20 +261,25 @@ Por que isso é necessário:
 - Docker Compose lê o `.env` da raiz.
 - Next.js executado no host lê `apps/admin/.env.local` (diretório do app).
 
-Then confirm these values in `.env` for local development:
+Confirme estes valores para **admin no host** (`pnpm --filter @cafedebug/admin dev`) em `apps/admin/.env.local`:
 
-- `ADMIN_PORT=3010`
-- `ADMIN_PUBLIC_URL=http://localhost:3010`
-- `ADMIN_API_BASE_URL=http://localhost:8080`
+- `ADMIN_PUBLIC_URL=http://localhost:3001` (porta do servidor admin em dev)
+- `ADMIN_API_BASE_URL=http://localhost:8080` (API local em HTTP)
 - `ADMIN_COOKIE_DOMAIN=localhost`
 - `ADMIN_COOKIE_SAMESITE=Lax`
 - `ADMIN_COOKIE_SECURE=false`
 
-Notes:
+Para **admin no Docker Compose**, confirme no `.env` da raiz:
 
-- If your API runs on another port/host, change `ADMIN_API_BASE_URL`.
-- Example for local .NET HTTPS API: `ADMIN_API_BASE_URL=https://localhost:7211`
-- `ADMIN_API_BASE_URL_DOCKER` is only for Docker-based runs.
+- `ADMIN_PORT=3010` (porta host mapeada para o container admin)
+- `ADMIN_CONTAINER_PORT=3000` (porta onde o Next.js escuta no container)
+- `ADMIN_PUBLIC_URL=http://localhost:3010` (deve acompanhar `ADMIN_PORT`)
+- `ADMIN_API_BASE_URL_DOCKER=http://host.docker.internal:8080`
+
+Notas:
+
+- Se sua API local usar HTTPS com certificado de desenvolvimento, use `pnpm --filter @cafedebug/admin dev:insecure-tls` (opt-in) ou descomente `NODE_TLS_REJECT_UNAUTHORIZED=0` em `apps/admin/.env.local` (veja `apps/admin/.env.example`).
+- `ADMIN_API_BASE_URL_DOCKER` é usado apenas nas execuções Docker do admin.
 
 #### 3. Start admin directly on host (recommended for daily coding)
 
@@ -287,8 +292,8 @@ pnpm --filter @cafedebug/admin dev
 Abra `http://localhost:3001`.
 
 **Notas de Plataforma:**
-- **macOS/Linux:** Funciona com a sintaxe original de variável de ambiente
-- **Windows:** Usa `cross-env` para compatibilidade cross-platform (instalado automaticamente com `pnpm install`)
+- **macOS/Linux/Windows:** `pnpm --filter @cafedebug/admin dev` funciona como fluxo padrão cross-platform.
+- **HTTPS local com certificado de desenvolvimento:** use `pnpm --filter @cafedebug/admin dev:insecure-tls` (opt-in) ou descomente `NODE_TLS_REJECT_UNAUTHORIZED=0` em `apps/admin/.env.local` (veja `apps/admin/.env.example`).
 
 **Por que `3001`?**
 
