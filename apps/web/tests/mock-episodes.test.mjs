@@ -12,10 +12,12 @@ const episodeSchema = z.object({
   publishedAt: z.iso.date(),
   dateLabel: z.string().min(4),
   durationMinutes: z.number().positive(),
+  durationLabel: z.string().min(3),
   plays: z.string().min(2),
   audioUrl: z.string().min(1),
   artworkUrl: z.string().min(1),
   guestName: z.string().min(2),
+  guestAvatarUrl: z.string().min(1),
   guestRole: z.string().min(2),
   showNotesHtml: z.string().min(10)
 });
@@ -30,10 +32,12 @@ const fixtures = [
     publishedAt: "2026-06-12",
     dateLabel: "12 Jun 2026",
     durationMinutes: 48,
+    durationLabel: "48 min",
     plays: "8.4k reproduções",
     audioUrl: "/mock/sample-audio.mp3",
     artworkUrl: "/mock/episode-142.svg",
     guestName: "Ana Ribeiro",
+    guestAvatarUrl: "/mock/hero-guest-ana.jpg",
     guestRole: "Engenheira de Software · Google",
     showNotesHtml: "<p>Texto válido de show notes.</p>"
   }

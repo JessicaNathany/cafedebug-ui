@@ -3,6 +3,11 @@
 @import "../styles/theme.css";
 @import "../styles/typography.css";
 
+:root {
+  --font-primary: var(--font-jetbrains-mono);
+  --font-secondary: var(--font-geist);
+}
+
 body {
   @apply bg-background text-foreground font-sans antialiased;
 }

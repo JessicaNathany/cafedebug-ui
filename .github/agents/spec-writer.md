@@ -133,6 +133,11 @@ Example:
 - When defining UI behavior:
   - Ensure compatibility with `nextjs-tailwind.instructions.md`
   - Do NOT propose patterns that violate it
+- For non-trivial `apps/web` visual or UX work:
+  - Identify the exact Pencil node IDs from `.specs/web/foundation/ux-design-reference.md`
+  - Add a screen contract using `.specs/web/page-contract-template.md`
+  - Define deterministic fixture content for visual parity checks
+  - Define required desktop, tablet, and mobile validation viewports
 - Ensure no direct data fetching inside components (must go through services/hooks)
 - Ensure forms use React Hook Form + Zod schemas
 - Ensure design tokens are used instead of hardcoded styles

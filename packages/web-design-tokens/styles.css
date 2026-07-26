@@ -1,16 +1,11 @@
 :root {
-  --brand-orange: #FF8400;
-  --brand-ink: #111111;
-  --brand-white: #FFFFFF;
-  --brand-paper: #F2F3F0;
-
   --background: #F2F3F0;
   --foreground: #111111;
   --card: #FFFFFF;
   --card-foreground: #111111;
   --popover: #FFFFFF;
   --popover-foreground: #111111;
-  --primary: var(--brand-orange);
+  --primary: #FF8400;
   --primary-foreground: #111111;
   --secondary: #E7E8E5;
   --secondary-foreground: #111111;
@@ -23,27 +18,59 @@
   --input: #CBCCC9;
   --ring: #666666;
 
-  --success: #DFE6E1;
-  --success-foreground: #004D1A;
-  --warning: #E9E3D8;
-  --warning-foreground: #804200;
-  --error: #E5DCDA;
-  --error-foreground: #8C1C00;
-  --info: #DFDFE6;
-  --info-foreground: #000066;
+  --color-success: #DFE6E1;
+  --color-success-foreground: #004D1A;
+  --color-warning: #E9E3D8;
+  --color-warning-foreground: #804200;
+  --color-error: #E5DCDA;
+  --color-error-foreground: #8C1C00;
+  --color-info: #DFDFE6;
+  --color-info-foreground: #000066;
+
+  --sidebar: #E7E8E5;
+  --sidebar-foreground: #666666;
+  --sidebar-primary: #18181b;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #CBCCC9;
+  --sidebar-accent-foreground: #18181b;
+  --sidebar-border: #CBCCC9;
+  --sidebar-ring: #71717a;
+
+  --white: #FFFFFF;
+  --black: #000000;
+
+  --font-primary: "JetBrains Mono";
+  --font-secondary: "Geist";
+
+  --radius-m: 16px;
+  --radius-none: 0;
+  --radius-pill: 999px;
+
+  --brand-orange: var(--primary);
+  --brand-ink: var(--primary-foreground);
+  --brand-white: var(--white);
+  --brand-paper: var(--background);
 
   --header: #111111;
   --header-foreground: #FFFFFF;
   --footer: #1A1A1A;
   --footer-foreground: #FFFFFF;
 
-  --font-sans: "Geist", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: var(--font-secondary), system-ui, sans-serif;
+  --font-mono: var(--font-primary), ui-monospace, monospace;
 
-  --radius-m: 16px;
-  --radius-pill: 999px;
   --shadow-card: 0 1px 2px #11111110, 0 8px 24px #11111114;
   --shadow-float: 0 12px 40px #11111129;
+  --shadow-pencil-subtle: 0 1px 1.75px #0000000d;
+
+  --success: var(--color-success);
+  --success-foreground: var(--color-success-foreground);
+  --warning: var(--color-warning);
+  --warning-foreground: var(--color-warning-foreground);
+  --error: var(--color-error);
+  --error-foreground: var(--color-error-foreground);
+  --info: var(--color-info);
+  --info-foreground: var(--color-info-foreground);
 }
 
 .dark {
@@ -53,6 +80,8 @@
   --card-foreground: #FFFFFF;
   --popover: #1A1A1A;
   --popover-foreground: #FFFFFF;
+  --primary: #FF8400;
+  --primary-foreground: #111111;
   --secondary: #2E2E2E;
   --secondary-foreground: #FFFFFF;
   --muted: #2E2E2E;
@@ -62,16 +91,36 @@
   --destructive: #FF5C33;
   --border: #2E2E2E;
   --input: #2E2E2E;
+  --ring: #666666;
 
-  --success: #222924;
-  --success-foreground: #B6FFCE;
-  --warning: #291C0F;
-  --warning-foreground: #FF8400;
-  --error: #24100B;
-  --error-foreground: #FF5C33;
-  --info: #222229;
-  --info-foreground: #B2B2FF;
+  --color-success: #222924;
+  --color-success-foreground: #B6FFCE;
+  --color-warning: #291C0F;
+  --color-warning-foreground: #FF8400;
+  --color-error: #24100B;
+  --color-error-foreground: #FF5C33;
+  --color-info: #222229;
+  --color-info-foreground: #B2B2FF;
+
+  --sidebar: #18181b;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #18181b;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #2a2a30;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #ffffff1a;
+  --sidebar-ring: #71717a;
 
   --shadow-card: 0 1px 2px #00000050, 0 8px 24px #00000066;
   --shadow-float: 0 12px 40px #00000099;
+  --shadow-pencil-subtle: 0 1px 1.75px #0000000d;
+
+  --success: var(--color-success);
+  --success-foreground: var(--color-success-foreground);
+  --warning: var(--color-warning);
+  --warning-foreground: var(--color-warning-foreground);
+  --error: var(--color-error);
+  --error-foreground: var(--color-error-foreground);
+  --info: var(--color-info);
+  --info-foreground: var(--color-info-foreground);
 }

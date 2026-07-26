@@ -58,6 +58,15 @@ Implementation must follow:
 - the design
 - the task breakdown
 
+For non-trivial `apps/web` visual or UX work, the feature design must also include
+a Pencil implementation contract. Use `.specs/web/page-contract-template.md` and
+the node index in `.specs/web/foundation/ux-design-reference.md`.
+
+Web visual implementation must use `cafedebug.pen` at the repository root as the
+authoritative source via Pencil MCP, not screenshots alone. Do not move the `.pen`
+file or invent a visual substitute unless a dedicated spec updates every affected
+reference.
+
 ---
 
 ## Spec Index
