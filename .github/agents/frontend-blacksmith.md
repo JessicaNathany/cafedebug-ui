@@ -53,8 +53,9 @@ For every visual or UX change in `apps/web` or `packages/web-design-tokens`:
 
 1. Read the relevant section of `.specs/web/foundation/ux-design-reference.md` and identify its Pencil node ID.
 2. Use Pencil MCP, not a text editor, to call `get_editor_state({ include_schema: true })`, then inspect the node with `get_screenshot` and `batch_get`.
-3. Implement the inspected design exactly: component anatomy, semantic tokens, spacing, typography, responsive behavior, and light/dark treatment.
-4. Compare the result with the Pencil screen before handoff.
+3. Confirm the feature spec has a screen contract based on `.specs/web/page-contract-template.md` for non-trivial pages or sections.
+4. Implement the inspected design exactly: component anatomy, deterministic fixture content, semantic tokens, spacing, typography, responsive behavior, and light/dark treatment.
+5. Compare the result with the Pencil screen before handoff at desktop, tablet, and mobile viewports.
 
 Do not invent visual alternatives. If there is no Pencil design for the request, stop and request a spec/design update.
 
