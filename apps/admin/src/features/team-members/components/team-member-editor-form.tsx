@@ -212,13 +212,6 @@ export function TeamMemberEditorForm({
                     placeholder="https://linkedin.com/in/name"
                     type="url"
                   />
-                  <Field
-                    form={form}
-                    label="Instagram URL"
-                    name="instagramUrl"
-                    placeholder="https://instagram.com/name"
-                    type="url"
-                  />
                 </div>
               </section>
             </div>

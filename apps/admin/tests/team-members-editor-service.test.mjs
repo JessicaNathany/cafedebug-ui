@@ -38,8 +38,8 @@ test("browser service sends only protected internal editor endpoints and parses 
   };
   try {
     assert.equal((await service.fetchTeamMemberById(4)).id, 4);
-    await service.createTeamMember({ name: "Jessica", podcastRole: "Host", nickname: null, email: null, bio: null, jobTitle: null, gitHubUrl: null, linkedInUrl: null, instagramUrl: null, profilePhotoUrl: null, joinedAt: null, isActive: true });
-    await service.updateTeamMember({ id: 4, payload: { name: "Jessica", podcastRole: "Host", nickname: null, email: null, bio: null, jobTitle: null, gitHubUrl: null, linkedInUrl: null, instagramUrl: null, profilePhotoUrl: null, joinedAt: null, isActive: false } });
+    await service.createTeamMember({ name: "Jessica", podcastRole: "Host", nickname: null, email: null, bio: null, jobTitle: null, gitHubUrl: null, linkedInUrl: null, profilePhotoUrl: null, joinedAt: null, isActive: true });
+    await service.updateTeamMember({ id: 4, payload: { name: "Jessica", podcastRole: "Host", nickname: null, email: null, bio: null, jobTitle: null, gitHubUrl: null, linkedInUrl: null, profilePhotoUrl: null, joinedAt: null, isActive: false } });
     assert.deepEqual(calls.map((call) => [call.input, call.init?.method ?? "GET"]), [["/api/admin/team-members/4", "GET"], ["/api/admin/team-members", "POST"], ["/api/admin/team-members/4", "PUT"]]);
     assert.equal(JSON.parse(calls[1].init.body).isActive, true);
   } finally { globalThis.fetch = originalFetch; }

@@ -158,7 +158,6 @@ apps/admin/src/
 ### Team member record normalization
 
 - The list uses the exact generated field names where applicable: `gitHubUrl`, `linkedInUrl`, `createdAt`, `updatedAt`, `isActive`.
-- `instagramUrl` is intentionally ignored in list normalization for this delivery.
 - Missing names fall back to `Team Member #{id}` when possible.
 - Missing `email` and `podcastRole` normalize to `—` for display safety.
 - `isActive` normalizes into a stable boolean.

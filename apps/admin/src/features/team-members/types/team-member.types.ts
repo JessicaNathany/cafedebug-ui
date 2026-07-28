@@ -43,7 +43,6 @@ export type TeamMemberRecord = {
   jobTitle: string;
   gitHubUrl: string;
   linkedInUrl: string;
-  instagramUrl: string;
   profilePhotoUrl: string;
   joinedAt: string;
   isActive?: boolean;

@@ -72,7 +72,6 @@
 **Steps:**
 1. Normalize `TeamMemberResponsePagedResult` into a UI-safe page contract.
 2. Normalize each team member row for the final approved columns.
-3. Ignore `instagramUrl` in list normalization for this delivery.
 
 **Validation:**
 - The list feature exposes a stable data contract independent from backend nullability.

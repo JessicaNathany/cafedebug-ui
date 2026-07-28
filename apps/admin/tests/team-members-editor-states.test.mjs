@@ -101,7 +101,6 @@ test("editor UI remains a presentation layer with all required controls and acce
     "jobTitle",
     "gitHubUrl",
     "linkedInUrl",
-    "instagramUrl",
     "joinedAt",
     "isActive",
   ]) {

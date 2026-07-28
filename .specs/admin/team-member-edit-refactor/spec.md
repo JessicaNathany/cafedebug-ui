@@ -21,7 +21,7 @@ The Team Members list can navigate to create and edit destinations, but both des
 ## 3. Goals
 
 1. Provide production-ready create and edit workflows on the two scoped routes only.
-2. Allow an administrator to edit exactly these fields: `name`, `podcastRole`, `nickname`, `email`, `bio`, `jobTitle`, `gitHubUrl`, `linkedInUrl`, `instagramUrl`, `profilePhotoUrl`, `joinedAt`, and `isActive`.
+2. Allow an administrator to edit exactly these fields: `name`, `podcastRole`, `nickname`, `email`, `bio`, `jobTitle`, `gitHubUrl`, `linkedInUrl`, `profilePhotoUrl`, `joinedAt`, and `isActive`.
 3. Require non-empty, trimmed `name` and `podcastRole`.
 4. Validate optional email, web URLs, and ISO date-time input before submission.
 5. Default `isActive` to `true` in new mode; hydrate its stored value in edit mode.
@@ -99,7 +99,6 @@ All fields below are present in the editor and map one-for-one to `TeamMemberReq
 | `jobTitle` | Text; optional. | Trimmed non-empty string or `null`. |
 | `gitHubUrl` | URL input; optional; valid absolute `http` or `https` URL when present. | Trimmed non-empty string or `null`. |
 | `linkedInUrl` | URL input; optional; valid absolute `http` or `https` URL when present. | Trimmed non-empty string or `null`. |
-| `instagramUrl` | URL input; optional; valid absolute `http` or `https` URL when present. | Trimmed non-empty string or `null`. |
 | `profilePhotoUrl` | URL input; optional; valid absolute `http` or `https` URL when present. | Trimmed non-empty string or `null`. |
 | `joinedAt` | Optional `datetime-local`; must be a real ISO 8601 local date-time when present. | `YYYY-MM-DDTHH:mm:ss`, or `null`; no timezone conversion. |
 | `isActive` | Boolean switch/checkbox; defaults to `true` in new mode. | Boolean, always included. |

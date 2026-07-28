@@ -18,7 +18,6 @@ export const teamMemberEditorDefaultValues: TeamMemberEditorValues = {
   jobTitle: "",
   gitHubUrl: "",
   linkedInUrl: "",
-  instagramUrl: "",
   profilePhotoUrl: "",
   joinedAt: "",
   isActive: true

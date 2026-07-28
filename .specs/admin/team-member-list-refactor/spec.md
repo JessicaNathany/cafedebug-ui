@@ -52,7 +52,6 @@ The team members list must align with the generated backend contract and normali
 | `podcastRole` | Backend record | Yes | Rendered in the `Role` column. Empty or invalid values normalize to `—`. |
 | `gitHubUrl` | Backend record | Yes | Rendered as a GitHub icon in `Social Media` when present. Empty values do not render an icon. |
 | `linkedInUrl` | Backend record | Yes | Rendered as a LinkedIn icon in `Social Media` when present. Empty values do not render an icon. |
-| `instagramUrl` | Backend record | No | Ignored by list normalization for this delivery. |
 | `isActive` | Backend record | Yes | Normalized into a UI-safe boolean before rendering `Active` or `Inactive`. |
 | `createdAt` | Backend record | Yes | Rendered in the `Created` column using the Episodes date style. Invalid or missing values render as `—`. |
 | `updatedAt` | Backend record | Yes | Rendered in the `Updated` column using the Episodes date style. Invalid or missing values render as `—`. |

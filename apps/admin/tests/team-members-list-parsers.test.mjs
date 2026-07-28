@@ -15,7 +15,6 @@ test("parseTeamMembersPageData normalizes team member list rows and page metadat
             podcastRole: " Host ",
             gitHubUrl: " https://github.com/jessica ",
             linkedInUrl: " https://linkedin.com/in/jessica ",
-            instagramUrl: "https://instagram.com/jessica",
             isActive: "true",
             createdAt: "2026-06-01T00:00:00Z",
             updatedAt: "2026-06-02T00:00:00Z"

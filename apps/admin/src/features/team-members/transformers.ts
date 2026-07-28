@@ -23,7 +23,6 @@ export const toTeamMemberEditorDefaults = (record: TeamMemberRecord): TeamMember
   jobTitle: record.jobTitle,
   gitHubUrl: record.gitHubUrl,
   linkedInUrl: record.linkedInUrl,
-  instagramUrl: record.instagramUrl,
   profilePhotoUrl: record.profilePhotoUrl,
   joinedAt: toLocalDateTimeInput(record.joinedAt),
   isActive: record.isActive ?? false
@@ -38,7 +37,6 @@ export const toTeamMemberRequestPayload = (values: TeamMemberEditorValues): Team
   jobTitle: nullableTrimmed(values.jobTitle),
   gitHubUrl: nullableTrimmed(values.gitHubUrl),
   linkedInUrl: nullableTrimmed(values.linkedInUrl),
-  instagramUrl: nullableTrimmed(values.instagramUrl),
   profilePhotoUrl: nullableTrimmed(values.profilePhotoUrl),
   joinedAt: values.joinedAt.trim() ? withSeconds(values.joinedAt.trim()) : null,
   isActive: values.isActive

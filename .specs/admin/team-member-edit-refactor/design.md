@@ -215,7 +215,6 @@ The existing list `GET /api/admin/team-members` remains exclusively under the li
   jobTitle: string | null,
   gitHubUrl: string | null,
   linkedInUrl: string | null,
-  instagramUrl: string | null,
   profilePhotoUrl: string | null,
   joinedAt: string | null,
   isActive: boolean

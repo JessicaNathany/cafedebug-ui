@@ -44,7 +44,6 @@ export const teamMemberEditorSchema = z.object({
   jobTitle: z.string(),
   gitHubUrl: optionalHttpUrl,
   linkedInUrl: optionalHttpUrl,
-  instagramUrl: optionalHttpUrl,
   profilePhotoUrl: optionalHttpUrl,
   joinedAt: z.string().trim().refine((value) => value.length === 0 || isValidLocalDateTime(value), "Enter a valid local date and time."),
   isActive: z.boolean()

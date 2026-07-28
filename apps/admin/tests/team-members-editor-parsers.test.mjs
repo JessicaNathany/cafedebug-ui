@@ -12,6 +12,6 @@ test("record parser requires a valid response id and respects the edit route tar
   assert.equal(parseTeamMemberRecord({ name: "Missing" }), null);
   assert.equal(parseTeamMemberRecord({ id: 2, name: "A", podcastRole: "Host" }, 3), null);
   assert.deepEqual(parseTeamMemberRecord({ id: 2, name: null, podcastRole: null, isActive: false }), {
-    id: 2, name: "", podcastRole: "", nickname: "", email: "", bio: "", jobTitle: "", gitHubUrl: "", linkedInUrl: "", instagramUrl: "", profilePhotoUrl: "", joinedAt: "", isActive: false, createdAt: "", updatedAt: ""
+    id: 2, name: "", podcastRole: "", nickname: "", email: "", bio: "", jobTitle: "", gitHubUrl: "", linkedInUrl: "", profilePhotoUrl: "", joinedAt: "", isActive: false, createdAt: "", updatedAt: ""
   });
 });

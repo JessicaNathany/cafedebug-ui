@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { teamMemberEditorSchema } from "../src/features/team-members/schemas/team-member.schema.ts";
 
-const valid = { name: "Jessica", podcastRole: "Host", nickname: "", email: "", bio: "", jobTitle: "", gitHubUrl: "", linkedInUrl: "", instagramUrl: "", profilePhotoUrl: "", joinedAt: "2026-07-13T15:30", isActive: true };
+const valid = { name: "Jessica", podcastRole: "Host", nickname: "", email: "", bio: "", jobTitle: "", gitHubUrl: "", linkedInUrl: "", profilePhotoUrl: "", joinedAt: "2026-07-13T15:30", isActive: true };
 
 test("team member schema accepts the minimum valid editor values", () => {
   assert.equal(teamMemberEditorSchema.safeParse(valid).success, true);

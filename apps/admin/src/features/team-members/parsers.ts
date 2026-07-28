@@ -75,7 +75,6 @@ export const parseTeamMemberRecord = (source: unknown, routeId?: number): TeamMe
     jobTitle: typeof candidate.jobTitle === "string" ? candidate.jobTitle : "",
     gitHubUrl: typeof candidate.gitHubUrl === "string" ? candidate.gitHubUrl : "",
     linkedInUrl: typeof candidate.linkedInUrl === "string" ? candidate.linkedInUrl : "",
-    instagramUrl: typeof candidate.instagramUrl === "string" ? candidate.instagramUrl : "",
     profilePhotoUrl: typeof candidate.profilePhotoUrl === "string" ? candidate.profilePhotoUrl : "",
     joinedAt: typeof candidate.joinedAt === "string" ? candidate.joinedAt : "",
     ...(typeof candidate.isActive === "boolean" ? { isActive: candidate.isActive } : {}),
