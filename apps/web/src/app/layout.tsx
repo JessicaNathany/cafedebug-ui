@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Geist, JetBrains_Mono } from "next/font/google";
 
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
@@ -12,6 +13,16 @@ import { getThemePref, resolveInitialThemeClass } from "@/lib/theme";
 import "./globals.css";
 import { Providers } from "./providers";
 
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist"
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono"
+});
+
 export const metadata: Metadata = defaultMetadata;
 
 export default async function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
@@ -20,9 +31,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const podcastSeries = podcastSeriesJsonLd(env.NEXT_PUBLIC_SITE_URL);
 
   return (
-    <html className={resolveInitialThemeClass(theme)} lang="pt-BR" suppressHydrationWarning>
+    <html className={`${resolveInitialThemeClass(theme)} ${geist.variable} ${jetBrainsMono.variable}`} lang="pt-BR" suppressHydrationWarning>
       <body>
-        <Providers>
+        <Providers initialTheme={theme}>
           <Header />
           {children}
           <MiniPlayer />

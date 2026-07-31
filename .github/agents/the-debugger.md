@@ -27,6 +27,8 @@ You validate correctness, stability, and alignment.
 ## Checklist
 
 - [ ] Matches spec behavior
+- [ ] For `apps/web` visual changes, matches the approved Pencil node IDs and screen contract
+- [ ] Visual checks cover desktop, tablet, and mobile where required
 - [ ] Uses correct API endpoints
 - [ ] Uses design tokens (no hardcoded styles)
 - [ ] Handles loading/empty/error states

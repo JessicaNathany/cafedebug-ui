@@ -198,9 +198,9 @@ Buttons (`Button/Default` `ZETEA`, `Button/Outline` `4x7RU`, `Button/Secondary`,
 `Alert`, `Tooltip`, `Switch`, `Checkbox`, `Radio`, `Dropdown`, `Table`/`Data Table`, `Sidebar`
 (admin), `Modal`/`Dialog`, `Breadcrumb`.
 
-> Slice 1 only needs **Button** (`components/ui/button.tsx`, per `tasks.md` 4.1). Hand-roll
-> additional primitives (Label/badge, Avatar, Tab, Search, Pagination, Input/Select/Textarea)
-> as later slices require them — do **not** pull the whole DS in now.
+> The completed homepage-parity work extends the initial Slice 1 primitive set with `Button`,
+> `IconButton`, `Label`, `Input`, `SearchBox`, and `Card` under `components/ui/`. The remaining
+> generic primitives are still deferred until a designed route requires them.
 
 ### 2.2 Site-specific components (build these in `features/` / `components/layout/`)
 
@@ -209,7 +209,7 @@ Buttons (`Button/Default` `ZETEA`, `Button/Outline` `4x7RU`, `Button/Secondary`,
 | **Site Header** | `m9zV96` | every page | **Slice 1** (`components/layout/header.tsx`) |
 | **Site Footer** | `LSgoB` | every page | **Slice 1** (`components/layout/footer.tsx`) |
 | **Episode Card** | `FGSFI` | Home, Episodes listing, Related | **Slice 1** (`features/episodes/components/episode-card.tsx`) |
-| **News Card** | `wQPNg` | Home, News listing/detail | Deferred (News feature) |
+| **News Card** | `wQPNg` | Home, News listing/detail | Homepage parity (`features/news/components/news-card.tsx`); News listing/detail routes deferred |
 | **Profile Card** | `e3Drx` | Team page | Deferred (Team feature) |
 
 ---
@@ -266,7 +266,7 @@ Buttons (`Button/Default` `ZETEA`, `Button/Outline` `4x7RU`, `Button/Secondary`,
   (`design.md` §5.3). Category/duration pills are absolutely positioned over the artwork —
   recompute overlay positions at responsive card widths.
 
-### 3.4 News Card — `wQPNg`  `[Deferred — News feature]`
+### 3.4 News Card — `wQPNg`  `[Homepage parity; News routes deferred]`
 
 - Same shell as Episode Card (384 wide, `--card`, `--radius-m`). Image (h200) with **only** a
   top-left category pill (no play/duration overlays — this is what distinguishes it from the
@@ -315,19 +315,18 @@ Node IDs below are the **dark-theme** frames.
    (`FGSFI`). Sample copy: EP 141 `CARREIRA` "Negociação salarial…", EP 140 `ARQUITETURA`
    "Microsserviços valem a pena?…", EP 139 `IA` "Programando com IA…".
 4. **News & Events** (fill `--card`, 2-column): **News** column ("Últimas Notícias" + "Ver todas"
-   + 2× News Card) **[the News cards render mock news in Slice 1's Home only if in scope; see
-   `spec.md` §3 — the news section is a placeholder ("em breve") in Slice 1]**; **Events** rail
-   (w380 card, "Agenda de Eventos" + 4 dated rows + full-width secondary "ver todos" button).
+   + 2× News Card) alongside the **Events** rail (w380 card, "Agenda de Eventos" + 4 dated rows
+   + full-width secondary "ver todos" button). The homepage uses parity mock data; standalone
+   News and Events routes remain deferred.
 5. **Newsletter** (centered card, radial glow): **"Fique por dentro do universo dev"** + subtext
    + email pill input (`seu@email.com`) + **"Inscrever-se"** + note **"Sem spam. Cancele quando
-   quiser."** → **copy-only in Slice 1 (no form)** per `spec.md` FR-7.
+   quiser."** → UI-only form in this phase (no backend submission).
 6. **Site Footer** (`LSgoB`).
 
-> **Slice-1 mapping.** `spec.md` FR-7 requires: hero (featured episode + Play), recent-episodes
-> grid, a **news placeholder** ("em breve"), a **newsletter placeholder** (copy only), and social
-> links. The design's News/Events section and full newsletter form are **richer than Slice 1**:
-> render the hero + episode grid faithfully; reduce News/Events + Newsletter to the placeholders
-> the spec mandates, keeping the visual slots so later slices fill them in without relayout.
+> **Homepage-parity extension.** The original Foundation scope documented a reduced Home surface.
+> G01-G14 completed the Pencil-backed News & Events section and newsletter form as visual,
+> mock-data/UI-only surfaces. Dedicated News, Events, and newsletter-submission workflows remain
+> deferred to their respective route and integration specs.
 
 ### 4.2 Episode Detail — `VkDts`  `[Slice 1]`
 
@@ -475,8 +474,10 @@ stacked rows:
   themes.
 - **Interactive surfaces to wire:** all "Ver todos/todas" links; hero/CTAs; play controls
   (cards + players); newsletter inputs; search/sort/filter chips; pagination (with disabled edge
-  states); mailto links (`--primary`-styled emails). Slice 1 wires only the shell, Home hero +
-  grid Play, episode detail player, and theme toggle — the rest are deferred.
+  states); mailto links (`--primary`-styled emails). Foundation and homepage-parity work wire the
+  shell, Home controls, UI-only newsletter form, episode-detail player, and theme system. Real
+  submissions, deferred-route navigation, search/filtering, pagination, and mailto integration
+  remain deferred.
 - **Accessibility:** keyboard-reachable controls with visible focus (`--ring`), pt-BR `aria-label`s,
   alt text on artwork, labeled social/icon buttons (`design.md` NFRs).
 
@@ -506,21 +507,22 @@ stacked rows:
 
 ---
 
-## 8. What to build in Slice 1 (design checklist)
+## 8. What was built in Slice 1 (design checklist)
 
 From this reference, Slice 1 (`spec.md` §3, `tasks.md`) builds:
 
-- [ ] **Tokens** — reconcile `design.md` §2.2 to §1 above (hex palette, JetBrains Mono + Geist,
-      pill buttons, `--radius-m` cards). Header and footer are always-dark chrome in both themes; the decision is final.
-- [ ] **Site Header** (`m9zV96`) with the 7-item nav (only `Início`/`#episodios` live).
-- [ ] **Site Footer** (`LSgoB`) with placeholder links + copy-only newsletter mini.
-- [ ] **Episode Card** (`FGSFI`) with a working Play control → player store.
-- [ ] **Homepage** (`tWWON`) — hero + featured player + recent-episodes grid; News/Events reduced
-      to placeholders; newsletter copy-only.
-- [ ] **Episode Detail** (`VkDts`) — hero + full player + show notes + related; chapters/guest/
-      resources/comments deferred.
-- [ ] **Audio player** (`E53fPU`) — mini (persistent) + full, one `<audio>`, per §5.
-- [ ] Light/dark parity via the single `Mode` axis.
+- [x] **Tokens** — Pencil-backed hex palette, JetBrains Mono + Geist, pill buttons, and
+      `--radius-m` cards. Header and footer are always-dark chrome in both themes.
+- [x] **Site Header** (`m9zV96`) with the 7-item nav; only `Início`/`#episodios` are live while deferred routes remain non-interactive.
+- [x] **Site Footer** (`LSgoB`) with non-interactive deferred links and a copy-only newsletter mini form.
+- [x] **Episode Card** (`FGSFI`) with a working Play control connected to the player store.
+- [x] **Homepage** (`tWWON` / `k71CIc`) — hero, featured player, recent-episodes grid, News & Events, and the Pencil-aligned UI-only newsletter form.
+- [x] **Episode Detail** (`VkDts`) — hero, full player, show notes, and related episodes; chapters, guest,
+      resources, and comments remain deferred.
+- [x] **Audio player** (`E53fPU`) — persistent mini player and full player share one `<audio>` element, per §5.
+- [x] Light/dark parity via the single `Mode` axis, including Home's section-scoped dark-first behavior.
+
+Homepage visual parity was completed and approved through G01-G14; see the [homepage parity plan](../homepage-visual-parity/plan.md) for the component-level baseline and acceptance record.
 
 Everything else in §4 is design reference for later slices — build components generically so the
 deferred pages compose without rework.

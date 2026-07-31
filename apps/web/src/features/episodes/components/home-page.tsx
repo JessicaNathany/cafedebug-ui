@@ -1,36 +1,19 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Circle, Headphones, Radio, Send, SkipBack, SkipForward, SlidersHorizontal, Volume2 } from "lucide-react";
+import { ArrowRight, Calendar, MapPin, Mail } from "lucide-react";
 
+import { NewsCard } from "../../news/components/news-card";
+import { mockNewsArticles } from "../../news/mock/news.mock";
+import { mockHomepageEvents } from "../../events/mock/homepage-events.mock";
 import { listEpisodes } from "../server/list-episodes";
 import { PlayButton } from "./play-button";
 import { EpisodeCard } from "./episode-card";
+import { HeroPlayer } from "./hero-player";
+import { NewsletterForm } from "./newsletter-form";
 
 const heroStats = [
-  { label: "Episódios publicados", value: "140+" },
-  { label: "Pessoas ouvintes", value: "50k+" },
-  { label: "Comunidade ativa", value: "9 anos" }
-] as const;
-
-const newsItems = [
-  {
-    category: "COMUNIDADE",
-    date: "14 Jul 2026",
-    title: "Guia de carreira em engenharia já está no ar",
-    summary: "Publicamos uma curadoria prática com caminhos para transição e progressão técnica no mercado atual."
-  },
-  {
-    category: "PODCAST",
-    date: "10 Jul 2026",
-    title: "Novo episódio com foco em arquitetura evolutiva",
-    summary: "Discussão sobre decisões incrementais, trade-offs e organização de times para escalar sistemas sem perder clareza."
-  }
-] as const;
-
-const eventItems = [
-  { date: "18 Jul", title: "Live: Entrevistas técnicas", time: "19:00 · Online" },
-  { date: "25 Jul", title: "Meetup: Carreira em produto", time: "20:00 · São Paulo" },
-  { date: "01 Ago", title: "Painel: Engenharia e IA", time: "19:30 · Online" }
+  { label: "Episódios", value: "142" },
+  { label: "Ouvintes/mês", value: "85k" },
+  { label: "Avaliação", value: "4.9" }
 ] as const;
 
 export async function HomePage() {
@@ -45,111 +28,57 @@ export async function HomePage() {
 
   return (
     <main>
-      <section className="dark bg-background px-6 py-20 md:px-10">
-        <div className="mx-auto grid w-full max-w-[1440px] gap-10 md:grid-cols-2 md:items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-pill bg-secondary px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.15em] text-secondary-foreground">
-              <Circle className="fill-primary text-primary" size={10} />
-              Ao vivo agora
+      <section className="dark grid min-h-180 w-full items-center bg-background px-4 py-16 text-foreground sm:px-6 md:px-10 lg:min-h-[719px] lg:px-16 lg:py-20">
+        <div className="mx-auto grid w-full max-w-[1312px] items-center gap-16 lg:w-[calc(100vw-8rem)] lg:grid-cols-[minmax(0,728px)_minmax(0,520px)]">
+          <div className="grid gap-6">
+            <div className="inline-flex items-center gap-2 font-primary text-[13px] font-semibold tracking-[1.5px] text-primary">
+              <span aria-hidden className="size-2 rounded-pill bg-primary" />
+              <span>EP {featured.number} · EPISÓDIO EM DESTAQUE</span>
             </div>
-            <p className="mt-4 font-mono text-xs uppercase tracking-[0.15em] text-primary">EP {featured.number} · EPISÓDIO EM DESTAQUE</p>
-            <h1 className="mt-4 max-w-xl text-4xl font-semibold leading-tight text-foreground md:text-6xl">
-              Dê o próximo passo <span className="text-primary">na sua carreira dev</span>
+            <h1 className="max-w-182 font-secondary text-4xl font-bold leading-[1.05] tracking-normal text-foreground sm:text-5xl lg:text-[56px]">
+              <span className="block">Dê o próximo passo</span>
+              <span className="block text-primary">na sua carreira dev</span>
             </h1>
-            <p className="mt-5 max-w-xl text-base text-muted-foreground md:text-lg">
-              Conversas profundas com os melhores desenvolvedores sobre carreira, tecnologia e crescimento profissional. Aqui você encontra clareza para tomar melhores decisões na sua jornada.
+            <p className="max-w-140 font-secondary text-base leading-[1.6] text-muted-foreground lg:text-[17px]">
+              Conversas profundas com os melhores desenvolvedores sobre carreira, tecnologia e crescimento profissional. Novos episódios toda semana.
             </p>
-            <div className="mt-7 flex flex-wrap items-center gap-3">
-              <PlayButton episode={featured} label="Ouvir agora" />
-              <Link className="inline-flex h-10 items-center rounded-pill border border-border px-4 text-foreground hover:bg-secondary/40" href="#episodios">
+            <div className="flex flex-wrap items-center gap-3.5 pt-1.5">
+              <PlayButton className="h-13 w-[174px] gap-2.5 px-7 font-secondary text-base font-semibold leading-6" episode={featured} iconSize={18} label="Ouvir agora" />
+              <Link className="inline-flex h-13 w-[226px] shrink-0 whitespace-nowrap items-center justify-center rounded-pill border border-border bg-background px-7 font-secondary text-base font-medium leading-6 text-foreground transition-colors hover:bg-secondary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href="#episodios">
                 Ver todos os episódios
               </Link>
             </div>
 
-            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              {heroStats.map((stat) => (
-                <div className="rounded-[--radius-m] border border-border bg-card p-4" key={stat.label}>
-                  <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">{stat.label}</p>
-                  <p className="mt-2 text-xl font-semibold text-foreground">{stat.value}</p>
+            <dl className="flex flex-wrap items-center gap-4 pt-5 sm:gap-9">
+              {heroStats.map((stat, index) => (
+                <div className="flex items-center gap-4 sm:gap-9" key={stat.label}>
+                  {index > 0 ? <span aria-hidden className="h-9 w-px bg-border" /> : null}
+                  <div className="grid gap-0.5">
+                    <dt className="order-2 font-secondary text-[13px] text-muted-foreground">{stat.label}</dt>
+                    <dd className="order-1 font-primary text-2xl font-bold text-foreground">{stat.value}</dd>
+                  </div>
                 </div>
               ))}
-            </div>
+            </dl>
           </div>
-
-          <article className="overflow-hidden rounded-[--radius-m] border border-border bg-card p-5 shadow-card md:p-6">
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <div className="inline-flex items-center gap-2 rounded-pill bg-secondary px-3 py-1 text-xs text-secondary-foreground">
-                <Radio aria-hidden size={14} />
-                Player ao vivo
-              </div>
-              <span className="font-mono text-xs text-muted-foreground">{featured.dateLabel}</span>
-            </div>
-
-            <div className="relative mb-5 h-[180px] overflow-hidden rounded-[--radius-m] border border-border">
-              <Image alt={`Capa do episódio ${featured.number}`} className="object-cover" fill sizes="(max-width: 768px) 100vw, 560px" src={featured.artworkUrl} />
-            </div>
-
-            <p className="font-mono text-xs text-primary">EP {featured.number}</p>
-            <h2 className="mt-2 text-xl font-semibold md:text-2xl">{featured.title}</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              com <span className="text-foreground">{featured.guestName}</span>
-            </p>
-
-            <div className="mt-5 space-y-2">
-              <div className="h-2 w-full overflow-hidden rounded-pill bg-secondary">
-                <div className="h-full w-1/3 rounded-pill bg-primary" />
-              </div>
-              <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
-                <span>08:24</span>
-                <span>{featured.durationMinutes}:00</span>
-              </div>
-            </div>
-
-            <div className="mt-5 flex items-center justify-between gap-3">
-              <div className="inline-flex items-center gap-2">
-                <button aria-label="Retroceder" className="inline-flex h-10 w-10 items-center justify-center rounded-pill border border-border bg-secondary text-secondary-foreground" type="button">
-                  <SkipBack aria-hidden size={16} />
-                </button>
-                <PlayButton className="h-12 px-5" episode={featured} iconSize={18} label="Tocar" />
-                <button aria-label="Avançar" className="inline-flex h-10 w-10 items-center justify-center rounded-pill border border-border bg-secondary text-secondary-foreground" type="button">
-                  <SkipForward aria-hidden size={16} />
-                </button>
-              </div>
-
-              <div className="inline-flex items-center gap-2 text-xs text-muted-foreground">
-                <SlidersHorizontal aria-hidden size={14} />
-                <span>1.25x</span>
-              </div>
-            </div>
-
-            <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-              <div className="inline-flex items-center gap-1.5">
-                <Volume2 aria-hidden size={14} />
-                <span>Volume 72%</span>
-              </div>
-              <div className="inline-flex items-center gap-1.5">
-                <Headphones aria-hidden size={14} />
-                <span>{featured.plays}</span>
-              </div>
-            </div>
-          </article>
+          <HeroPlayer episode={featured} />
         </div>
       </section>
 
-      <section className="px-6 py-16" id="episodios">
-        <div className="mx-auto w-full max-w-[1440px]">
-          <div className="flex items-end justify-between gap-3">
-            <div>
-              <p className="font-mono text-sm text-primary">EPISÓDIOS RECENTES</p>
-              <h2 className="mt-3 text-3xl font-semibold">Episódios Recentes</h2>
-              <p className="mt-2 text-sm text-muted-foreground">Novos episódios todas as semanas com discussões práticas para carreira e engenharia.</p>
+      <section className="w-full bg-background px-4 py-18 text-foreground sm:px-6 md:px-10 lg:px-16" id="episodios">
+        <div className="mx-auto grid w-full max-w-[1312px] gap-7 lg:w-[calc(100vw-8rem)]">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="grid gap-1.5">
+              <h2 className="font-secondary text-[30px] font-bold leading-[1.3] tracking-normal text-foreground">Episódios Recentes</h2>
+              <p className="font-secondary text-[15px] leading-[19px] text-muted-foreground">Novas conversas toda semana com a comunidade dev.</p>
             </div>
-            <Link className="text-sm text-primary hover:underline" href="#episodios">
+            <Link className="relative inline-flex h-10 items-end gap-1.5 font-secondary text-sm font-semibold leading-[18px] text-primary after:absolute after:-inset-3 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href="#episodios">
               Ver todos
+              <ArrowRight aria-hidden size={16} />
             </Link>
           </div>
 
-          <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {recentEpisodes.map((episode) => (
               <EpisodeCard episode={episode} key={episode.slug} />
             ))}
@@ -157,66 +86,74 @@ export async function HomePage() {
         </div>
       </section>
 
-      <section className="px-6 py-12 md:px-10">
-        <div className="mx-auto w-full max-w-[1440px]">
-          <div className="mb-6">
-            <p className="font-mono text-sm text-primary">NEWSROOM</p>
-            <h2 className="mt-2 text-3xl font-semibold">Notícias & Eventos</h2>
-            <p className="mt-2 text-sm text-muted-foreground">Atualizações da comunidade e agenda com os próximos encontros do CaféDebug.</p>
+      <section className="relative w-full border-t-border border-b-border bg-background px-4 py-12 text-foreground before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-border after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-border dark:bg-card sm:px-6 sm:py-16 md:px-10 lg:px-16 lg:py-18" id="noticias">
+        <div className="mx-auto grid w-full max-w-[1312px] items-start gap-12 lg:w-[calc(100vw-8rem)] lg:grid-cols-[minmax(0,1fr)_380px]">
+          <div className="grid min-w-0 gap-6">
+            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-0">
+              <div className="grid gap-1.5">
+                <h2 className="font-secondary text-[30px] font-bold leading-[1.3] tracking-normal text-foreground">Últimas Notícias</h2>
+                <p className="font-secondary text-[15px] leading-[19px] text-muted-foreground">O que está acontecendo no mundo do desenvolvimento.</p>
+              </div>
+
+              <button aria-label="Ver todas as notícias" className="relative inline-flex h-10 items-end gap-1.5 font-secondary text-sm font-semibold leading-[18px] text-primary after:absolute after:-inset-3 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" type="button">
+                Ver todas
+                <ArrowRight aria-hidden size={16} />
+              </button>
+            </div>
+
+            <div className="grid min-w-0 gap-6 md:grid-cols-2">
+              {mockNewsArticles.map((article) => (
+                <NewsCard article={article} key={article.slug} />
+              ))}
+            </div>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-            <div className="grid gap-4">
-              {newsItems.map((item) => (
-                <article className="rounded-[--radius-m] border border-border bg-card p-5 shadow-card" key={item.title}>
-                  <p className="font-mono text-xs text-primary">
-                    {item.category} · {item.date}
-                  </p>
-                  <h3 className="mt-2 text-xl font-semibold">{item.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{item.summary}</p>
+          <aside aria-labelledby="agenda-title" className="grid w-full min-w-0 gap-5 rounded-[var(--radius-m)] border border-border bg-card p-6 dark:bg-background lg:min-h-[569px]">
+            <div className="flex items-center justify-between gap-4">
+              <h2 className="font-secondary text-xl font-bold leading-[26px] text-foreground" id="agenda-title">
+                Agenda de Eventos
+              </h2>
+              <Calendar aria-hidden className="shrink-0 text-primary" size={18} />
+            </div>
+
+            <div className="divide-y divide-border">
+              {mockHomepageEvents.map((event) => (
+                <article className="flex min-w-0 gap-3.5 py-4" key={event.slug}>
+                  <div className="flex h-[57px] w-13 shrink-0 flex-col items-center rounded-xl bg-secondary py-2">
+                    <span className="font-primary text-[11px] font-semibold leading-[13px] tracking-[1px] text-primary">{event.month}</span>
+                    <span className="font-secondary text-xl font-bold leading-6 text-foreground">{event.day}</span>
+                  </div>
+
+                  <div className="grid min-w-0 content-start gap-1.25">
+                    <p className="font-primary text-[10px] font-semibold leading-[12px] tracking-[1px] text-primary">{event.format}</p>
+                    <h3 className="font-secondary text-[15px] font-semibold leading-[1.3] text-foreground">{event.title}</h3>
+                    <p className="flex items-center gap-1.25 font-secondary text-[13px] leading-[18px] text-muted-foreground">
+                      <MapPin aria-hidden className="shrink-0" size={13} />
+                      {event.locationLabel}
+                    </p>
+                  </div>
                 </article>
               ))}
             </div>
 
-            <div className="rounded-[--radius-m] border border-border bg-card p-5 shadow-card">
-              <h3 className="text-xl font-semibold">Agenda da comunidade</h3>
-              <div className="mt-4 space-y-3">
-                {eventItems.map((event) => (
-                  <div className="flex items-start justify-between gap-4 rounded-[--radius-m] border border-border p-3" key={event.title}>
-                    <span className="font-mono text-sm text-primary">{event.date}</span>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-foreground">{event.title}</p>
-                      <p className="mt-1 text-xs text-muted-foreground">{event.time}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+            <button aria-label="Ver agenda completa" className="inline-flex h-11 w-full items-center justify-center rounded-pill bg-secondary px-4 font-secondary text-sm font-semibold text-secondary-foreground transition-colors hover:bg-secondary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" type="button">
+              Ver agenda completa
+            </button>
+          </aside>
         </div>
       </section>
 
-      <section className="dark px-6 py-16 md:px-10">
-        <div className="mx-auto w-full max-w-[960px] rounded-[--radius-m] border border-border bg-card p-8 shadow-card">
-          <p className="font-mono text-xs uppercase tracking-[0.15em] text-primary">Newsletter semanal</p>
-          <h2 className="text-3xl font-semibold">Fique por dentro do universo dev</h2>
-          <p className="mt-3 max-w-2xl text-sm text-muted-foreground md:text-base">
-            As melhores discussões da semana no seu email. Conteúdo curado sobre carreira, tecnologia e decisões reais de engenharia.
+      <section className="dark box-border w-full bg-background px-4 py-16 text-foreground sm:px-6 sm:py-20 md:px-10 lg:h-[574px] lg:px-16 lg:py-20" id="newsletter">
+        <div className="mx-auto flex w-full max-w-[1312px] flex-col items-center gap-5 rounded-[var(--radius-m)] bg-card p-6 ring-1 ring-inset ring-border sm:p-12 lg:w-[calc(100vw-8rem)] lg:h-[414px] lg:p-14 lg:px-12">
+          <span aria-hidden className="inline-flex size-14 items-center justify-center rounded-pill bg-secondary text-primary">
+            <Mail size={24} />
+          </span>
+          <h2 className="w-full max-w-160 text-center font-secondary text-3xl font-bold leading-[1.15] text-foreground sm:text-[34px]">Fique por dentro do universo dev</h2>
+          <p className="w-full max-w-140 text-center font-secondary text-base leading-[1.55] text-muted-foreground">
+            Receba os melhores episódios, notícias e vagas direto no seu email. Toda semana, sem ruído.
           </p>
-
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <div className="inline-flex h-12 flex-1 items-center rounded-pill border border-border bg-secondary px-4 text-sm text-muted-foreground">seu@email.com</div>
-            <button aria-label="Enviar newsletter" className="inline-flex h-12 items-center justify-center gap-2 rounded-pill bg-primary px-5 text-sm font-medium text-primary-foreground" type="button">
-              <Send aria-hidden size={16} />
-              Enviar
-            </button>
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-3 text-sm">
-            <span className="rounded-pill bg-secondary px-4 py-2 text-secondary-foreground">GitHub</span>
-            <span className="rounded-pill bg-secondary px-4 py-2 text-secondary-foreground">YouTube</span>
-            <span className="rounded-pill bg-secondary px-4 py-2 text-secondary-foreground">LinkedIn</span>
-          </div>
+          <NewsletterForm />
+          <p className="text-center font-secondary text-[13px] leading-[17px] text-muted-foreground">Sem spam. Cancele quando quiser.</p>
         </div>
       </section>
     </main>

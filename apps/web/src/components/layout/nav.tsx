@@ -15,12 +15,12 @@ const items: Array<
 
 export function Nav() {
   return (
-    <nav aria-label="Navegação principal" className="hidden items-center gap-7 text-sm md:flex">
+    <nav aria-label="Navegação principal" className="hidden items-center gap-7 font-secondary text-sm leading-5 lg:flex">
       {items.map((item) => {
         if ("href" in item) {
           return (
             <Link
-              className={item.active ? "font-semibold text-foreground" : "text-muted-foreground hover:text-foreground"}
+              className={item.active ? "font-semibold text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" : "text-muted-foreground hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"}
               href={item.href}
               key={item.label}
             >
@@ -32,7 +32,7 @@ export function Nav() {
         return (
           <span
             aria-disabled="true"
-            className="cursor-not-allowed text-muted-foreground/70"
+            className="cursor-default text-muted-foreground"
             key={item.label}
           >
             {item.label}

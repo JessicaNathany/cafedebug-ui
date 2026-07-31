@@ -7,10 +7,12 @@ export type Episode = {
   publishedAt: string;
   dateLabel: string;
   durationMinutes: number;
+  durationLabel: string;
   plays: string;
   audioUrl: string;
   artworkUrl: string;
   guestName: string;
+  guestAvatarUrl: string;
   guestRole: string;
   showNotesHtml: string;
 };
