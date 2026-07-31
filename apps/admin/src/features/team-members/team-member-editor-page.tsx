@@ -106,10 +106,14 @@ export function TeamMemberEditorPage({ mode, id }: TeamMemberEditorPageProps) {
   return (
     <TeamMemberEditorForm
       active={editor.active}
+      fileSelectionError={editor.fileSelectionError}
       form={editor.form}
+      imagePreviewUrl={editor.imagePreviewUrl}
       isSubmitting={editor.isSubmitting}
+      isUploadingImage={editor.isUploadingImage}
       mode={mode}
       onCancel={editor.handleNavigateBack}
+      onFileSelected={editor.handleFileSelected}
       onSubmit={editor.onSubmit}
       submitError={editor.submitError}
     />

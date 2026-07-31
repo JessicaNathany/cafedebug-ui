@@ -5,6 +5,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
+import {
+  ACCEPTED_IMAGE_MIME_TYPES,
+  uploadTeamMemberImage
+} from "@/features/images/services/images.service";
 import { appRoutes } from "@/lib/routes";
 import { logger, observabilityEvents } from "@/lib/observability";
 
@@ -35,6 +39,9 @@ export function useTeamMemberEditor({ mode, id: rawId }: UseTeamMemberEditorOpti
   const [submitError, setSubmitError] = useState<TeamMembersRouteError | null>(null);
   const [hasPendingNavigation, setHasPendingNavigation] = useState(false);
   const [isSubmitLocked, setIsSubmitLocked] = useState(false);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [fileSelectionError, setFileSelectionError] = useState<string | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const isMountedRef = useRef(true);
   const submitInFlightRef = useRef(false);
 
@@ -42,6 +49,14 @@ export function useTeamMemberEditor({ mode, id: rawId }: UseTeamMemberEditorOpti
     isMountedRef.current = true;
     return () => { isMountedRef.current = false; };
   }, []);
+
+  useEffect(() => {
+    if (!imagePreviewUrl) {
+      return;
+    }
+
+    return () => URL.revokeObjectURL(imagePreviewUrl);
+  }, [imagePreviewUrl]);
 
   useEffect(() => {
     if (!detailQuery.data) return;
@@ -77,6 +92,64 @@ export function useTeamMemberEditor({ mode, id: rawId }: UseTeamMemberEditorOpti
     router.push(appRoutes.teamMembers);
   }, [form.formState.isDirty, router]);
 
+  const handleFileSelected = useCallback(async (file: File | null) => {
+    if (!file) {
+      setImagePreviewUrl((previous) => {
+        if (previous) {
+          URL.revokeObjectURL(previous);
+        }
+        return null;
+      });
+      setFileSelectionError(null);
+      return;
+    }
+
+    const isAccepted = (ACCEPTED_IMAGE_MIME_TYPES as readonly string[]).includes(file.type);
+
+    if (!isAccepted) {
+      setFileSelectionError("Only JPG, PNG, or SVG files are supported.");
+      return;
+    }
+
+    setSubmitError(null);
+    setImagePreviewUrl((previous) => {
+      if (previous) {
+        URL.revokeObjectURL(previous);
+      }
+      return URL.createObjectURL(file);
+    });
+    setFileSelectionError(null);
+
+    setIsUploadingImage(true);
+    try {
+      const { imageUrl } = await uploadTeamMemberImage(file);
+      form.setValue("profilePhotoUrl", imageUrl, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true
+      });
+      setFileSelectionError(null);
+    } catch (uploadError) {
+      const normalizedUploadError = normalizeError(uploadError);
+      if (isMountedRef.current) {
+        setSubmitError(normalizedUploadError);
+        setFileSelectionError(normalizedUploadError.detail);
+      }
+      logger.warn(observabilityEvents.apiRequestFailed, {
+        module: "images",
+        action: "upload",
+        endpoint: "/api/admin/images/upload",
+        method: "POST",
+        status: normalizedUploadError.status,
+        ...(normalizedUploadError.traceId ? { traceId: normalizedUploadError.traceId } : {})
+      });
+    } finally {
+      if (isMountedRef.current) {
+        setIsUploadingImage(false);
+      }
+    }
+  }, []);
+
   const onSubmit = async (values: TeamMemberEditorValues) => {
     if (submitInFlightRef.current || createMutation.isPending || updateMutation.isPending) return;
     submitInFlightRef.current = true;
@@ -84,9 +157,17 @@ export function useTeamMemberEditor({ mode, id: rawId }: UseTeamMemberEditorOpti
     setSubmitError(null);
     try {
       const payload = toTeamMemberRequestPayload(values);
+
       if (mode === "new") {
         await createMutation.mutateAsync(payload);
         if (!isMountedRef.current) return;
+        setImagePreviewUrl((previous) => {
+          if (previous) {
+            URL.revokeObjectURL(previous);
+          }
+          return null;
+        });
+        setFileSelectionError(null);
         form.reset(teamMemberEditorDefaultValues);
         setHasPendingNavigation(true);
         router.replace(appRoutes.teamMembers);
@@ -98,6 +179,13 @@ export function useTeamMemberEditor({ mode, id: rawId }: UseTeamMemberEditorOpti
       }
       const record = await updateMutation.mutateAsync({ id: teamMemberId, payload });
       if (!isMountedRef.current) return;
+      setImagePreviewUrl((previous) => {
+        if (previous) {
+          URL.revokeObjectURL(previous);
+        }
+        return null;
+      });
+      setFileSelectionError(null);
       form.reset(toTeamMemberEditorDefaults(record));
     } catch (error) {
       reportMutationError(mode === "new" ? "create" : "update", error);
@@ -110,8 +198,11 @@ export function useTeamMemberEditor({ mode, id: rawId }: UseTeamMemberEditorOpti
   return {
     form, mode, teamMember: detailQuery.data, isInvalidTeamMemberId: mode === "edit" && teamMemberId === null,
     isLoading: mode === "edit" && teamMemberId !== null && detailQuery.isLoading,
-    isSubmitting: isSubmitLocked || createMutation.isPending || updateMutation.isPending,
+    isSubmitting: isSubmitLocked || createMutation.isPending || updateMutation.isPending || isUploadingImage,
+    isUploadingImage,
+    imagePreviewUrl,
+    fileSelectionError,
     isNotFound: loadError?.status === 404, loadError, submitError,
-    active: form.watch("isActive"), handleNavigateBack, onSubmit, retryLoad: detailQuery.refetch
+    active: form.watch("isActive"), handleNavigateBack, handleFileSelected, onSubmit, retryLoad: detailQuery.refetch
   };
 }

@@ -11,9 +11,13 @@ type TeamMemberEditorFormProps = {
   mode: "new" | "edit";
   form: UseFormReturn<TeamMemberEditorValues>;
   active: boolean;
+  imagePreviewUrl: string | null;
+  fileSelectionError: string | null;
   isSubmitting: boolean;
+  isUploadingImage: boolean;
   submitError: TeamMembersRouteError | null;
   onCancel: () => void;
+  onFileSelected: (file: File | null) => void | Promise<void>;
   onSubmit: (values: TeamMemberEditorValues) => Promise<void>;
 };
 
@@ -85,9 +89,13 @@ export function TeamMemberEditorForm({
   mode,
   form,
   active,
+  imagePreviewUrl,
+  fileSelectionError,
   isSubmitting,
+  isUploadingImage,
   submitError,
   onCancel,
+  onFileSelected,
   onSubmit,
 }: TeamMemberEditorFormProps) {
   const {
@@ -139,7 +147,6 @@ export function TeamMemberEditorForm({
               <section className="space-y-5">
                 <div>
                   <h2 className="font-display text-2xl font-bold text-on-surface">
-                    Identity
                   </h2>
                   <p className="mt-1 text-sm text-on-surface-variant">
                     Set the name and role displayed for this team member.
@@ -160,37 +167,10 @@ export function TeamMemberEditorForm({
                   />
                   <Field
                     form={form}
-                    label="Nickname"
-                    name="nickname"
-                    placeholder="Optional preferred name"
-                  />
-                  <Field
-                    form={form}
                     label="Job title"
                     name="jobTitle"
                     placeholder="Optional job title"
                   />
-                </div>
-              </section>
-
-              <section className="space-y-5">
-                <h2 className="font-display text-2xl font-bold text-on-surface">
-                  Profile
-                </h2>
-                <Field
-                  form={form}
-                  label="Biography"
-                  multiline
-                  name="bio"
-                  placeholder="Optional biography"
-                />
-              </section>
-
-              <section className="space-y-5">
-                <h2 className="font-display text-2xl font-bold text-on-surface">
-                  Contact & social
-                </h2>
-                <div className="grid gap-5 md:grid-cols-2">
                   <Field
                     form={form}
                     label="Email"
@@ -198,6 +178,21 @@ export function TeamMemberEditorForm({
                     placeholder="name@example.com"
                     type="email"
                   />
+                </div>
+              </section>
+
+              <section className="space-y-5">
+                <Field
+                  form={form}
+                  label="Biography"
+                  multiline
+                  name="bio"
+                  placeholder="Optional biography"
+                /> 
+              </section>
+
+              <section className="space-y-5">
+                <div className="grid gap-5 md:grid-cols-2">
                   <Field
                     form={form}
                     label="GitHub URL"
@@ -222,15 +217,19 @@ export function TeamMemberEditorForm({
             className="w-full border-t border-outline-variant/60 bg-surface-container-lowest px-6 pb-10 pt-8 lg:px-8 xl:border-l xl:border-t-0 xl:px-10 xl:pt-10"
           >
             <div className="space-y-8">
-              <TeamMemberProfilePhotoField form={form} name={name} />
+              <TeamMemberProfilePhotoField
+                fileSelectionError={fileSelectionError}
+                form={form}
+                imagePreviewUrl={imagePreviewUrl}
+                isUploadingImage={isUploadingImage}
+                name={name}
+                onFileSelected={onFileSelected}
+              />
               <section className="space-y-5">
-                <h2 className="font-display text-xl font-bold text-on-surface">
-                  Configuration
-                </h2>
                 <Field
                   form={form}
                   help="Use your local date and time; no timezone conversion is applied."
-                  label="Joined at"
+                  label="Created"
                   name="joinedAt"
                   type="datetime-local"
                 />

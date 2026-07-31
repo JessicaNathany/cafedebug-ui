@@ -17,8 +17,14 @@ export function AdminShellLayout({ children, currentTheme }: AdminShellLayoutPro
   const pathname = usePathname() ?? "/";
   const isEpisodeEditorRoute = pathname === appRoutes.newEpisode || /^\/episodes\/[^/]+\/edit$/.test(pathname);
   const isBannerEditorRoute = pathname === appRoutes.newBanner || /^\/banners\/[^/]+\/edit$/.test(pathname);
-  const showShellHeader = !(pathname === appRoutes.episodes || pathname.startsWith("/episodes/") || isBannerEditorRoute);
-  const contentClassName = isEpisodeEditorRoute || isBannerEditorRoute
+  const isTeamMemberEditorRoute = pathname === appRoutes.newTeamMember || /^\/team-members\/[^/]+\/edit$/.test(pathname);
+  const showShellHeader = !(
+    pathname === appRoutes.episodes ||
+    pathname.startsWith("/episodes/") ||
+    isBannerEditorRoute ||
+    isTeamMemberEditorRoute
+  );
+  const contentClassName = isEpisodeEditorRoute || isBannerEditorRoute || isTeamMemberEditorRoute
     ? "flex min-h-screen w-full flex-col"
     : "mx-auto flex w-full max-w-[1024px] flex-col gap-8 px-6 py-8 lg:px-8 lg:py-10";
 
