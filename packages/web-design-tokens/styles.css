@@ -63,6 +63,9 @@
   --shadow-float: 0 12px 40px #11111129;
   --shadow-pencil-subtle: 0 1px 1.75px #0000000d;
 
+  --home-beta-hero-glow: radial-gradient(ellipse 65% 90% at 18% 15%, #ED7D0030 0%, #ED7D0000 100%);
+  --home-beta-banner-overlay: linear-gradient(0deg, #0A0A0AF0 0%, #0A0A0A85 45%, #0A0A0A0A 100%);
+
   --success: var(--color-success);
   --success-foreground: var(--color-success-foreground);
   --warning: var(--color-warning);

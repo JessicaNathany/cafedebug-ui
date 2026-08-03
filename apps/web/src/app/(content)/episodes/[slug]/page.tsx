@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { episodeToTrack } from "@/features/episodes/mappers";
 import { EpisodeHero } from "@/features/episodes/components/episode-hero";
 import { EpisodeRelated } from "@/features/episodes/components/episode-related";
 import { ShowNotes } from "@/features/episodes/components/show-notes";
+import { episodeToTrack } from "@/features/episodes/mappers";
 import { getEpisode } from "@/features/episodes/server/get-episode";
 import { listEpisodes } from "@/features/episodes/server/list-episodes";
 import { podcastEpisodeJsonLd } from "@/features/episodes/structured-data";

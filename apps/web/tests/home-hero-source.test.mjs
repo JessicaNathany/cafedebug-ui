@@ -7,7 +7,7 @@ const root = process.cwd();
 const readSource = (file) => readFileSync(join(root, file), "utf8");
 
 test("G05 homepage hero preserves the Pencil information anatomy", () => {
-  const source = readSource("src/features/episodes/components/home-page.tsx");
+  const source = readSource("src/features/homepage/components/homepage-v2.tsx");
 
   assert.match(source, /dark grid min-h-180/);
   assert.match(source, /lg:min-h-\[719px\]/);

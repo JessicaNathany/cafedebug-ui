@@ -6,16 +6,26 @@ import { test } from "node:test";
 const root = process.cwd();
 const readSource = (file) => readFileSync(join(root, file), "utf8");
 
-test("site footer maps to the G04 Pencil shell geometry and dark scope", () => {
+test("site footer maps to the G04 Pencil shell geometry and preserves fixed-dark as the default", () => {
   const source = readSource("src/components/layout/footer.tsx");
 
-  assert.match(source, /className="relative dark flex w-full flex-col gap-10 border-t border-border bg-card px-4 pb-8 pt-14 text-card-foreground sm:px-6 md:px-10 xl:h-\[330px\] xl:border-t-0 xl:before:pointer-events-none xl:before:absolute xl:before:inset-x-0 xl:before:top-0 xl:before:h-px xl:before:bg-border"/);
+  assert.match(source, /export function Footer\(\{ variant = "fixed-dark" \}: \{ variant\?: FooterVariant \}\)/);
+  assert.match(source, /variant === "fixed-dark" && "dark"/);
+  assert.match(source, /relative flex w-full flex-col gap-10 border-t border-border bg-card px-4 pb-8 pt-14 text-card-foreground sm:px-6 md:px-10 xl:h-\[330px\]/);
   assert.match(source, /grid w-full gap-10 md:grid-cols-2 xl:h-36 xl:w-\[calc\(100vw-5rem\)\] xl:flex xl:justify-between xl:gap-16/);
   assert.match(source, /max-w-80 flex-col gap-4 xl:w-80/);
   assert.match(source, /max-w-75 flex-col gap-3 xl:w-75/);
   assert.match(source, /h-px w-full shrink-0 bg-border xl:w-\[calc\(100vw-5rem\)\]/);
   assert.doesNotMatch(source, /max-w-\[1440px\]|mx-auto/);
   assert.doesNotMatch(source, /#[0-9a-fA-F]{3,8}/);
+});
+
+test("beta footer explicitly inherits the root theme", () => {
+  const source = readSource("src/components/layout/footer.tsx");
+
+  assert.match(source, /export type FooterVariant = "beta" \| "fixed-dark"/);
+  assert.match(source, /variant === "fixed-dark" && "dark"/);
+  assert.doesNotMatch(source, /variant === "beta" && "dark"/);
 });
 
 test("site footer preserves Pencil content, typography, and inert deferred links", () => {
@@ -35,6 +45,19 @@ test("site footer preserves Pencil content, typography, and inert deferred links
   }
 
   assert.match(source, /aria-disabled="true"/);
+  assert.doesNotMatch(source, /href=/);
+});
+
+test("deferred content destinations expose the exact Pencil coming-soon status", () => {
+  const source = readSource("src/components/layout/footer.tsx");
+
+  for (const label of ["Notícias", "Eventos", "Vagas"]) {
+    assert.match(source, new RegExp(`\\{ label: "${label}", status: "Em breve" \\}`));
+  }
+
+  assert.equal((source.match(/status: "Em breve"/g) ?? []).length, 3);
+  assert.match(source, /aria-label=\{"status" in item \? `\$\{item\.label\} — \$\{item\.status\}` : item\.label\}/);
+  assert.match(source, /<span aria-hidden="true"> — \{item\.status\}<\/span>/);
   assert.doesNotMatch(source, /href=/);
 });
 
