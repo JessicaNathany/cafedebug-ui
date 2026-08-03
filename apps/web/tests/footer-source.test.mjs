@@ -48,6 +48,19 @@ test("site footer preserves Pencil content, typography, and inert deferred links
   assert.doesNotMatch(source, /href=/);
 });
 
+test("deferred content destinations expose the exact Pencil coming-soon status", () => {
+  const source = readSource("src/components/layout/footer.tsx");
+
+  for (const label of ["Notícias", "Eventos", "Vagas"]) {
+    assert.match(source, new RegExp(`\\{ label: "${label}", status: "Em breve" \\}`));
+  }
+
+  assert.equal((source.match(/status: "Em breve"/g) ?? []).length, 3);
+  assert.match(source, /aria-label=\{"status" in item \? `\$\{item\.label\} — \$\{item\.status\}` : item\.label\}/);
+  assert.match(source, /<span aria-hidden="true"> — \{item\.status\}<\/span>/);
+  assert.doesNotMatch(source, /href=/);
+});
+
 test("site footer uses the exact Pencil social and newsletter controls", () => {
   const source = readSource("src/components/layout/footer.tsx");
 

@@ -228,15 +228,19 @@ Buttons (`Button/Default` `ZETEA`, `Button/Outline` `4x7RU`, `Button/Secondary`,
   center-aligned.
 - **Left:** wordmark **"Café"** (`--foreground`) + **"Debug"** (`--primary`), `--font-primary`
   20px/700 — then nav (`--font-secondary` 14px, gap 28): **`Início`** · **`Episódios`** ·
-  **`Notícias`** · **`Eventos`** · **`Vagas`** · **`Time`** · **`Sobre`**. The current page's item
+  **`Time`** · **`Sobre`**. The current page's item
   is `--foreground`/600; the rest are `--muted-foreground`.
 - **Right:** 40×40 round search button (`--secondary`, lucide `search`) + **`Assinar`** pill
   button (`--primary`, lucide `mic`).
 
 > **Slice-1 nav caveat.** `spec.md` FR-6/AC-17 forbids links to non-existent routes. In Slice 1
-> only `/` and `/episodes/[slug]` exist. Render the full 7-item nav visually but point only
+> only `/` and `/episodes/[slug]` exist. Point only
 > `Início`→`/` (and an in-page `#episodios` anchor); keep the other items as **disabled/inert**
 > placeholders (no `href`) until their routes ship, or gate them behind a feature flag.
+
+> **Responsive navigation extension.** `.specs/web/responsive-navigation-menu/` supersedes the
+> original below-`lg` hidden-nav behavior. Compact contracts: beta Light closed/open `sYLaO` / `p4ky3`,
+> beta Dark closed/open `jHEKy` / `wahud`, and fixed-dark closed/open `l3At9Z` / `fWEbw`.
 
 ### 3.2 Site Footer — `LSgoB`  `[Slice 1]`
 
@@ -245,7 +249,7 @@ Buttons (`Button/Default` `ZETEA`, `Button/Outline` `4x7RU`, `Button/Secondary`,
   1. **Brand** (w320): wordmark + tagline **"Conversas profundas sobre carreira, tecnologia e a
      comunidade de desenvolvimento."** + 5 social pills (36×36): `github`, `twitter`, `youtube`,
      `linkedin`, `instagram`.
-  2. **`Conteúdo`**: `Episódios`, `Notícias`, `Eventos`, `Vagas`.
+  2. **`Conteúdo`**: `Episódios`, `Notícias — Em breve`, `Eventos — Em breve`, `Vagas — Em breve`.
   3. **`Comunidade`**: `Time`, `Discord`, `Sobre`, `Contato`.
   4. **`Empresa`**: `Publicidade`, `Newsletter`, `Imprensa`, `RSS Feed`.
   5. **Newsletter mini** (w300): title **"Newsletter semanal"**, desc **"As melhores discussões

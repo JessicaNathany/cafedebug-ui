@@ -5,9 +5,17 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const footerColumns = [
-  { title: "Conteúdo", links: ["Episódios", "Notícias", "Eventos", "Vagas"] },
-  { title: "Comunidade", links: ["Time", "Discord", "Sobre", "Contato"] },
-  { title: "Empresa", links: ["Publicidade", "Newsletter", "Imprensa", "RSS Feed"] }
+  {
+    title: "Conteúdo",
+    links: [
+      { label: "Episódios" },
+      { label: "Notícias", status: "Em breve" },
+      { label: "Eventos", status: "Em breve" },
+      { label: "Vagas", status: "Em breve" }
+    ]
+  },
+  { title: "Comunidade", links: [{ label: "Time" }, { label: "Discord" }, { label: "Sobre" }, { label: "Contato" }] },
+  { title: "Empresa", links: [{ label: "Publicidade" }, { label: "Newsletter" }, { label: "Imprensa" }, { label: "RSS Feed" }] }
 ] as const;
 
 const socialLinks: Array<{ icon: ReactNode; label: string }> = [
@@ -89,8 +97,14 @@ export function Footer({ variant = "fixed-dark" }: { variant?: FooterVariant }) 
             <h2 className="font-primary text-xs font-semibold leading-4 tracking-[1.5px] text-card-foreground">{column.title}</h2>
             <ul className="flex flex-col gap-3.5 font-secondary text-sm leading-[1.3] text-muted-foreground">
               {column.links.map((item) => (
-                <li aria-disabled="true" className="cursor-default" key={item}>
-                  {item}
+                <li
+                  aria-disabled="true"
+                  aria-label={"status" in item ? `${item.label} — ${item.status}` : item.label}
+                  className="cursor-default"
+                  key={item.label}
+                >
+                  {item.label}
+                  {"status" in item ? <span aria-hidden="true"> — {item.status}</span> : null}
                 </li>
               ))}
             </ul>

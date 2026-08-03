@@ -1,22 +1,11 @@
 import Link from "next/link";
 
-const items: Array<
-  | { label: string; href: string; active?: boolean }
-  | { label: string; disabled: true }
-> = [
-  { label: "Início", href: "/", active: true },
-  { label: "Episódios", href: "/#episodios" },
-  { label: "Notícias", disabled: true },
-  { label: "Eventos", disabled: true },
-  { label: "Vagas", disabled: true },
-  { label: "Time", disabled: true },
-  { label: "Sobre", disabled: true }
-];
+import { primaryNavigationItems } from "@/components/layout/navigation-items";
 
 export function Nav() {
   return (
     <nav aria-label="Navegação principal" className="hidden items-center gap-7 font-secondary text-sm leading-5 lg:flex">
-      {items.map((item) => {
+      {primaryNavigationItems.map((item) => {
         if ("href" in item) {
           return (
             <Link

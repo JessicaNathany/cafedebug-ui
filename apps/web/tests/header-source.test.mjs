@@ -11,7 +11,7 @@ test("site header maps to the G03 Pencil geometry and preserves fixed-dark as th
 
   assert.match(source, /export function Header\(props: HeaderProps = \{\}\)/);
   assert.match(source, /!isBeta && "dark"/);
-  assert.match(source, /h-18 overflow-x-clip border-b border-border bg-background text-foreground/);
+  assert.match(source, /relative h-18 border-b border-border bg-background text-foreground/);
   assert.match(source, /h-full w-full[^"]+md:w-screen/);
   assert.match(source, /md:px-10/);
   assert.doesNotMatch(source, /max-w-\[1440px\]/);
@@ -41,25 +41,29 @@ test("beta header explicitly follows the root theme and replaces Assinar with th
 });
 
 test("site navigation preserves allowed links and inert placeholders", () => {
-  const source = readSource("src/components/layout/nav.tsx");
-
-  assert.match(source, /\{ label: "Início", href: "\/", active: true \}/);
-  assert.match(source, /\{ label: "Episódios", href: "\/#episodios" \}/);
-  for (const label of ["Notícias", "Eventos", "Vagas", "Time", "Sobre"]) {
-    assert.match(source, new RegExp(`\\{ label: "${label}", disabled: true \\}`));
-  }
-  assert.match(source, /aria-disabled="true"/);
-  assert.match(source, /hidden items-center gap-7 font-secondary text-sm leading-5 lg:flex/);
-  assert.doesNotMatch(source, /md:flex/);
-});
-
-test("site header keeps tablet and mobile navigation hidden to avoid overflow", () => {
-  const headerSource = readSource("src/components/layout/header.tsx");
+  const itemsSource = readSource("src/components/layout/navigation-items.ts");
   const navSource = readSource("src/components/layout/nav.tsx");
 
-  assert.match(navSource, /className="hidden items-center gap-7 font-secondary text-sm leading-5 lg:flex"/);
-  assert.doesNotMatch(navSource, /\bmd:flex\b/);
-  assert.match(headerSource, /flex min-w-0 items-center gap-10/);
+  assert.match(itemsSource, /\{ label: "Início", href: "\/", active: true \}/);
+  assert.match(itemsSource, /\{ label: "Episódios", href: "\/#episodios" \}/);
+  for (const label of ["Time", "Sobre"]) {
+    assert.match(itemsSource, new RegExp(`\\{ label: "${label}", disabled: true \\}`));
+  }
+  for (const removedLabel of ["Notícias", "Eventos", "Vagas"]) {
+    assert.doesNotMatch(itemsSource, new RegExp(`label: "${removedLabel}"`));
+  }
+  assert.match(navSource, /primaryNavigationItems\.map/);
+  assert.match(navSource, /aria-disabled="true"/);
+  assert.match(navSource, /hidden items-center gap-7 font-secondary text-sm leading-5 lg:flex/);
+  assert.doesNotMatch(navSource, /md:flex/);
+});
+
+test("site header composes the compact trigger after the wordmark and keeps the desktop breakpoint", () => {
+  const headerSource = readSource("src/components/layout/header.tsx");
+
+  assert.match(headerSource, /import \{ MobileNav \} from "@\/components\/layout\/mobile-nav"/);
+  assert.match(headerSource, /flex min-w-0 items-center gap-3 lg:gap-10/);
+  assert.match(headerSource, /<\/Link>\s*<MobileNav \/>\s*<Nav \/>/);
   assert.match(headerSource, /flex shrink-0 items-center gap-3\.5/);
   assert.match(headerSource, /inline-flex h-10 shrink-0 items-center font-primary/, "the logo link must keep a 40px touch target");
 });
