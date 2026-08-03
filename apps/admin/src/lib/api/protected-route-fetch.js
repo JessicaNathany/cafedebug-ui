@@ -1,6 +1,9 @@
 const defaultRefreshPath = "/api/auth/refresh";
+const defaultLoginPath = "/login";
+const sessionExpiredReason = "session-expired";
 
 let inFlightRefreshRequest = null;
+let hasTriggeredSessionRedirect = false;
 
 const resolvePathname = (input) => {
   if (input instanceof URL) {
@@ -20,6 +23,30 @@ const resolvePathname = (input) => {
 
 const isProtectedAdminApiRequest = (input) =>
   resolvePathname(input).startsWith("/api/admin/");
+
+const redirectToLoginOnUnauthorized = () => {
+  if (
+    hasTriggeredSessionRedirect ||
+    typeof window === "undefined" ||
+    !window.location ||
+    typeof window.location.replace !== "function"
+  ) {
+    return;
+  }
+
+  hasTriggeredSessionRedirect = true;
+
+  const searchParams = new URLSearchParams({ reason: sessionExpiredReason });
+  const fromPath = typeof window.location.pathname === "string"
+    ? window.location.pathname
+    : "";
+
+  if (fromPath && fromPath !== defaultLoginPath) {
+    searchParams.set("from", fromPath);
+  }
+
+  window.location.replace(`${defaultLoginPath}?${searchParams.toString()}`);
+};
 
 const requestSessionRefresh = async (refreshPath) => {
   if (!inFlightRefreshRequest) {
@@ -61,20 +88,40 @@ export const fetchProtectedAdminRoute = async (
   } = options ?? {};
 
   const initialResponse = await fetch(input, init);
+  const isProtectedRequest = isProtectedAdminApiRequest(input);
 
   if (
-    !retryOn401Once ||
-    initialResponse.status !== 401 ||
-    !isProtectedAdminApiRequest(input)
+    !isProtectedRequest ||
+    initialResponse.status !== 401
   ) {
+    return initialResponse;
+  }
+
+  if (!retryOn401Once) {
+    redirectToLoginOnUnauthorized();
     return initialResponse;
   }
 
   const refreshSucceeded = await requestSessionRefresh(refreshPath);
 
   if (!refreshSucceeded) {
+    redirectToLoginOnUnauthorized();
     return initialResponse;
   }
 
-  return fetch(input, init);
+  const retriedResponse = await fetch(input, init);
+
+  if (retriedResponse.status === 401) {
+    redirectToLoginOnUnauthorized();
+  }
+
+  return retriedResponse;
+};
+
+/**
+ * Test-only helper for resetting module-level state.
+ */
+export const __resetProtectedRouteFetchStateForTests = () => {
+  inFlightRefreshRequest = null;
+  hasTriggeredSessionRedirect = false;
 };

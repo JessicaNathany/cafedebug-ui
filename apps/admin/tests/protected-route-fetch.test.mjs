@@ -1,12 +1,17 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { fetchProtectedAdminRoute } from "../src/lib/api/protected-route-fetch.js";
+import {
+  __resetProtectedRouteFetchStateForTests,
+  fetchProtectedAdminRoute
+} from "../src/lib/api/protected-route-fetch.js";
 
 test("fetchProtectedAdminRoute retries once after successful refresh", async () => {
+  __resetProtectedRouteFetchStateForTests();
   const calls = [];
 
   const originalFetch = globalThis.fetch;
+  const originalWindow = globalThis.window;
   globalThis.fetch = async (input, init) => {
     const url = typeof input === "string" ? input : input.toString();
     calls.push({ url, init });
@@ -30,6 +35,7 @@ test("fetchProtectedAdminRoute retries once after successful refresh", async () 
   };
 
   try {
+    globalThis.window = undefined;
     const response = await fetchProtectedAdminRoute("/api/admin/episodes", {
       method: "GET"
     });
@@ -38,13 +44,17 @@ test("fetchProtectedAdminRoute retries once after successful refresh", async () 
     assert.equal(calls.length, 3);
   } finally {
     globalThis.fetch = originalFetch;
+    globalThis.window = originalWindow;
   }
 });
 
 test("fetchProtectedAdminRoute does not refresh for non-admin paths", async () => {
+  __resetProtectedRouteFetchStateForTests();
   const calls = [];
+  let redirectTarget = null;
 
   const originalFetch = globalThis.fetch;
+  const originalWindow = globalThis.window;
   globalThis.fetch = async (input) => {
     const url = typeof input === "string" ? input : input.toString();
     calls.push({ url });
@@ -53,6 +63,14 @@ test("fetchProtectedAdminRoute does not refresh for non-admin paths", async () =
   };
 
   try {
+    globalThis.window = {
+      location: {
+        pathname: "/login",
+        replace: (target) => {
+          redirectTarget = target;
+        }
+      }
+    };
     const response = await fetchProtectedAdminRoute("/api/auth/login", {
       method: "POST"
     });
@@ -60,15 +78,20 @@ test("fetchProtectedAdminRoute does not refresh for non-admin paths", async () =
     assert.equal(response.status, 401);
     assert.equal(calls.length, 1);
     assert.equal(calls[0].url, "/api/auth/login");
+    assert.equal(redirectTarget, null);
   } finally {
     globalThis.fetch = originalFetch;
+    globalThis.window = originalWindow;
   }
 });
 
 test("fetchProtectedAdminRoute stops after failed refresh", async () => {
+  __resetProtectedRouteFetchStateForTests();
   const calls = [];
+  let redirectTarget = null;
 
   const originalFetch = globalThis.fetch;
+  const originalWindow = globalThis.window;
   globalThis.fetch = async (input) => {
     const url = typeof input === "string" ? input : input.toString();
     calls.push({ url });
@@ -87,13 +110,26 @@ test("fetchProtectedAdminRoute stops after failed refresh", async () => {
   };
 
   try {
+    globalThis.window = {
+      location: {
+        pathname: "/team-members",
+        replace: (target) => {
+          redirectTarget = target;
+        }
+      }
+    };
     const response = await fetchProtectedAdminRoute("/api/admin/episodes", {
       method: "GET"
     });
 
     assert.equal(response.status, 401);
     assert.equal(calls.length, 2);
+    assert.equal(
+      redirectTarget,
+      "/login?reason=session-expired&from=%2Fteam-members"
+    );
   } finally {
     globalThis.fetch = originalFetch;
+    globalThis.window = originalWindow;
   }
 });

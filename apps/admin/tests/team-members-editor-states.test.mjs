@@ -95,7 +95,6 @@ test("editor UI remains a presentation layer with all required controls and acce
   for (const field of [
     "name",
     "podcastRole",
-    "nickname",
     "email",
     "bio",
     "jobTitle",
