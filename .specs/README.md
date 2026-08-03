@@ -85,6 +85,8 @@ reference.
 | Episode Category Selector | `Implemented` | `.specs/admin/episode-category-selector/` | Replaces hardcoded category options in the episode editor with a dynamic list fetched from the backend categories API |
 | Episode List Search | `Draft` | `.specs/admin/episode-search/` | Replaces client-side filtering with server-side search via `GET /api/v1/admin/episodes?search=` |
 | Episode List Number Display | `Implemented` | `.specs/admin/episode-list-number-display/` | Removes the `#` prefix from the episodes list number column while keeping the same numeric content and table behavior |
+| Team Members List Refactor | `Implemented` | `.specs/admin/team-member-list-refactor/` | Replaces the `/team-members` placeholder with the real admin team members list flow backed by the backend list endpoint. |
+| Team Members Editor | `Implemented — manual backend acceptance pending` | `.specs/admin/team-member-edit-refactor/` | Delivers create and edit workflows for `/team-members/new` and `/team-members/[id]/edit` without changing the implemented Team Members list. |
 
 ### `platform`
 

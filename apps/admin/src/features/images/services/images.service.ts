@@ -13,6 +13,7 @@ export const ACCEPTED_IMAGE_MIME_TYPES = [
 export type AcceptedImageMimeType = (typeof ACCEPTED_IMAGE_MIME_TYPES)[number];
 
 export type UploadedImage = { imageUrl: string };
+type UploadImageFolder = "episodes" | "teamMembers";
 
 type UploadResponseEnvelope = {
   ok?: boolean;
@@ -87,7 +88,13 @@ const fileToDataUrl = (file: File): Promise<string> =>
     reader.readAsDataURL(file);
   });
 
-export const uploadEpisodeImage = async (file: File): Promise<UploadedImage> => {
+const uploadImage = async ({
+  file,
+  imageFolder
+}: {
+  file: File;
+  imageFolder: UploadImageFolder;
+}): Promise<UploadedImage> => {
   const base64 = await fileToDataUrl(file);
 
   const response = await fetchProtectedAdminRoute("/api/admin/images/upload", {
@@ -96,7 +103,7 @@ export const uploadEpisodeImage = async (file: File): Promise<UploadedImage> => 
     body: JSON.stringify({
       base64,
       fileName: file.name,
-      imageFolder: "episodes"
+      imageFolder
     })
   });
 
@@ -119,3 +126,9 @@ export const uploadEpisodeImage = async (file: File): Promise<UploadedImage> => 
 
   return { imageUrl };
 };
+
+export const uploadEpisodeImage = async (file: File): Promise<UploadedImage> =>
+  uploadImage({ file, imageFolder: "episodes" });
+
+export const uploadTeamMemberImage = async (file: File): Promise<UploadedImage> =>
+  uploadImage({ file, imageFolder: "teamMembers" });

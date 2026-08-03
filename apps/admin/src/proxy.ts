@@ -189,6 +189,7 @@ export const config = {
     "/dashboard/:path*",
     "/episodes/:path*",
     "/banners/:path*",
+    "/team-members/:path*",
     "/settings/:path*",
     "/login"
   ]

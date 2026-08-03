@@ -1,0 +1,271 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Debuggers List - CafeDebug</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Cabinet+Grotesk:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            background-color: #FAFAFA;
+            color: #1A1A1A;
+        }
+        h1, h2, h3, h4, h5, h6, .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shadow-soft {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+        .focus-ring {
+            transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        .focus-ring:focus-within {
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+            border-color: #FF6B35;
+        }
+        .table-row-hover {
+            transition: background-color 0.15s ease-in-out;
+        }
+        .table-row-hover:hover {
+            background-color: #FAFAFA;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #EAEAEA;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D1D1D1;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FF6B35",
+                        "background-light": "#FAFAFA",
+                        "background-dark": "#0F0F11",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#18181B",
+                        "text-light": "#1A1A1A",
+                        "text-dark": "#F4F4F5",
+                        "muted-light": "#878787",
+                        "muted-dark": "#A1A1AA",
+                        "border-light": "#EAEAEA",
+                        "border-dark": "#27272A"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Cabinet Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light text-text-light antialiased flex h-screen overflow-hidden">
+<!-- Shared SideNavBar -->
+<div class="relative flex h-full w-60 flex-col bg-surface-light border-r border-border-light z-10 shrink-0">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2 pt-2">
+<div class="bg-primary text-white flex items-center justify-center rounded-lg size-10 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">mic</span>
+</div>
+<div class="flex flex-col">
+<h1 class="font-display text-text-light text-base font-bold leading-tight">Cafe Debug</h1>
+<p class="text-muted-light text-xs font-medium leading-none mt-0.5 tracking-wide uppercase">Admin</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-light hover:bg-gray-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted-light group-hover:text-primary transition-colors">home</span>
+<span class="font-body text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-light hover:bg-gray-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted-light group-hover:text-primary">mic</span>
+<span class="font-body text-sm font-medium">Episodes</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-light hover:bg-gray-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted-light group-hover:text-primary">campaign</span>
+<span class="font-body text-sm font-medium">Banners</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group bg-orange-50 text-primary font-medium relative border-l-2 border-primary" href="#">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">bug_report</span>
+<span class="font-body text-sm font-semibold">Debuggers</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-light hover:bg-gray-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted-light group-hover:text-primary transition-colors">group</span>
+<span class="font-body text-sm font-medium">Users</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-light hover:bg-gray-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted-light group-hover:text-primary transition-colors">settings</span>
+<span class="font-body text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- User Profile Bottom -->
+<div class="mt-auto border-t border-border-light pt-4 px-2">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="size-8 rounded-full border border-border-light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4LcY3IwkilbPEDn5sfyMsRa1RYKLxjzYxJ0isEMNhL4jYSktZBYmaAichvrgqQU3T9m12yxYwddDNRN1Lxwe-4O8-DyiqSZ-i2zNFJ9czK4Tl8b6YXonDQBiYKd0N8X1HSBsR9uCgCasOiTAwb5jjDMLIPp5jqKvwWloNEdeMAI6ywnd6Goila23k4vafPwrPZMvx2Jxj_reK1r77HuzYqGjS6jLhEidtbvwUzdHSbc8iKhHuyZ65xf2kAoU84fKPSPgw1BdWLl4">
+<div class="flex flex-col overflow-hidden">
+<span class="text-sm font-medium text-text-light truncate">Alice Admin</span>
+<span class="text-xs text-muted-light truncate">alice@cafedebug.com</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-y-auto w-full relative">
+<div class="max-w-full mx-auto px-8 py-10 flex flex-col gap-8">
+<!-- Header Section -->
+<header class="flex items-center justify-between w-full">
+<div class="flex flex-col gap-1">
+<h2 class="font-display text-text-light text-[32px] font-bold leading-tight">Debuggers</h2>
+<p class="text-muted-light font-body text-sm">Manage, edit, and publish your podcast content.</p>
+</div>
+<button class="bg-primary hover:bg-[#E55A25] text-white font-display font-semibold text-sm h-10 px-5 rounded-lg flex items-center gap-2 transition-colors shadow-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    New Debugger</button>
+</header>
+<!-- Search Section -->
+<div class="flex w-full bg-surface-light rounded-lg shadow-soft border border-border-light focus-ring h-12 relative overflow-hidden items-center px-4">
+<span class="material-symbols-outlined text-muted-light mr-3">search</span>
+<input class="w-full h-full bg-transparent border-none outline-none font-body text-base text-text-light placeholder:text-muted-light focus:ring-0" placeholder="Search debuggers by name, role or email..." type="text">
+</div>
+<!-- Data Table Section -->
+<div class="bg-surface-light rounded-lg border border-border-light shadow-soft overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[1000px]">
+<thead>
+<tr class="border-b border-border-light bg-gray-50/50">
+<th class="py-4 px-6 font-display font-semibold text-xs text-muted-light uppercase tracking-wider w-16">Photo</th>
+<th class="py-4 px-6 font-display font-semibold text-xs text-muted-light uppercase tracking-wider">Name &amp; Email</th>
+<th class="py-4 px-6 font-display font-semibold text-xs text-muted-light uppercase tracking-wider">Role</th>
+<th class="py-4 px-6 font-display font-semibold text-xs text-muted-light uppercase tracking-wider">Socials</th>
+<th class="py-4 px-6 font-display font-semibold text-xs text-muted-light uppercase tracking-wider">Status</th>
+<th class="py-4 px-6 font-display font-semibold text-xs text-muted-light uppercase tracking-wider">Created</th>
+<th class="py-4 px-6 font-display font-semibold text-xs text-muted-light uppercase tracking-wider">Updated</th>
+<th class="py-4 px-6 font-display font-semibold text-xs text-muted-light uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body divide-y divide-border-light">
+<!-- Row 1: Jessica Nathany -->
+<tr class="table-row-hover group">
+<td class="py-4 px-6">
+<div class="size-10 rounded-lg overflow-hidden border border-border-light bg-gray-50 flex items-center justify-center shrink-0">
+<img alt="Jéssica Nathany" class="size-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsfUXE1IamWkwzAC8nNjhhjQFpLs731aArwH_WEOGg-ubQkwOvdZ-pseER80ABfFot78PfVcFigjO5zsei7oCRKpF-hbL6Qt7T5neaXzbnx3xxkRD50XaylakzTmN3TnlUV2zK6pq9kj-9wSS_0r2yDLl1oUy5qjz0lWH9dvJKfh5JP39kSWnU1bD199r3eba1P8NMNZIQjlax1Si-nI90pBhQ_-CN56PPzbhgCqvaa9HNIp2vaxheGHoikQGfjmczXjfZ-pl8dFeD">
+</div>
+</td>
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-text-light font-bold text-sm group-hover:text-primary transition-colors">Jéssica Nathany</span>
+<span class="text-muted-light text-xs mt-0.5">teste@test.com</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2 py-1 rounded bg-gray-100 text-gray-700 text-xs font-medium">Host</span>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<a class="text-muted-light hover:text-[#24292F] transition-colors" href="https://github.com/JessicaNathany" target="_blank">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.041-1.412-4.041-1.412-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+</a>
+<a class="text-muted-light hover:text-[#0A66C2] transition-colors" href="https://www.linkedin.com/in/jessica-nathany-38260868/" target="_blank">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+</a>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-bold font-display uppercase tracking-wider bg-green-50 text-green-600 border border-green-200">ACTIVE</span>
+</td>
+<td class="py-4 px-6 text-muted-light text-xs">Jan 12, 2024</td>
+<td class="py-4 px-6 text-muted-light text-xs">Oct 24, 2024</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 text-muted-light hover:text-primary hover:bg-orange-50 rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-muted-light hover:text-red-500 hover:bg-red-50 rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Placeholder -->
+<tr class="table-row-hover group">
+<td class="py-4 px-6">
+<div class="size-10 rounded-lg overflow-hidden border border-border-light bg-gray-50 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-muted-light">person</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-text-light font-bold text-sm group-hover:text-primary transition-colors">Eduardo Santos</span>
+<span class="text-muted-light text-xs mt-0.5">eduardo@cafedebug.com</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2 py-1 rounded bg-gray-100 text-gray-700 text-xs font-medium">Guest</span>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<a class="text-muted-light hover:text-text-light transition-colors" href="#"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.041-1.412-4.041-1.412-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-bold font-display uppercase tracking-wider bg-red-50 text-red-600 border border-red-200">INACTIVE</span>
+</td>
+<td class="py-4 px-6 text-muted-light text-xs">Feb 20, 2024</td>
+<td class="py-4 px-6 text-muted-light text-xs">Feb 20, 2024</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 text-muted-light hover:text-primary hover:bg-orange-50 rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-muted-light hover:text-red-500 hover:bg-red-50 rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination / Footer area -->
+<div class="px-6 py-4 border-t border-border-light bg-gray-50/30 flex items-center justify-between">
+<span class="text-sm text-muted-light">Showing 1 to 2 of 2 debuggers</span>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded-md text-muted-light hover:text-text-light hover:bg-gray-100 disabled:opacity-50 transition-colors" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="p-1 rounded-md text-muted-light hover:text-text-light hover:bg-gray-100 disabled:opacity-50 transition-colors" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+</body></html>

@@ -20,8 +20,6 @@ export interface TeamMemberRequest {
   /** @nullable */
   gitHubUrl?: string | null;
   /** @nullable */
-  instagramUrl?: string | null;
-  /** @nullable */
   linkedInUrl?: string | null;
   /** @nullable */
   profilePhotoUrl?: string | null;

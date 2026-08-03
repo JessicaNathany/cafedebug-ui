@@ -6,6 +6,9 @@ export const appRoutes = {
   banners: "/banners",
   newBanner: "/banners/new",
   editBanner: (id: string) => `/banners/${id}/edit`,
+  teamMembers: "/team-members",
+  newTeamMember: "/team-members/new",
+  editTeamMember: (id: string) => `/team-members/${id}/edit`,
   dashboard: "/dashboard",
   settings: "/settings"
 } as const;

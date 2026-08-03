@@ -2733,10 +2733,6 @@
             "type": "string",
             "nullable": true
           },
-          "instagramUrl": {
-            "type": "string",
-            "nullable": true
-          },
           "linkedInUrl": {
             "type": "string",
             "nullable": true
@@ -2792,10 +2788,6 @@
             "nullable": true
           },
           "gitHubUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "instagramUrl": {
             "type": "string",
             "nullable": true
           },
