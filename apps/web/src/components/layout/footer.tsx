@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 import { ArrowRight } from "lucide-react";
 
+import { cn } from "@/lib/utils";
+
 const footerColumns = [
   { title: "Conteúdo", links: ["Episódios", "Notícias", "Eventos", "Vagas"] },
   { title: "Comunidade", links: ["Time", "Discord", "Sobre", "Contato"] },
@@ -55,9 +57,16 @@ const socialLinks: Array<{ icon: ReactNode; label: string }> = [
 const iconButtonClass =
   "inline-flex size-9 items-center justify-center rounded-pill bg-secondary text-muted-foreground transition-colors hover:text-secondary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:cursor-default disabled:bg-secondary disabled:text-muted-foreground disabled:opacity-100 [&_svg]:size-4 [&_svg]:fill-current";
 
-export function Footer() {
+export type FooterVariant = "beta" | "fixed-dark";
+
+export function Footer({ variant = "fixed-dark" }: { variant?: FooterVariant }) {
   return (
-    <footer className="relative dark flex w-full flex-col gap-10 border-t border-border bg-card px-4 pb-8 pt-14 text-card-foreground sm:px-6 md:px-10 xl:h-[330px] xl:border-t-0 xl:before:pointer-events-none xl:before:absolute xl:before:inset-x-0 xl:before:top-0 xl:before:h-px xl:before:bg-border">
+    <footer
+      className={cn(
+        variant === "fixed-dark" && "dark",
+        "relative flex w-full flex-col gap-10 border-t border-border bg-card px-4 pb-8 pt-14 text-card-foreground sm:px-6 md:px-10 xl:h-[330px] xl:border-t-0 xl:before:pointer-events-none xl:before:absolute xl:before:inset-x-0 xl:before:top-0 xl:before:h-px xl:before:bg-border"
+      )}
+    >
       <div className="grid w-full gap-10 md:grid-cols-2 xl:h-36 xl:w-[calc(100vw-5rem)] xl:flex xl:justify-between xl:gap-16">
         <section className="flex max-w-80 flex-col gap-4 xl:w-80 xl:max-w-none">
           <p className="font-primary text-[22px] font-bold leading-none">

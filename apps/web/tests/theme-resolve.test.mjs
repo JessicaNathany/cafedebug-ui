@@ -41,3 +41,24 @@ test("the client theme provider preserves the server-resolved preference", () =>
   assert.match(themeProviderSource, /initialTheme: ThemePref/);
   assert.match(themeProviderSource, /defaultTheme=\{initialTheme\}/);
 });
+
+test("the beta theme toggle renders from the server theme before hydration", () => {
+  const source = readSource("src/components/theme-toggle.tsx");
+
+  assert.match(source, /export function ThemeToggle\(\{ initialTheme \}: \{ initialTheme: ThemePref \}\)/);
+  assert.match(source, /const serverResolvedTheme = initialTheme === "light" \? "light" : "dark"/);
+  assert.match(source, /const isDark = \(resolvedTheme \?\? serverResolvedTheme\) === "dark"/);
+  assert.doesNotMatch(source, /useEffect|useState|mounted/);
+});
+
+test("the beta theme toggle uses exact icons, destination labels, and cd-theme persistence", () => {
+  const source = readSource("src/components/theme-toggle.tsx");
+
+  assert.match(source, /aria-label=\{isDark \? "Ativar tema claro" : "Ativar tema escuro"\}/);
+  assert.match(source, /isDark \? <Sun aria-hidden size=\{18\} \/> : <Moon aria-hidden size=\{18\} \/>/);
+  assert.match(source, /THEME_COOKIE/);
+  assert.match(source, /Max-Age=31536000; SameSite=Lax/);
+  assert.match(source, /setTheme\(nextTheme\)/);
+  assert.match(source, /size="icon"/);
+  assert.match(source, /variant="secondary"/);
+});

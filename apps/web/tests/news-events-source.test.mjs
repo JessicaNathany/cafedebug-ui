@@ -7,7 +7,7 @@ const root = process.cwd();
 const readSource = (file) => readFileSync(join(root, file), "utf8");
 
 test("G09 News and Events composes the inspected Pencil layout from approved feature components", () => {
-  const source = readSource("src/features/episodes/components/home-page.tsx");
+  const source = readSource("src/features/homepage/components/homepage-v2.tsx");
   const sectionSource = source.match(/<section[^>]*id="noticias">[\s\S]*?<\/section>/)?.[0] ?? "";
 
   assert.match(source, /import \{ NewsCard \} from "\.\.\/\.\.\/news\/components\/news-card"/);

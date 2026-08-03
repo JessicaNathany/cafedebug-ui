@@ -39,7 +39,7 @@ export function EpisodeCard({ episode }: { episode: Episode }) {
         <h2 className="font-secondary text-lg font-semibold leading-[1.35] text-foreground">{episode.title}</h2>
         <p className="font-secondary text-sm leading-[1.55] text-muted-foreground">{episode.summary}</p>
         <div className="flex items-center gap-2.5 pt-1.5">
-          <Image alt="" className="size-7 rounded-pill object-cover" height={28} sizes="28px" src={episode.guestAvatarUrl} width={28} />
+          <Image alt={episode.guestName} className="size-7 rounded-pill object-cover" height={28} sizes="28px" src={episode.guestAvatarUrl} width={28} />
           <p className="font-secondary text-[13px] text-muted-foreground">com {episode.guestName}</p>
         </div>
       </div>

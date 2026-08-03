@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Geist, JetBrains_Mono } from "next/font/google";
 
-import { Footer } from "@/components/layout/footer";
-import { Header } from "@/components/layout/header";
 import { MiniPlayer } from "@/features/player/mini-player";
 import { env } from "@/lib/env";
 import { organizationJsonLd, podcastSeriesJsonLd } from "@/lib/seo/jsonld";
@@ -34,10 +32,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html className={`${resolveInitialThemeClass(theme)} ${geist.variable} ${jetBrainsMono.variable}`} lang="pt-BR" suppressHydrationWarning>
       <body>
         <Providers initialTheme={theme}>
-          <Header />
           {children}
           <MiniPlayer />
-          <Footer />
 
           <script dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }} type="application/ld+json" />
           <script dangerouslySetInnerHTML={{ __html: JSON.stringify(podcastSeries) }} type="application/ld+json" />
