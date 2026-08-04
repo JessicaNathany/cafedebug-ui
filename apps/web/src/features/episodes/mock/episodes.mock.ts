@@ -76,5 +76,62 @@ export const mockEpisodes: Episode[] = [
     guestRole: "Especialista em desenvolvimento assistido por IA",
     showNotesHtml:
       "<p>Discutimos limites e oportunidades de IA no dia a dia de engenharia, com foco em validação e contexto de domínio.</p><p>Fechamos com padrões para revisão de código assistida e métricas de qualidade.</p>"
+  },
+  {
+    slug: "tdd-sem-dogma",
+    number: 138,
+    category: "TESTES",
+    title: "TDD sem dogma: o que realmente vale a pena testar",
+    summary: "Onde investir esforço em testes e onde parar de perder tempo.",
+    publishedAt: "2026-05-15",
+    dateLabel: "15 Mai 2026",
+    durationMinutes: 39,
+    durationLabel: "39 min",
+    plays: "5.8k reproduções",
+    audioUrl: "/mock/sample-audio.mp3",
+    artworkUrl: "/mock/episode-138.jpg",
+    guestName: "Camila Ferreira",
+    guestAvatarUrl: "/mock/guest-camila.jpg",
+    guestRole: "Especialista em qualidade de software",
+    showNotesHtml:
+      "<p>Conversamos sobre onde testes automatizados geram confiança e onde a busca por cobertura deixa de entregar valor.</p><p>Camila compartilha critérios práticos para equilibrar TDD, integração e velocidade de entrega.</p>"
+  },
+  {
+    slug: "de-pleno-a-senior",
+    number: 137,
+    category: "CARREIRA",
+    title: "De pleno a sênior: o que muda de verdade",
+    summary: "As habilidades que ninguém te conta na hora da promoção.",
+    publishedAt: "2026-05-08",
+    dateLabel: "8 Mai 2026",
+    durationMinutes: 58,
+    durationLabel: "58 min",
+    plays: "6.5k reproduções",
+    audioUrl: "/mock/sample-audio.mp3",
+    artworkUrl: "/mock/episode-137.jpg",
+    guestName: "Diego Andrade",
+    guestAvatarUrl: "/mock/guest-diego.jpg",
+    guestRole: "Líder de engenharia",
+    showNotesHtml:
+      "<p>Diego explica como autonomia, influência e leitura de contexto diferenciam senioridade de tempo de carreira.</p><p>A conversa traz exemplos de decisões técnicas, mentoria e comunicação entre times.</p>"
+  },
+  {
+    slug: "dev-e-produto",
+    number: 136,
+    category: "PRODUTO",
+    title: "Dev e produto: como parar de brigar e começar a construir",
+    summary: "Alinhando engenharia e produto sem perder velocidade.",
+    publishedAt: "2026-05-01",
+    dateLabel: "1 Mai 2026",
+    durationMinutes: 44,
+    durationLabel: "44 min",
+    plays: "4.9k reproduções",
+    audioUrl: "/mock/sample-audio.mp3",
+    artworkUrl: "/mock/episode-136.jpg",
+    guestName: "Juliana Prado",
+    guestAvatarUrl: "/mock/guest-juliana.jpg",
+    guestRole: "Líder de produto digital",
+    showNotesHtml:
+      "<p>Exploramos como engenharia e produto podem construir contexto compartilhado antes de discutir soluções.</p><p>Juliana apresenta rituais leves para alinhar descoberta, entrega e decisões de escopo.</p>"
   }
 ];

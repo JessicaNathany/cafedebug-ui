@@ -7,7 +7,7 @@ const root = process.cwd();
 const readSource = (file) => readFileSync(join(root, file), "utf8");
 
 test("G07 Recent Episodes preserves the Pencil band, header, responsive grid, and wide desktop cap", () => {
-  const source = readSource("src/features/episodes/components/home-page.tsx");
+  const source = readSource("src/features/homepage/components/homepage-v2.tsx");
   const recentEpisodesSource = source.match(/<section className="w-full bg-background[\s\S]*?<\/section>/)?.[0] ?? "";
 
   assert.match(recentEpisodesSource, /w-full bg-background px-4 py-18[^"]*lg:px-16/);

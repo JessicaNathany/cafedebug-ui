@@ -4,12 +4,12 @@ import { join } from "node:path";
 import { test } from "node:test";
 
 const root = process.cwd();
-const source = readFileSync(join(root, "src/features/episodes/components/home-page.tsx"), "utf8");
+const source = readFileSync(join(root, "src/features/homepage/components/homepage-v2.tsx"), "utf8");
 const formSource = readFileSync(join(root, "src/features/episodes/components/newsletter-form.tsx"), "utf8");
 const newsletterSource = source.match(/<section className="dark box-border w-full bg-background[\s\S]*?id="newsletter">[\s\S]*?<\/section>/)?.[0] ?? "";
 
 test("G10 Newsletter matches the Pencil dark-locked card and subscription form", () => {
-  assert.match(source, /import \{ NewsletterForm \} from "\.\/newsletter-form"/);
+  assert.match(source, /import \{ NewsletterForm \} from "\.\.\/\.\.\/episodes\/components\/newsletter-form"/);
   assert.match(source, /ArrowRight, Calendar, MapPin, Mail/);
   assert.match(newsletterSource, /className="dark box-border w-full bg-background px-4 py-16 text-foreground sm:px-6 sm:py-20 md:px-10 lg:h-\[574px\] lg:px-16 lg:py-20"/);
   assert.match(newsletterSource, /mx-auto flex w-full max-w-\[1312px\] flex-col items-center gap-5 rounded-\[var\(--radius-m\)\] bg-card p-6 ring-1 ring-inset ring-border sm:p-12 lg:w-\[calc\(100vw-8rem\)\] lg:h-\[414px\] lg:p-14 lg:px-12/);

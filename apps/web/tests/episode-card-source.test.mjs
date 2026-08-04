@@ -24,7 +24,7 @@ test("G06 episode card preserves the FGSFI anatomy with token-backed theme behav
   assert.match(source, /p-5/);
   assert.match(source, /gap-2\.5/);
   assert.match(source, /size-7 rounded-pill object-cover/);
-  assert.match(source, /alt=""/);
+  assert.match(source, /alt=\{episode\.guestName\}/);
   assert.match(source, /guestAvatarUrl/);
   assert.match(source, /Reproduzir episódio \$\{episode\.number\}/);
   assert.doesNotMatch(source, /#[0-9a-fA-F]{3,8}/, "episode-card source should keep colors token-backed");

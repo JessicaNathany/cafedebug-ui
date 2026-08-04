@@ -123,14 +123,20 @@ to these values before/while building. Specifically:
 4. **Buttons are pill-shaped** (`--radius-pill`), not the `0.5rem` `radius-button` in `design.md`.
 5. **Icon library is `lucide`** everywhere (matches `design.md` §9.1 `lucide-react`).
 
-### 1.5 Theme model (Slice-1 pages) — always-dark chrome, per-page theming  `[Slice 1]`
+### 1.5 Theme model — launch beta plus Slice-1 pages
 
-**Shared invariant (verified on both Slice-1 pages): the Site Header and Site Footer are dark in
-both themes.** Beyond that, the two pages theme **differently** — Home is dark-first with only two
-content bands flipping; Episode Detail is a conventional whole-page flip with the chrome pinned
-dark. Build the header/footer as always-dark chrome; treat the rest per page below.
+The implemented Slice-1/website-2.0 screens use always-dark chrome. The launch Homepage Beta is a
+new exception: its header, hero, content, newsletter, and footer all follow the root `Mode` axis.
+Preserve both shell variants instead of rewriting the old homepage or episode-detail contracts.
 
-#### Home — dark-first, content-band theming (`tWWON` dark / `k71CIc` light)
+#### Homepage Beta — whole-page flip (`fm0R5` dark / `B3qM0p` light)  `[Launch]`
+
+The implementation reference is the inner `1440x2794` page: `b3Kzt` dark / `F0E1s` light.
+Every visible band follows the root theme. Light uses `--background` (`#F2F3F0`) for page bands
+and `--card` (`#FFFFFF`) for elevated surfaces; “all white” means no forced-dark bands, not one
+literal fill value. The beta route contract lives in `.specs/web/homepage-beta-launch/`.
+
+#### Homepage V2 — dark-first, content-band theming (`tWWON` dark / `k71CIc` light)  `[Future 2.0]`
 
 The design ships **two Homepage frames**: a fully **dark** page (`tWWON`) and a **"Light Content"**
 page (`k71CIc`). Diffed section-by-section, the *only* difference is **two content bands** — the
@@ -222,15 +228,19 @@ Buttons (`Button/Default` `ZETEA`, `Button/Outline` `4x7RU`, `Button/Secondary`,
   center-aligned.
 - **Left:** wordmark **"Café"** (`--foreground`) + **"Debug"** (`--primary`), `--font-primary`
   20px/700 — then nav (`--font-secondary` 14px, gap 28): **`Início`** · **`Episódios`** ·
-  **`Notícias`** · **`Eventos`** · **`Vagas`** · **`Time`** · **`Sobre`**. The current page's item
+  **`Time`** · **`Sobre`**. The current page's item
   is `--foreground`/600; the rest are `--muted-foreground`.
 - **Right:** 40×40 round search button (`--secondary`, lucide `search`) + **`Assinar`** pill
   button (`--primary`, lucide `mic`).
 
 > **Slice-1 nav caveat.** `spec.md` FR-6/AC-17 forbids links to non-existent routes. In Slice 1
-> only `/` and `/episodes/[slug]` exist. Render the full 7-item nav visually but point only
+> only `/` and `/episodes/[slug]` exist. Point only
 > `Início`→`/` (and an in-page `#episodios` anchor); keep the other items as **disabled/inert**
 > placeholders (no `href`) until their routes ship, or gate them behind a feature flag.
+
+> **Responsive navigation extension.** `.specs/web/responsive-navigation-menu/` supersedes the
+> original below-`lg` hidden-nav behavior. Compact contracts: beta Light closed/open `sYLaO` / `p4ky3`,
+> beta Dark closed/open `jHEKy` / `wahud`, and fixed-dark closed/open `l3At9Z` / `fWEbw`.
 
 ### 3.2 Site Footer — `LSgoB`  `[Slice 1]`
 
@@ -239,7 +249,7 @@ Buttons (`Button/Default` `ZETEA`, `Button/Outline` `4x7RU`, `Button/Secondary`,
   1. **Brand** (w320): wordmark + tagline **"Conversas profundas sobre carreira, tecnologia e a
      comunidade de desenvolvimento."** + 5 social pills (36×36): `github`, `twitter`, `youtube`,
      `linkedin`, `instagram`.
-  2. **`Conteúdo`**: `Episódios`, `Notícias`, `Eventos`, `Vagas`.
+  2. **`Conteúdo`**: `Episódios`, `Notícias — Em breve`, `Eventos — Em breve`, `Vagas — Em breve`.
   3. **`Comunidade`**: `Time`, `Discord`, `Sobre`, `Contato`.
   4. **`Empresa`**: `Publicidade`, `Newsletter`, `Imprensa`, `RSS Feed`.
   5. **Newsletter mini** (w300): title **"Newsletter semanal"**, desc **"As melhores discussões
@@ -290,7 +300,7 @@ Screens exist in both themes; the "Light Content" duplicates are structurally id
 `Mode` axis differs). **Build each page once as a themed component set** — never two pages.
 Node IDs below are the **dark-theme** frames.
 
-### 4.1 Homepage — `tWWON`  `[Slice 1]`
+### 4.1 Homepage V2 — `tWWON`  `[Future 2.0]`
 
 > **Theme:** dark-first with section-scoped theming — header, hero, newsletter, and footer are
 > **always dark**; only **Recent Episodes** and **News & Events** follow the light/dark toggle
@@ -327,6 +337,19 @@ Node IDs below are the **dark-theme** frames.
 > G01-G14 completed the Pencil-backed News & Events section and newsletter form as visual,
 > mock-data/UI-only surfaces. Dedicated News, Events, and newsletter-submission workflows remain
 > deferred to their respective route and integration specs.
+
+> **Website 2.0 preservation.** `tWWON` / `k71CIc` and the implemented G01-G14 composition remain
+> the future website 2.0 contract. The launch `/` route is governed by the Homepage Beta nodes
+> below; implementation must retain the 2.0 components and tests behind a versioned boundary.
+
+### 4.1.1 Homepage Beta — `b3Kzt` dark / `F0E1s` light  `[Launch]`
+
+The visible desktop stack is Header 72px, Hero 734px, Recent Episodes 1084px, Newsletter 574px,
+and Footer 330px (2794px total). The Hero uses a 728x574 four-slide banner carousel beside the
+existing 520x559 player. Recent Episodes renders EP 141 through EP 136 as a 3x2 grid. News &
+Events nodes `R2MZY` / `FcEf0` remain in Pencil but are disabled. Header action `Assinar` is also
+retained in the reusable Header but disabled in beta instances in favor of the 40px Sun/Moon
+theme control. See `.specs/web/homepage-beta-launch/design.md` for the complete screen contract.
 
 ### 4.2 Episode Detail — `VkDts`  `[Slice 1]`
 
