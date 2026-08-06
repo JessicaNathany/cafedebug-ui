@@ -1,8 +1,10 @@
-import type { Episode } from "../types";
-import { listEpisodes } from "./list-episodes";
+import type { Episode, EpisodeDetail } from "../types";
+import { mockEpisodeCatalog } from "../services/episode-catalog.service";
 
 export async function getEpisode(slug: string): Promise<Episode | null> {
-  // TODO(api): replace mock with @cafedebug/api-client + "use cache"/cacheTag.
-  const episodes = await listEpisodes();
-  return episodes.find((episode) => episode.slug === slug) ?? null;
+  return mockEpisodeCatalog.getBySlug(slug);
+}
+
+export async function getEpisodeDetail(slug: string): Promise<EpisodeDetail | null> {
+  return mockEpisodeCatalog.getDetailBySlug(slug);
 }

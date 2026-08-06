@@ -34,7 +34,7 @@ export function Header(props: HeaderProps = {}) {
 
   return (
     <header className={cn(!isBeta && "dark", "relative h-18 border-b border-border bg-background text-foreground")}>
-      <div className="flex h-full w-full items-center justify-between gap-4 px-4 sm:px-6 md:w-screen md:px-10">
+      <div className="flex h-full w-full items-center justify-between gap-4 px-4 sm:px-6 md:px-10">
         <div className="flex min-w-0 items-center gap-3 lg:gap-10">
           <Link className="inline-flex h-10 shrink-0 items-center font-primary text-xl font-bold leading-none text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href="/">
             Café<span className="text-primary">Debug</span>

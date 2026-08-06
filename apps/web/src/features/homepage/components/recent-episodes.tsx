@@ -13,7 +13,7 @@ export function RecentEpisodes({ episodes }: { episodes: Episode[] }) {
             <h2 className="font-secondary text-[30px] font-bold leading-[1.3] tracking-normal text-foreground">Episódios Recentes</h2>
             <p className="font-secondary text-[15px] leading-[19px] text-muted-foreground">Novas conversas toda semana com a comunidade dev.</p>
           </div>
-          <Link className="relative inline-flex h-10 items-end gap-1.5 font-secondary text-sm font-semibold leading-[18px] text-primary after:absolute after:-inset-3 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href="#episodios">
+          <Link className="relative inline-flex h-10 items-end gap-1.5 font-secondary text-sm font-semibold leading-[18px] text-primary after:absolute after:-inset-3 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href="/episodes">
             Ver todos
             <ArrowRight aria-hidden size={16} />
           </Link>

@@ -44,7 +44,7 @@ export async function HomePage() {
             </p>
             <div className="flex flex-wrap items-center gap-3.5 pt-1.5">
               <PlayButton className="h-13 w-[174px] gap-2.5 px-7 font-secondary text-base font-semibold leading-6" episode={featured} iconSize={18} label="Ouvir agora" />
-              <Link className="inline-flex h-13 w-[226px] shrink-0 whitespace-nowrap items-center justify-center rounded-pill border border-border bg-background px-7 font-secondary text-base font-medium leading-6 text-foreground transition-colors hover:bg-secondary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href="#episodios">
+              <Link className="inline-flex h-13 w-[226px] shrink-0 whitespace-nowrap items-center justify-center rounded-pill border border-border bg-background px-7 font-secondary text-base font-medium leading-6 text-foreground transition-colors hover:bg-secondary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href="/episodes">
                 Ver todos os episódios
               </Link>
             </div>
@@ -72,7 +72,7 @@ export async function HomePage() {
               <h2 className="font-secondary text-[30px] font-bold leading-[1.3] tracking-normal text-foreground">Episódios Recentes</h2>
               <p className="font-secondary text-[15px] leading-[19px] text-muted-foreground">Novas conversas toda semana com a comunidade dev.</p>
             </div>
-            <Link className="relative inline-flex h-10 items-end gap-1.5 font-secondary text-sm font-semibold leading-[18px] text-primary after:absolute after:-inset-3 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href="#episodios">
+            <Link className="relative inline-flex h-10 items-end gap-1.5 font-secondary text-sm font-semibold leading-[18px] text-primary after:absolute after:-inset-3 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href="/episodes">
               Ver todos
               <ArrowRight aria-hidden size={16} />
             </Link>
