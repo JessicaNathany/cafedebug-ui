@@ -7026,36 +7026,6 @@
                 },
                 {
                   "type": "text",
-                  "id": "npsXW",
-                  "name": "Notícias",
-                  "fill": "$--muted-foreground",
-                  "content": "Notícias",
-                  "fontFamily": "$--font-secondary",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "R3Wv2",
-                  "name": "Eventos",
-                  "fill": "$--muted-foreground",
-                  "content": "Eventos",
-                  "fontFamily": "$--font-secondary",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "x4biy",
-                  "name": "Vagas",
-                  "fill": "$--muted-foreground",
-                  "content": "Vagas",
-                  "fontFamily": "$--font-secondary",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
                   "id": "tPZw2",
                   "name": "Time",
                   "fill": "$--muted-foreground",
@@ -7390,9 +7360,9 @@
                 {
                   "type": "text",
                   "id": "q1R1BG",
-                  "name": "Notícias",
+                  "name": "Notícias — Em breve",
                   "fill": "$--muted-foreground",
-                  "content": "Notícias",
+                  "content": "Notícias — Em breve",
                   "fontFamily": "$--font-secondary",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -7400,9 +7370,9 @@
                 {
                   "type": "text",
                   "id": "slZN3",
-                  "name": "Eventos",
+                  "name": "Eventos — Em breve",
                   "fill": "$--muted-foreground",
-                  "content": "Eventos",
+                  "content": "Eventos — Em breve",
                   "fontFamily": "$--font-secondary",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -7410,9 +7380,9 @@
                 {
                   "type": "text",
                   "id": "rznhe",
-                  "name": "Vagas",
+                  "name": "Vagas — Em breve",
                   "fill": "$--muted-foreground",
-                  "content": "Vagas",
+                  "content": "Vagas — Em breve",
                   "fontFamily": "$--font-secondary",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -17083,10 +17053,6 @@
                 "EifV2": {
                   "fill": "$--muted-foreground",
                   "fontWeight": "normal"
-                },
-                "x4biy": {
-                  "fill": "$--foreground",
-                  "fontWeight": "600"
                 }
               }
             },
@@ -18912,10 +18878,6 @@
                 "EifV2": {
                   "fill": "$--muted-foreground",
                   "fontWeight": "normal"
-                },
-                "R3Wv2": {
-                  "fill": "$--foreground",
-                  "fontWeight": "600"
                 }
               }
             },
@@ -34105,10 +34067,6 @@
                 "EifV2": {
                   "fill": "$--muted-foreground",
                   "fontWeight": "normal"
-                },
-                "x4biy": {
-                  "fill": "$--foreground",
-                  "fontWeight": "600"
                 }
               }
             },
@@ -35940,10 +35898,6 @@
                 "EifV2": {
                   "fill": "$--muted-foreground",
                   "fontWeight": "normal"
-                },
-                "R3Wv2": {
-                  "fill": "$--foreground",
-                  "fontWeight": "600"
                 }
               }
             },
@@ -47559,6 +47513,1297 @@
               "theme": {
                 "Mode": "Light"
               }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "sYLaO",
+      "x": 27200,
+      "y": -3351,
+      "name": "Compact Header — Beta Light / Closed",
+      "theme": {
+        "Mode": "Light"
+      },
+      "clip": true,
+      "width": 390,
+      "height": 72,
+      "fill": "$--background",
+      "stroke": "$--border",
+      "strokeWidth": {
+        "bottom": 1
+      },
+      "strokeAlignment": "inner",
+      "padding": [
+        0,
+        16
+      ],
+      "justifyContent": "space_between",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "c97pHX",
+          "name": "Left",
+          "gap": 12,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "y61uqc",
+              "name": "Logo",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "CzIvk",
+                  "name": "LogoCafe",
+                  "fill": "$--foreground",
+                  "content": "Café",
+                  "fontFamily": "$--font-primary",
+                  "fontSize": 20,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "qlUr0",
+                  "name": "LogoDebug",
+                  "fill": "$--primary",
+                  "content": "Debug",
+                  "fontFamily": "$--font-primary",
+                  "fontSize": 20,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "x48hEL",
+              "name": "Menu Trigger",
+              "width": 40,
+              "height": 40,
+              "fill": "$--secondary",
+              "cornerRadius": "$--radius-pill",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "c7t02f",
+                  "name": "Menu",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "menu",
+                  "library": "lucide",
+                  "fill": "$--secondary-foreground"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "K0bzo",
+          "name": "Right",
+          "gap": 14,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "sSYs4",
+              "name": "Search",
+              "width": 40,
+              "height": 40,
+              "fill": "$--secondary",
+              "cornerRadius": "$--radius-pill",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "S80giH",
+                  "name": "Search",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "search",
+                  "library": "lucide",
+                  "fill": "$--muted-foreground"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ytPQU",
+              "name": "Theme Toggle",
+              "width": 40,
+              "height": 40,
+              "fill": "$--secondary",
+              "cornerRadius": "$--radius-pill",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "K6mK30",
+                  "name": "Theme",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "moon",
+                  "library": "lucide",
+                  "fill": "$--secondary-foreground"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "jHEKy",
+      "x": 27200,
+      "y": -3199,
+      "name": "Compact Header — Beta Dark / Closed",
+      "theme": {
+        "Mode": "Dark"
+      },
+      "clip": true,
+      "width": 390,
+      "height": 72,
+      "fill": "$--background",
+      "stroke": "$--border",
+      "strokeWidth": {
+        "bottom": 1
+      },
+      "strokeAlignment": "inner",
+      "padding": [
+        0,
+        16
+      ],
+      "justifyContent": "space_between",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "yHwVC",
+          "name": "Left",
+          "gap": 12,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "TT9GN",
+              "name": "Logo",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "i91Ok",
+                  "name": "LogoCafe",
+                  "fill": "$--foreground",
+                  "content": "Café",
+                  "fontFamily": "$--font-primary",
+                  "fontSize": 20,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "lvgIA",
+                  "name": "LogoDebug",
+                  "fill": "$--primary",
+                  "content": "Debug",
+                  "fontFamily": "$--font-primary",
+                  "fontSize": 20,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "s1kF6a",
+              "name": "Menu Trigger",
+              "width": 40,
+              "height": 40,
+              "fill": "$--secondary",
+              "cornerRadius": "$--radius-pill",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "xxPkE",
+                  "name": "Menu",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "menu",
+                  "library": "lucide",
+                  "fill": "$--secondary-foreground"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "cjgyx",
+          "name": "Right",
+          "gap": 14,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "b87MDP",
+              "name": "Search",
+              "width": 40,
+              "height": 40,
+              "fill": "$--secondary",
+              "cornerRadius": "$--radius-pill",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "s6oeL",
+                  "name": "Search",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "search",
+                  "library": "lucide",
+                  "fill": "$--muted-foreground"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Y2pWjU",
+              "name": "Theme Toggle",
+              "width": 40,
+              "height": 40,
+              "fill": "$--secondary",
+              "cornerRadius": "$--radius-pill",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "rRGMV",
+                  "name": "Theme",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "sun",
+                  "library": "lucide",
+                  "fill": "$--secondary-foreground"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "l3At9Z",
+      "x": 27200,
+      "y": -3047,
+      "name": "Compact Header — Fixed Dark / Closed",
+      "theme": {
+        "Mode": "Dark"
+      },
+      "clip": true,
+      "width": 390,
+      "height": 72,
+      "fill": "$--background",
+      "stroke": "$--border",
+      "strokeWidth": {
+        "bottom": 1
+      },
+      "strokeAlignment": "inner",
+      "padding": [
+        0,
+        16
+      ],
+      "justifyContent": "space_between",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "G9IWc",
+          "name": "Left",
+          "gap": 12,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "cIKNS",
+              "name": "Logo",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "DN5QM",
+                  "name": "LogoCafe",
+                  "fill": "$--foreground",
+                  "content": "Café",
+                  "fontFamily": "$--font-primary",
+                  "fontSize": 20,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "zjaUT",
+                  "name": "LogoDebug",
+                  "fill": "$--primary",
+                  "content": "Debug",
+                  "fontFamily": "$--font-primary",
+                  "fontSize": 20,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "h2nVCG",
+              "name": "Menu Trigger",
+              "width": 40,
+              "height": 40,
+              "fill": "$--secondary",
+              "cornerRadius": "$--radius-pill",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "P7w9WH",
+                  "name": "Menu",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "menu",
+                  "library": "lucide",
+                  "fill": "$--secondary-foreground"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "QBVDZ",
+          "name": "Right",
+          "gap": 14,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "X06nK",
+              "name": "Search",
+              "width": 40,
+              "height": 40,
+              "fill": "$--secondary",
+              "cornerRadius": "$--radius-pill",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "irtZN",
+                  "name": "Search",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "search",
+                  "library": "lucide",
+                  "fill": "$--muted-foreground"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "aD1Lt",
+              "name": "Subscribe",
+              "height": 40,
+              "fill": "$--primary",
+              "cornerRadius": "$--radius-pill",
+              "gap": 8,
+              "padding": [
+                0,
+                18
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "uUEtA",
+                  "name": "Mic",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "mic",
+                  "library": "lucide",
+                  "fill": "$--primary-foreground"
+                },
+                {
+                  "type": "text",
+                  "id": "V0p4n",
+                  "name": "Label",
+                  "fill": "$--primary-foreground",
+                  "content": "Assinar",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "p4ky3",
+      "x": 27670,
+      "y": -3351,
+      "name": "Compact Header — Beta Light / Open",
+      "theme": {
+        "Mode": "Light"
+      },
+      "clip": true,
+      "width": 390,
+      "fill": "$--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "Y6vLum",
+          "name": "Header",
+          "theme": {
+            "Mode": "Light"
+          },
+          "clip": true,
+          "width": "fill_container",
+          "height": 72,
+          "fill": "$--background",
+          "stroke": "$--border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "strokeAlignment": "inner",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "BOgB8",
+              "name": "Left",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "fjGga",
+                  "name": "Logo",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "P4BCF",
+                      "name": "LogoCafe",
+                      "fill": "$--foreground",
+                      "content": "Café",
+                      "fontFamily": "$--font-primary",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "zGyU1",
+                      "name": "LogoDebug",
+                      "fill": "$--primary",
+                      "content": "Debug",
+                      "fontFamily": "$--font-primary",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "k23ZQE",
+                  "name": "Menu Trigger",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "$--secondary",
+                  "cornerRadius": "$--radius-pill",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "AQWUz",
+                      "name": "Menu",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "x",
+                      "library": "lucide",
+                      "fill": "$--secondary-foreground"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "xWiLt",
+              "name": "Right",
+              "gap": 14,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "f2UjiD",
+                  "name": "Search",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "$--secondary",
+                  "cornerRadius": "$--radius-pill",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "B8FfO",
+                      "name": "Search",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "search",
+                      "library": "lucide",
+                      "fill": "$--muted-foreground"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "RmMbD",
+                  "name": "Theme Toggle",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "$--secondary",
+                  "cornerRadius": "$--radius-pill",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "XTxX7",
+                      "name": "Theme",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "moon",
+                      "library": "lucide",
+                      "fill": "$--secondary-foreground"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "z8UqJ",
+          "name": "Navigation Panel",
+          "width": "fill_container",
+          "fill": "$--popover",
+          "stroke": "$--border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "strokeAlignment": "inner",
+          "layout": "vertical",
+          "gap": 4,
+          "padding": [
+            12,
+            16,
+            20,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "NDGl6",
+              "name": "Início",
+              "width": "fill_container",
+              "height": 44,
+              "fill": "$--secondary",
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "U4tk8",
+                  "name": "Label",
+                  "fill": "$--foreground",
+                  "content": "Início",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "CLzdI",
+              "name": "Episódios",
+              "width": "fill_container",
+              "height": 44,
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bxuQK",
+                  "name": "Label",
+                  "fill": "$--foreground",
+                  "content": "Episódios",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "LAB7L",
+              "name": "Time — Disabled",
+              "width": "fill_container",
+              "height": 44,
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "nnTzd",
+                  "name": "Label",
+                  "fill": "$--muted-foreground",
+                  "content": "Time",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "HmrxH",
+              "name": "Sobre — Disabled",
+              "width": "fill_container",
+              "height": 44,
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Jj4su",
+                  "name": "Label",
+                  "fill": "$--muted-foreground",
+                  "content": "Sobre",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "wahud",
+      "x": 27670,
+      "y": -2979,
+      "name": "Compact Header — Beta Dark / Open",
+      "theme": {
+        "Mode": "Dark"
+      },
+      "clip": true,
+      "width": 390,
+      "fill": "$--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "u19KR",
+          "name": "Header",
+          "theme": {
+            "Mode": "Dark"
+          },
+          "clip": true,
+          "width": "fill_container",
+          "height": 72,
+          "fill": "$--background",
+          "stroke": "$--border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "strokeAlignment": "inner",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "L1tU0F",
+              "name": "Left",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "S6OG4v",
+                  "name": "Logo",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "jgezg",
+                      "name": "LogoCafe",
+                      "fill": "$--foreground",
+                      "content": "Café",
+                      "fontFamily": "$--font-primary",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "iJdaP",
+                      "name": "LogoDebug",
+                      "fill": "$--primary",
+                      "content": "Debug",
+                      "fontFamily": "$--font-primary",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "xK6PB",
+                  "name": "Menu Trigger",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "$--secondary",
+                  "cornerRadius": "$--radius-pill",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "WHqBM",
+                      "name": "Menu",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "x",
+                      "library": "lucide",
+                      "fill": "$--secondary-foreground"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "SMfZP",
+              "name": "Right",
+              "gap": 14,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Dk9bI",
+                  "name": "Search",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "$--secondary",
+                  "cornerRadius": "$--radius-pill",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "xuRJf",
+                      "name": "Search",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "search",
+                      "library": "lucide",
+                      "fill": "$--muted-foreground"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "nCeUm",
+                  "name": "Theme Toggle",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "$--secondary",
+                  "cornerRadius": "$--radius-pill",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "a6gbE",
+                      "name": "Theme",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "sun",
+                      "library": "lucide",
+                      "fill": "$--secondary-foreground"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "IyygS",
+          "name": "Navigation Panel",
+          "width": "fill_container",
+          "fill": "$--popover",
+          "stroke": "$--border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "strokeAlignment": "inner",
+          "layout": "vertical",
+          "gap": 4,
+          "padding": [
+            12,
+            16,
+            20,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "mxann",
+              "name": "Início",
+              "width": "fill_container",
+              "height": 44,
+              "fill": "$--secondary",
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "IMdFa",
+                  "name": "Label",
+                  "fill": "$--foreground",
+                  "content": "Início",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "VmuwB",
+              "name": "Episódios",
+              "width": "fill_container",
+              "height": 44,
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "CLxsQ",
+                  "name": "Label",
+                  "fill": "$--foreground",
+                  "content": "Episódios",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "YyPgV",
+              "name": "Time — Disabled",
+              "width": "fill_container",
+              "height": 44,
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "z6wzSP",
+                  "name": "Label",
+                  "fill": "$--muted-foreground",
+                  "content": "Time",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "LlGJw",
+              "name": "Sobre — Disabled",
+              "width": "fill_container",
+              "height": 44,
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "r3ekOb",
+                  "name": "Label",
+                  "fill": "$--muted-foreground",
+                  "content": "Sobre",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "fWEbw",
+      "x": 27670,
+      "y": -2607,
+      "name": "Compact Header — Fixed Dark / Open",
+      "theme": {
+        "Mode": "Dark"
+      },
+      "clip": true,
+      "width": 390,
+      "fill": "$--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "DPxuw",
+          "name": "Header",
+          "theme": {
+            "Mode": "Dark"
+          },
+          "clip": true,
+          "width": "fill_container",
+          "height": 72,
+          "fill": "$--background",
+          "stroke": "$--border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "strokeAlignment": "inner",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "h5utk7",
+              "name": "Left",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "xODI7",
+                  "name": "Logo",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "z5S98o",
+                      "name": "LogoCafe",
+                      "fill": "$--foreground",
+                      "content": "Café",
+                      "fontFamily": "$--font-primary",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "qwAu2",
+                      "name": "LogoDebug",
+                      "fill": "$--primary",
+                      "content": "Debug",
+                      "fontFamily": "$--font-primary",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "lyg2M",
+                  "name": "Menu Trigger",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "$--secondary",
+                  "cornerRadius": "$--radius-pill",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "cMwff",
+                      "name": "Menu",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "x",
+                      "library": "lucide",
+                      "fill": "$--secondary-foreground"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "wBD9s",
+              "name": "Right",
+              "gap": 14,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "JsdD1",
+                  "name": "Search",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "$--secondary",
+                  "cornerRadius": "$--radius-pill",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "q6TXGR",
+                      "name": "Search",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "search",
+                      "library": "lucide",
+                      "fill": "$--muted-foreground"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "n9VT7e",
+                  "name": "Subscribe",
+                  "height": 40,
+                  "fill": "$--primary",
+                  "cornerRadius": "$--radius-pill",
+                  "gap": 8,
+                  "padding": [
+                    0,
+                    18
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "RKbt2",
+                      "name": "Mic",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "mic",
+                      "library": "lucide",
+                      "fill": "$--primary-foreground"
+                    },
+                    {
+                      "type": "text",
+                      "id": "AP4kl",
+                      "name": "Label",
+                      "fill": "$--primary-foreground",
+                      "content": "Assinar",
+                      "fontFamily": "$--font-secondary",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "b5UoAA",
+          "name": "Navigation Panel",
+          "width": "fill_container",
+          "fill": "$--popover",
+          "stroke": "$--border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "strokeAlignment": "inner",
+          "layout": "vertical",
+          "gap": 4,
+          "padding": [
+            12,
+            16,
+            20,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "X86xy",
+              "name": "Início",
+              "width": "fill_container",
+              "height": 44,
+              "fill": "$--secondary",
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "w8zrEL",
+                  "name": "Label",
+                  "fill": "$--foreground",
+                  "content": "Início",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kdDVG",
+              "name": "Episódios",
+              "width": "fill_container",
+              "height": 44,
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "KjvZI",
+                  "name": "Label",
+                  "fill": "$--foreground",
+                  "content": "Episódios",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "q5XyD5",
+              "name": "Time — Disabled",
+              "width": "fill_container",
+              "height": 44,
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "o9NelI",
+                  "name": "Label",
+                  "fill": "$--muted-foreground",
+                  "content": "Time",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "e7crXi",
+              "name": "Sobre — Disabled",
+              "width": "fill_container",
+              "height": 44,
+              "cornerRadius": "$--radius-m",
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "N8j5Bb",
+                  "name": "Label",
+                  "fill": "$--muted-foreground",
+                  "content": "Sobre",
+                  "fontFamily": "$--font-secondary",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
             }
           ]
         }
