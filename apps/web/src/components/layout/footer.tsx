@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
@@ -8,7 +9,7 @@ const footerColumns = [
   {
     title: "Conteúdo",
     links: [
-      { label: "Episódios" },
+      { label: "Episódios", href: "/episodes" },
       { label: "Notícias", status: "Em breve" },
       { label: "Eventos", status: "Em breve" },
       { label: "Vagas", status: "Em breve" }
@@ -97,14 +98,21 @@ export function Footer({ variant = "fixed-dark" }: { variant?: FooterVariant }) 
             <h2 className="font-primary text-xs font-semibold leading-4 tracking-[1.5px] text-card-foreground">{column.title}</h2>
             <ul className="flex flex-col gap-3.5 font-secondary text-sm leading-[1.3] text-muted-foreground">
               {column.links.map((item) => (
-                <li
-                  aria-disabled="true"
-                  aria-label={"status" in item ? `${item.label} — ${item.status}` : item.label}
-                  className="cursor-default"
-                  key={item.label}
-                >
-                  {item.label}
-                  {"status" in item ? <span aria-hidden="true"> — {item.status}</span> : null}
+                <li key={item.label}>
+                  {"href" in item ? (
+                    <Link className="hover:text-card-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href={item.href}>
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <span
+                      aria-disabled="true"
+                      aria-label={"status" in item ? `${item.label} — ${item.status}` : item.label}
+                      className="cursor-default"
+                    >
+                      {item.label}
+                      {"status" in item ? <span aria-hidden="true"> — {item.status}</span> : null}
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>

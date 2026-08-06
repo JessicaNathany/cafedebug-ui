@@ -1,4 +1,4 @@
-import type { PodcastEpisode, WithContext } from "schema-dts";
+import type { BreadcrumbList, CollectionPage, PodcastEpisode, WithContext } from "schema-dts";
 
 import type { Episode } from "./types";
 
@@ -24,4 +24,33 @@ export function podcastEpisodeJsonLd(
       url: baseUrl
     }
   };
+}
+
+export function episodeCollectionJsonLd(episodes: Episode[], baseUrl: string): WithContext<CollectionPage> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Episódios do CaféDebug",
+    url: `${baseUrl}/episodes`,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: episodes.map((episode, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `${baseUrl}/episodes/${episode.slug}`
+      }))
+    }
+  } as WithContext<CollectionPage>;
+}
+
+export function episodeBreadcrumbJsonLd(episode: Episode, baseUrl: string): WithContext<BreadcrumbList> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Início", item: baseUrl },
+      { "@type": "ListItem", position: 2, name: "Episódios", item: `${baseUrl}/episodes` },
+      { "@type": "ListItem", position: 3, name: `EP ${episode.number}`, item: `${baseUrl}/episodes/${episode.slug}` }
+    ]
+  } as WithContext<BreadcrumbList>;
 }

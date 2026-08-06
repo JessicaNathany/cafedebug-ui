@@ -8,8 +8,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     { url: env.NEXT_PUBLIC_SITE_URL, changeFrequency: "weekly", priority: 1 },
+    { url: `${env.NEXT_PUBLIC_SITE_URL}/episodes`, changeFrequency: "weekly", priority: 0.9 },
     ...episodes.map((episode) => ({
       url: `${env.NEXT_PUBLIC_SITE_URL}/episodes/${episode.slug}`,
+      lastModified: new Date(`${episode.publishedAt}T00:00:00.000Z`),
       changeFrequency: "weekly" as const,
       priority: 0.8
     }))

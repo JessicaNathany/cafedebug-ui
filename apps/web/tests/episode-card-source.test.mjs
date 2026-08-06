@@ -9,11 +9,11 @@ const readSource = (file) => readFileSync(join(root, file), "utf8");
 test("G06 episode card preserves the FGSFI anatomy with token-backed theme behavior", () => {
   const source = readSource("src/features/episodes/components/episode-card.tsx");
 
-  assert.match(source, /min-h-\[412px\]/);
+  assert.match(source, /h-103/);
   assert.match(source, /h-50 shrink-0/);
-  assert.match(source, /rounded-\[var\(--radius-m\)\]/);
+  assert.match(source, /rounded-m/);
   assert.match(source, /ring-1 ring-inset ring-border/);
-  assert.doesNotMatch(source, /rounded-\[--/, "custom-property values must use valid arbitrary-value syntax");
+  assert.doesNotMatch(source, /rounded-\[/, "episode-card should use named radius utilities");
   assert.match(source, /shadow-card dark:shadow-none/);
   assert.match(source, /left-4 top-4/);
   assert.match(source, /leading-\[15px\]/);

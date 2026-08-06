@@ -62,7 +62,7 @@ test("carousel CTA semantics distinguish playable, linked, and deferred actions"
   assert.match(source, /cta\.action === "play-featured"/);
   assert.match(source, /<PlayButton[^>]+episode=\{episode\}/);
   assert.match(source, /cta\.action === "episodes-anchor"/);
-  assert.match(source, /<Link className=\{className\} href="#episodios">/);
+  assert.match(source, /<Link className=\{className\} href="\/episodes">/);
   assert.match(source, /<button aria-disabled="true"[^>]+type="button">/);
   assert.doesNotMatch(source, /disabled=\{true\}|\sdisabled(?:\s|>)/);
 });

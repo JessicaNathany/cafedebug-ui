@@ -1,10 +1,15 @@
 import type { Episode } from "../types";
 
-export const mockEpisodes: Episode[] = [
+// P1 taxonomy decision: retain the established visible fixture labels for card compatibility and
+// search, while assigning the stable filter keys below. Arquitetura/Testes map to Backend, IA to
+// IA & Dados, and the cross-discipline Produto conversation maps to Comunidade. Frontend, DevOps,
+// and Mobile intentionally have no fixture yet so their valid filters exercise the empty state.
+export const mockEpisodes = [
   {
     slug: "entrevista-tecnica-2026",
     number: 142,
     category: "CARREIRA",
+    categoryKey: "carreira",
     title: "Como passar numa entrevista técnica em 2026",
     summary: "Princípios práticos para preparar storytelling técnico, algoritmo e arquitetura sem decorar respostas.",
     publishedAt: "2026-06-12",
@@ -12,7 +17,7 @@ export const mockEpisodes: Episode[] = [
     durationMinutes: 48,
     durationLabel: "48 min",
     plays: "8.4k reproduções",
-    audioUrl: "/mock/sample-audio.mp3",
+    audioUrl: "/mock/sample-audio.m4a",
     artworkUrl: "/mock/episode-142.svg",
     guestName: "Ana Ribeiro",
     guestAvatarUrl: "/mock/hero-guest-ana.jpg",
@@ -24,6 +29,7 @@ export const mockEpisodes: Episode[] = [
     slug: "negociacao-salarial-senior",
     number: 141,
     category: "CARREIRA",
+    categoryKey: "carreira",
     title: "Negociação salarial: como pedir o aumento que você merece",
     summary: "Táticas reais de negociação para devs em todos os níveis.",
     publishedAt: "2026-06-05",
@@ -31,7 +37,7 @@ export const mockEpisodes: Episode[] = [
     durationMinutes: 52,
     durationLabel: "52 min",
     plays: "6.2k reproduções",
-    audioUrl: "/mock/sample-audio.mp3",
+    audioUrl: "/mock/sample-audio.m4a",
     artworkUrl: "/mock/episode-141.jpg",
     guestName: "Marcos Vinícius",
     guestAvatarUrl: "/mock/guest-marcos.jpg",
@@ -43,6 +49,7 @@ export const mockEpisodes: Episode[] = [
     slug: "microservicos-valem-a-pena",
     number: 140,
     category: "ARQUITETURA",
+    categoryKey: "backend",
     title: "Microsserviços valem a pena? Lições de quem migrou",
     summary: "Os trade-offs reais entre monolito e microsserviços na prática.",
     publishedAt: "2026-05-29",
@@ -50,7 +57,7 @@ export const mockEpisodes: Episode[] = [
     durationMinutes: 64,
     durationLabel: "1h 04min",
     plays: "7.1k reproduções",
-    audioUrl: "/mock/sample-audio.mp3",
+    audioUrl: "/mock/sample-audio.m4a",
     artworkUrl: "/mock/episode-140.jpg",
     guestName: "Letícia Souza",
     guestAvatarUrl: "/mock/guest-leticia.jpg",
@@ -62,6 +69,7 @@ export const mockEpisodes: Episode[] = [
     slug: "programando-com-ia",
     number: 139,
     category: "IA",
+    categoryKey: "ia-dados",
     title: "Programando com IA: o novo fluxo de trabalho do dev",
     summary: "Como agentes de código estão mudando o dia a dia da engenharia.",
     publishedAt: "2026-05-22",
@@ -69,7 +77,7 @@ export const mockEpisodes: Episode[] = [
     durationMinutes: 47,
     durationLabel: "47 min",
     plays: "9.0k reproduções",
-    audioUrl: "/mock/sample-audio.mp3",
+    audioUrl: "/mock/sample-audio.m4a",
     artworkUrl: "/mock/episode-139.jpg",
     guestName: "Rafael Lima",
     guestAvatarUrl: "/mock/guest-rafael.jpg",
@@ -81,6 +89,7 @@ export const mockEpisodes: Episode[] = [
     slug: "tdd-sem-dogma",
     number: 138,
     category: "TESTES",
+    categoryKey: "backend",
     title: "TDD sem dogma: o que realmente vale a pena testar",
     summary: "Onde investir esforço em testes e onde parar de perder tempo.",
     publishedAt: "2026-05-15",
@@ -88,7 +97,7 @@ export const mockEpisodes: Episode[] = [
     durationMinutes: 39,
     durationLabel: "39 min",
     plays: "5.8k reproduções",
-    audioUrl: "/mock/sample-audio.mp3",
+    audioUrl: "/mock/sample-audio.m4a",
     artworkUrl: "/mock/episode-138.jpg",
     guestName: "Camila Ferreira",
     guestAvatarUrl: "/mock/guest-camila.jpg",
@@ -100,6 +109,7 @@ export const mockEpisodes: Episode[] = [
     slug: "de-pleno-a-senior",
     number: 137,
     category: "CARREIRA",
+    categoryKey: "carreira",
     title: "De pleno a sênior: o que muda de verdade",
     summary: "As habilidades que ninguém te conta na hora da promoção.",
     publishedAt: "2026-05-08",
@@ -107,7 +117,7 @@ export const mockEpisodes: Episode[] = [
     durationMinutes: 58,
     durationLabel: "58 min",
     plays: "6.5k reproduções",
-    audioUrl: "/mock/sample-audio.mp3",
+    audioUrl: "/mock/sample-audio.m4a",
     artworkUrl: "/mock/episode-137.jpg",
     guestName: "Diego Andrade",
     guestAvatarUrl: "/mock/guest-diego.jpg",
@@ -119,6 +129,7 @@ export const mockEpisodes: Episode[] = [
     slug: "dev-e-produto",
     number: 136,
     category: "PRODUTO",
+    categoryKey: "comunidade",
     title: "Dev e produto: como parar de brigar e começar a construir",
     summary: "Alinhando engenharia e produto sem perder velocidade.",
     publishedAt: "2026-05-01",
@@ -126,7 +137,7 @@ export const mockEpisodes: Episode[] = [
     durationMinutes: 44,
     durationLabel: "44 min",
     plays: "4.9k reproduções",
-    audioUrl: "/mock/sample-audio.mp3",
+    audioUrl: "/mock/sample-audio.m4a",
     artworkUrl: "/mock/episode-136.jpg",
     guestName: "Juliana Prado",
     guestAvatarUrl: "/mock/guest-juliana.jpg",
@@ -134,4 +145,4 @@ export const mockEpisodes: Episode[] = [
     showNotesHtml:
       "<p>Exploramos como engenharia e produto podem construir contexto compartilhado antes de discutir soluções.</p><p>Juliana apresenta rituais leves para alinhar descoberta, entrega e decisões de escopo.</p>"
   }
-];
+] satisfies readonly Episode[];

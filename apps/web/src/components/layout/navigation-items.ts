@@ -3,8 +3,8 @@ export type NavigationItem =
   | { disabled: true; label: string };
 
 export const primaryNavigationItems: readonly NavigationItem[] = [
-  { label: "Início", href: "/", active: true },
-  { label: "Episódios", href: "/#episodios" },
+  { label: "Início", href: "/" },
+  { label: "Episódios", href: "/episodes" },
   { label: "Time", disabled: true },
   { label: "Sobre", disabled: true }
 ];

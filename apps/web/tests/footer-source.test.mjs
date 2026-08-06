@@ -28,7 +28,7 @@ test("beta footer explicitly inherits the root theme", () => {
   assert.doesNotMatch(source, /variant === "beta" && "dark"/);
 });
 
-test("site footer preserves Pencil content, typography, and inert deferred links", () => {
+test("site footer preserves Pencil content, typography, a live episodes link, and inert deferred links", () => {
   const source = readSource("src/components/layout/footer.tsx");
 
   assert.match(source, /font-primary text-\[22px\] font-bold leading-none/);
@@ -45,7 +45,8 @@ test("site footer preserves Pencil content, typography, and inert deferred links
   }
 
   assert.match(source, /aria-disabled="true"/);
-  assert.doesNotMatch(source, /href=/);
+  assert.match(source, /\{ label: "Episódios", href: "\/episodes" \}/);
+  assert.match(source, /<Link[^>]+href=\{item\.href\}/);
 });
 
 test("deferred content destinations expose the exact Pencil coming-soon status", () => {
@@ -58,7 +59,9 @@ test("deferred content destinations expose the exact Pencil coming-soon status",
   assert.equal((source.match(/status: "Em breve"/g) ?? []).length, 3);
   assert.match(source, /aria-label=\{"status" in item \? `\$\{item\.label\} — \$\{item\.status\}` : item\.label\}/);
   assert.match(source, /<span aria-hidden="true"> — \{item\.status\}<\/span>/);
-  assert.doesNotMatch(source, /href=/);
+  assert.doesNotMatch(source, /\{ label: "Notícias", href:/);
+  assert.doesNotMatch(source, /\{ label: "Eventos", href:/);
+  assert.doesNotMatch(source, /\{ label: "Vagas", href:/);
 });
 
 test("site footer uses the exact Pencil social and newsletter controls", () => {

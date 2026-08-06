@@ -12,7 +12,8 @@ test("site header maps to the G03 Pencil geometry and preserves fixed-dark as th
   assert.match(source, /export function Header\(props: HeaderProps = \{\}\)/);
   assert.match(source, /!isBeta && "dark"/);
   assert.match(source, /relative h-18 border-b border-border bg-background text-foreground/);
-  assert.match(source, /h-full w-full[^"]+md:w-screen/);
+  assert.match(source, /h-full w-full items-center justify-between gap-4 px-4 sm:px-6 md:px-10/);
+  assert.doesNotMatch(source, /md:w-screen/);
   assert.match(source, /md:px-10/);
   assert.doesNotMatch(source, /max-w-\[1440px\]/);
 });
@@ -44,8 +45,8 @@ test("site navigation preserves allowed links and inert placeholders", () => {
   const itemsSource = readSource("src/components/layout/navigation-items.ts");
   const navSource = readSource("src/components/layout/nav.tsx");
 
-  assert.match(itemsSource, /\{ label: "Início", href: "\/", active: true \}/);
-  assert.match(itemsSource, /\{ label: "Episódios", href: "\/#episodios" \}/);
+  assert.match(itemsSource, /\{ label: "Início", href: "\/" \}/);
+  assert.match(itemsSource, /\{ label: "Episódios", href: "\/episodes" \}/);
   for (const label of ["Time", "Sobre"]) {
     assert.match(itemsSource, new RegExp(`\\{ label: "${label}", disabled: true \\}`));
   }
@@ -53,6 +54,8 @@ test("site navigation preserves allowed links and inert placeholders", () => {
     assert.doesNotMatch(itemsSource, new RegExp(`label: "${removedLabel}"`));
   }
   assert.match(navSource, /primaryNavigationItems\.map/);
+  assert.match(navSource, /usePathname/);
+  assert.match(navSource, /aria-current=\{isCurrentPage \? "page" : undefined\}/);
   assert.match(navSource, /aria-disabled="true"/);
   assert.match(navSource, /hidden items-center gap-7 font-secondary text-sm leading-5 lg:flex/);
   assert.doesNotMatch(navSource, /md:flex/);
