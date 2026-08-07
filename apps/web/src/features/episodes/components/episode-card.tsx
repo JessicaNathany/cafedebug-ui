@@ -9,7 +9,7 @@ export function EpisodeCard({ episode }: { episode: Episode }) {
   const episodeHref = `/episodes/${episode.slug}`;
 
   return (
-    <article className="flex h-103 w-full min-w-0 flex-col overflow-hidden rounded-m bg-card text-card-foreground ring-1 ring-inset ring-border shadow-card dark:shadow-none">
+    <article className="group flex h-103 w-full min-w-0 flex-col overflow-hidden rounded-m bg-card text-card-foreground ring-1 ring-inset ring-border shadow-card dark:shadow-none transition-colors motion-reduce:transition-none focus-within:bg-secondary/25 dark:focus-within:bg-secondary/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-secondary/25 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:bg-secondary/50">
       <div className="relative h-50 shrink-0">
         <Link aria-label={`Abrir episódio ${episode.number}: ${episode.title}`} className="absolute inset-0 z-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href={episodeHref}>
           <Image
@@ -21,15 +21,15 @@ export function EpisodeCard({ episode }: { episode: Episode }) {
           />
         </Link>
 
-        <span className="absolute left-4 top-4 z-10 rounded-pill bg-header/80 px-3 py-1.5 font-primary text-[11px] font-semibold leading-[15px] tracking-[1px] text-primary">
+        <span className="pointer-events-none absolute left-4 top-4 z-10 rounded-pill bg-header/80 px-3 py-1.5 font-primary text-[11px] font-semibold leading-[15px] tracking-[1px] text-primary">
           {episode.category}
         </span>
 
-        <div className="absolute inset-0 z-10 grid place-items-center">
-          <PlayButton className="h-14 w-14" episode={episode} iconOnly iconSize={22} label={`Reproduzir episódio ${episode.number}`} />
+        <div className="pointer-events-none absolute inset-0 z-10 grid place-items-center opacity-100 transition-opacity motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:opacity-0 [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 [@media(hover:hover)_and_(pointer:fine)]:group-focus-within:opacity-100">
+          <PlayButton className="pointer-events-auto h-14 w-14" episode={episode} iconOnly iconSize={22} label={`Reproduzir episódio ${episode.number}`} />
         </div>
 
-        <div className="absolute bottom-[18px] right-4 z-10 inline-flex items-center gap-[5px] rounded-pill bg-header/80 px-2.5 py-[5px] font-secondary text-[11px] font-medium leading-[14px] text-header-foreground">
+        <div className="pointer-events-none absolute bottom-[18px] right-4 z-10 inline-flex items-center gap-[5px] rounded-pill bg-header/80 px-2.5 py-[5px] font-secondary text-[11px] font-medium leading-[14px] text-header-foreground">
           <Headphones aria-hidden size={12} />
           <span>{episode.durationLabel}</span>
         </div>
