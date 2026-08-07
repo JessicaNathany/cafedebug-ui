@@ -8,7 +8,7 @@ import { usePlayer } from "./store";
 
 export function PlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const { isPlaying, pause, position, rate, setPosition, track } = usePlayer();
+  const { isMuted, isPlaying, pause, position, rate, setPosition, track } = usePlayer();
 
   useMediaSession(audioRef);
 
@@ -24,6 +24,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     }
 
     audio.playbackRate = rate;
+    audio.muted = isMuted;
 
     if (Math.abs(audio.currentTime - position) > 1) {
       audio.currentTime = position;
@@ -37,11 +38,15 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     const playPromise = audio.play();
     if (playPromise) {
       playPromise.catch((error) => {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+
         console.error("Failed to autoplay track", error);
         pause();
       });
     }
-  }, [isPlaying, pause, position, rate, track]);
+  }, [isMuted, isPlaying, pause, position, rate, track]);
 
   useEffect(() => {
     const audio = audioRef.current;

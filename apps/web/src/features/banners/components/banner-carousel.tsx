@@ -46,7 +46,7 @@ function CarouselCta({
 
   if (cta.action === "episodes-anchor") {
     return (
-      <Link className={className} href="#episodios">
+      <Link className={className} href="/episodes">
         {cta.label}
       </Link>
     );
