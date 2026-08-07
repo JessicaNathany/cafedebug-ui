@@ -4,19 +4,14 @@ import { FastForward, Gauge, List, Pause, Play, Rewind, SkipBack, SkipForward, V
 
 import { Button } from "@/components/ui/button";
 
+import { clampPosition, formatDuration, getNextPlaybackRate } from "./player-controls";
+import { PlayerProgress } from "./player-progress";
 import { usePlayer } from "./store";
 import type { Track } from "./types";
 
 type FullPlayerProps = {
   track: Track;
 };
-
-function formatDuration(value: number) {
-  const minutes = Math.floor(value / 60);
-  const seconds = Math.floor(value % 60);
-
-  return `${minutes}:${String(seconds).padStart(2, "0")}`;
-}
 
 export function FullPlayer({ track }: FullPlayerProps) {
   const { isMuted, isPlaying, load, pause, play, position, rate, setRate, toggleMuted, track: activeTrack } = usePlayer();
@@ -46,7 +41,7 @@ export function FullPlayer({ track }: FullPlayerProps) {
       player.load(track);
     }
 
-    player.setPosition(Math.min(track.durationSeconds, Math.max(0, startingPosition + amount)));
+    player.setPosition(clampPosition(startingPosition + amount, track));
   };
 
   const skipBack = () => seekBy(-15);
@@ -54,15 +49,21 @@ export function FullPlayer({ track }: FullPlayerProps) {
   const fastForward = () => seekBy(5);
   const skipForward = () => seekBy(15);
 
-  const cycleRate = () => {
-    const rates = [1, 1.25, 1.5];
-    const nextRate = rates[(rates.indexOf(rate) + 1) % rates.length] ?? 1;
+  const seekTo = (nextPosition: number) => {
+    const player = usePlayer.getState();
 
-    setRate(nextRate);
+    if (player.track?.id !== track.id) {
+      player.load(track);
+    }
+
+    player.setPosition(clampPosition(nextPosition, track));
+  };
+
+  const cycleRate = () => {
+    setRate(getNextPlaybackRate(rate));
   };
 
   const currentPosition = isCurrentTrack ? position : 0;
-  const progress = Math.min(100, (currentPosition / Math.max(track.durationSeconds, 1)) * 100);
 
   return (
     <section aria-label="Player do episódio" className="min-h-45 rounded-m border border-border bg-card p-6 shadow-card dark:shadow-none md:h-45">
@@ -82,10 +83,7 @@ export function FullPlayer({ track }: FullPlayerProps) {
 
         <div className="flex items-center gap-3 font-primary text-[13px] tabular-nums text-muted-foreground">
           <span>{formatDuration(currentPosition)}</span>
-          <div aria-label="Progresso do episódio" aria-valuemax={track.durationSeconds} aria-valuemin={0} aria-valuenow={currentPosition} className="relative h-1.5 flex-1 rounded-pill bg-secondary" role="progressbar">
-            <div className="h-full rounded-pill bg-primary" style={{ width: `${progress}%` }} />
-            <span aria-hidden className="absolute top-1/2 size-3 -translate-y-1/2 rounded-pill border border-primary bg-card" style={{ left: `calc(${progress}% - 6px)` }} />
-          </div>
+          <PlayerProgress className="h-1.5 flex-1 cursor-pointer accent-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" onPositionChange={seekTo} position={currentPosition} track={track} />
           <span>{formatDuration(track.durationSeconds)}</span>
         </div>
 
