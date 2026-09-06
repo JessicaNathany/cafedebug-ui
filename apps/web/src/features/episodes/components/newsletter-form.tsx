@@ -7,9 +7,36 @@ import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export function NewsletterForm() {
+type NewsletterFormProps = {
+  variant?: "contact" | "default";
+};
+
+export function NewsletterForm({ variant = "default" }: NewsletterFormProps) {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+  }
+
+  if (variant === "contact") {
+    return (
+      <form aria-label="Inscrição na newsletter" className="grid w-full gap-3 sm:grid-cols-[minmax(0,280px)_124px]" onSubmit={handleSubmit}>
+        <label className="sr-only" htmlFor="contact-newsletter-email">
+          Seu melhor email
+        </label>
+        <Input
+          autoComplete="email"
+          className="h-12 border-border bg-background px-4 text-sm hover:border-border"
+          id="contact-newsletter-email"
+          leftIcon={<Mail aria-hidden size={16} />}
+          name="email"
+          placeholder="seu@email.com"
+          required
+          type="email"
+        />
+        <Button className="h-12 w-full px-5 font-secondary text-sm font-semibold" type="submit">
+          Inscrever
+        </Button>
+      </form>
+    );
   }
 
   return (
