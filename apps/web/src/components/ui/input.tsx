@@ -32,17 +32,20 @@ export function Input({ className, disabled, invalid = false, leftIcon, rightIco
 
 type InputGroupProps = {
   className?: string;
-  error?: string;
+  error?: string | undefined;
+  errorId?: string | undefined;
   inputClassName?: string;
   label?: ReactNode;
 } & InputProps;
 
-export function InputGroup({ className, error, id, inputClassName, invalid = false, label, ...props }: InputGroupProps) {
+export function InputGroup({ className, error, errorId, id, inputClassName, invalid = false, label, ...props }: InputGroupProps) {
   return (
-    <label className={cn("grid w-full gap-1.5", className)} htmlFor={id}>
-      {label ? <span className="font-secondary text-sm font-medium leading-5 text-foreground">{label}</span> : null}
-      <Input className={inputClassName} id={id} invalid={Boolean(error) || invalid} {...props} />
-      {error ? <span className="font-secondary text-xs leading-4 text-error-foreground">{error}</span> : null}
-    </label>
+    <div className={cn("grid w-full gap-1.5", className)}>
+      <label className="grid gap-1.5" htmlFor={id}>
+        {label ? <span className="font-secondary text-sm font-medium leading-5 text-foreground">{label}</span> : null}
+        <Input className={inputClassName} id={id} invalid={Boolean(error) || invalid} {...props} />
+      </label>
+      {error ? <span className="font-secondary text-xs leading-4 text-error-foreground" id={errorId} role="alert">{error}</span> : null}
+    </div>
   );
 }
