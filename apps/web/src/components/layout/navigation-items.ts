@@ -6,5 +6,5 @@ export const primaryNavigationItems: readonly NavigationItem[] = [
   { label: "Início", href: "/" },
   { label: "Episódios", href: "/episodes" },
   { label: "Time", disabled: true },
-  { label: "Sobre", disabled: true }
+  { label: "Sobre", href: "/about" }
 ];
