@@ -52,6 +52,7 @@
 | Implementation | Frontend Blacksmith | approved package; refreshed Pencil frames; current upstream main | `apps/web/src/features/about/**`, `apps/web/src/app/(beta)/about/page.tsx`, `apps/web/tests/about-source.test.mjs`, shared navigation/footer/sitemap | `build`, `context7-mcp`, `web-design-reviewer`, `webapp-testing` | responsive source remains absent; shared light-chrome delta is intentionally preserved | complete |
 | Validation / documentation | Architect Guardian | implemented route, active Pencil frames, in-app browser, and full web validation | `validation.md`, updated traceability/final-gate record, browser/Pencil evidence | `web-design-reviewer`, `webapp-testing` | terminal Chromium unavailable; connected in-app browser completed the matrix | complete — ready for review |
 | Border correction review | Web Design Reviewer | user-provided annotated captures; Pencil nodes `Q7N3ab`, `YQdSK`, `X4Nga`, `ZdGtq` and light equivalents | token-backed Mission/Value/Impact/Timeline border treatments; focused About test | `web-design-reviewer` | no authored tablet/mobile frames; responsive browser reflow reviewed without claiming mobile Pencil parity | approved — handed off ready for review |
+| PR isolation | Ship | current `jessica/main` `44da66e` and About commit `f4cedb7` | isolated `codex/about-page` with About-only conflict resolution | `ship` | target baseline has no `ci:web:validation` helper; direct equivalent web commands were used | approved — ready to publish |
 
 ## Validation Evidence
 
@@ -68,6 +69,7 @@
 | Architecture audit | The Debugger final source audit | pass | Thin route, feature ownership, mock-only data, token use, and shared-shell boundaries approved. |
 | Border correction visual review | Pencil direct node reads and connected in-app browser | pass | Dark/light 1px semantic borders, desktop dividers, and responsive reflow verified; `validation.md` has the concrete correction record. |
 | Border correction gate | `pnpm ci:web:validation` and `git diff --check` | pass | Production build, 91/91 tests, lint, typecheck, and diff hygiene passed after the correction. |
+| Isolated PR gate | direct web build/test/lint/typecheck and `git diff --check` | pass | Target-branch build lists `/about`; 84/84 tests, lint, typecheck, and diff hygiene passed on `codex/about-page`. |
 | Documentation impact | About spec package and index | pass | `validation.md` records the executed visual, browser, and automated evidence; index is ready for review. |
 
 ## Final Gate

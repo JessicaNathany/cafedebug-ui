@@ -13,7 +13,8 @@
 
 | Check | Result | Evidence |
 | --- | --- | --- |
-| Aggregate web validation | pass | `pnpm ci:web:validation` completed production build, 91/91 tests, lint, and typecheck. |
+| Feature-branch aggregate validation | pass | `pnpm ci:web:validation` completed production build, 91/91 tests, lint, and typecheck before PR isolation. |
+| Isolated PR-branch validation | pass | Jessica `main` baseline builds `/about`; its direct web checks completed 84/84 tests, lint, and typecheck after conflict resolution. |
 | Production route | pass | Next build listed `/about` and generated the site successfully. |
 | Diff whitespace | pass | `git diff --check` completed with no output. |
 | Feature content/architecture coverage | pass | `apps/web/tests/about-source.test.mjs` covers fixture order, no-network seam, route metadata/delegation, semantic landmarks, decoration, responsive classes, and no local shared chrome. |
