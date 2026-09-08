@@ -47,9 +47,8 @@ test("site navigation preserves allowed links and inert placeholders", () => {
 
   assert.match(itemsSource, /\{ label: "Início", href: "\/" \}/);
   assert.match(itemsSource, /\{ label: "Episódios", href: "\/episodes" \}/);
-  for (const label of ["Time", "Sobre"]) {
-    assert.match(itemsSource, new RegExp(`\\{ label: "${label}", disabled: true \\}`));
-  }
+  assert.match(itemsSource, /\{ label: "Time", disabled: true \}/);
+  assert.match(itemsSource, /\{ label: "Sobre", href: "\/about" \}/);
   for (const removedLabel of ["Notícias", "Eventos", "Vagas"]) {
     assert.doesNotMatch(itemsSource, new RegExp(`label: "${removedLabel}"`));
   }
