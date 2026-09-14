@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
-import { postLoginRedirectRoute } from "@/lib/routes";
+import { appRoutes } from "@/lib/routes";
 
 export default function HomePage() {
-  redirect(postLoginRedirectRoute);
+  redirect(appRoutes.login);
 }
