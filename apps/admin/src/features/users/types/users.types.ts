@@ -43,5 +43,4 @@ export type UserMutationPayload = {
   name: string;
   email: string;
   password?: string;
-  createdAt?: string;
 };

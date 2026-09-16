@@ -21,7 +21,6 @@ export type UserMutationInput = {
   name: string;
   email: string;
   password?: string;
-  createdAt?: string;
 };
 
 export type BackendUsersApiResult = BackendApiResult;
@@ -31,6 +30,30 @@ const parseJson = async (response: Response): Promise<unknown> => {
     return await response.json();
   } catch {
     return undefined;
+  }
+};
+
+const resolveUsersFallbackBaseUrl = (): string | null => {
+  const primaryBaseUrl = adminRuntimeEnv.apiBaseUrl.trim();
+  if (!primaryBaseUrl) {
+    return null;
+  }
+
+  try {
+    const url = new URL(primaryBaseUrl);
+    const isLocalhost =
+      url.hostname === "localhost" || url.hostname === "127.0.0.1";
+    const isLegacyPort = url.port === "8080";
+
+    if (!isLocalhost || !isLegacyPort) {
+      return null;
+    }
+
+    const fallbackUrl = new URL(primaryBaseUrl);
+    fallbackUrl.port = "5105";
+    return fallbackUrl.toString().replace(/\/$/, "");
+  } catch {
+    return null;
   }
 };
 
@@ -49,7 +72,9 @@ const callUsersBackend = async ({
     return toConfigurationErrorResult();
   }
 
-  const url = `${adminRuntimeEnv.apiBaseUrl}${path}`;
+  const primaryBaseUrl = adminRuntimeEnv.apiBaseUrl.replace(/\/$/, "");
+  const fallbackBaseUrl = resolveUsersFallbackBaseUrl();
+  const url = `${primaryBaseUrl}${path}`;
   const headers = withBackendAuthHeaders(cookieHeader);
 
   const requestInit: RequestInit = {
@@ -64,8 +89,42 @@ const callUsersBackend = async ({
   try {
     const response = await fetch(url, requestInit);
     const data = await parseJson(response);
-    return normalizeBackendResult({ data, status: response.status, headers: response.headers });
+    const primaryResult = normalizeBackendResult({
+      data,
+      status: response.status,
+      headers: response.headers
+    });
+
+    if (
+      fallbackBaseUrl &&
+      "error" in primaryResult &&
+      (primaryResult.status === 404 || primaryResult.status === 405)
+    ) {
+      const fallbackResponse = await fetch(`${fallbackBaseUrl}${path}`, requestInit);
+      const fallbackData = await parseJson(fallbackResponse);
+      return normalizeBackendResult({
+        data: fallbackData,
+        status: fallbackResponse.status,
+        headers: fallbackResponse.headers
+      });
+    }
+
+    return primaryResult;
   } catch {
+    if (fallbackBaseUrl) {
+      try {
+        const fallbackResponse = await fetch(`${fallbackBaseUrl}${path}`, requestInit);
+        const fallbackData = await parseJson(fallbackResponse);
+        return normalizeBackendResult({
+          data: fallbackData,
+          status: fallbackResponse.status,
+          headers: fallbackResponse.headers
+        });
+      } catch {
+        // Fallback failed; return service unavailable below.
+      }
+    }
+
     return {
       error: normalizeApiError(
         {
@@ -98,11 +157,21 @@ export const listUsersFromBackend = async ({
     searchParams.set("search", query.search);
   }
 
-  return callUsersBackend({
+  const result = await callUsersBackend({
     cookieHeader,
     path: `/api/v1/admin/users?${searchParams.toString()}`,
     method: "GET"
   });
+
+  if ("error" in result && result.status === 400) {
+    return callUsersBackend({
+      cookieHeader,
+      path: "/api/v1/admin/users",
+      method: "GET"
+    });
+  }
+
+  return result;
 };
 
 export const getUserFromBackend = async ({

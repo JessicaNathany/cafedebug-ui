@@ -23,8 +23,7 @@ export const toUserMutationPayload = ({
     return {
       name,
       email,
-      password,
-      createdAt: new Date().toISOString()
+      password
     };
   }
 
