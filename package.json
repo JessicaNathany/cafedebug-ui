@@ -3,10 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "description": "Cafe Debug platform monorepo foundation",
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@12.4.2",
   "engines": {
     "node": ">=22.0.0",
-    "pnpm": ">=10.0.0"
+    "pnpm": ">=12.0.0"
   },
   "scripts": {
     "build": "turbo run build",
@@ -14,17 +14,22 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
+    "ci:web:build": "pnpm --filter @cafedebug/web run build",
+    "ci:web:test": "pnpm --filter @cafedebug/web run test",
+    "ci:web:validate": "pnpm --filter @cafedebug/web run lint && pnpm --filter @cafedebug/web run typecheck",
     "ci:admin:build": "pnpm --filter @cafedebug/admin run build",
     "ci:admin:test": "pnpm --filter @cafedebug/admin run test",
     "ci:admin:validate": "pnpm --filter @cafedebug/admin run lint && pnpm --filter @cafedebug/admin run typecheck",
-    "ci:validation": "pnpm run ci:admin:build && pnpm run ci:admin:test && pnpm run ci:admin:validate",
+    "ci:validation": "pnpm run ci:web:build && pnpm run ci:web:test && pnpm run ci:web:validate && pnpm run ci:admin:build && pnpm run ci:admin:test && pnpm run ci:admin:validate",
     "clean": "turbo run clean",
     "docker:admin:config": "docker compose -f infra/docker/docker-compose.admin.yml --env-file .env config",
     "docker:admin:dev": "docker compose -f infra/docker/docker-compose.admin.yml --env-file .env up --build admin",
     "docker:admin:down": "docker compose -f infra/docker/docker-compose.admin.yml --env-file .env down --remove-orphans",
-    "docker:admin:build": "docker build -f infra/docker/admin/Dockerfile --target production -t cafedebug/admin:local ."
+    "docker:admin:build": "docker build -f infra/docker/admin/Dockerfile --target production -t cafedebug/admin:local .",
+    "docker:web:build": "docker build -f infra/docker/web/Dockerfile --target production -t cafedebug/web:local ."
   },
   "devDependencies": {
+    "railway": "3.11.0",
     "turbo": "^2.5.8"
   }
 }

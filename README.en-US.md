@@ -4,9 +4,7 @@
 
 ![image](https://user-images.githubusercontent.com/11943572/234849730-c6b41618-6c13-4a87-9b5e-5b9d16ba4474.png)
 
-
 <a href="README.en-US.md"><img src="https://flagcdn.com/w20/us.png" alt="United States" width="20" style="vertical-align: middle;" /> English</a> | <a href="README.md"><img src="https://flagcdn.com/w20/br.png" alt="Brasil" width="20" style="vertical-align: middle;" /> Português</a>
-
 
 This repository is the planning and foundation space for the Cafe Debug modernization effort.
 
@@ -46,20 +44,20 @@ What we confirmed from those sources:
 
 ## Tech Stack Decision
 
-| Area | Decision | Notes |
-| --- | --- | --- |
-| Monorepo | `pnpm` workspaces + `Turborepo` | Great fit for the two Next.js apps and shared packages. The .NET API can live in the same repo under `services/api` with its own lifecycle. |
-| Website | `Next.js` App Router + `TypeScript` | Server Components first, ISR/SSG for content pages, modern SEO support. |
-| Admin | `Next.js` App Router + `TypeScript` | Separate app with authenticated CRUD workflows. |
-| Styling | `Tailwind CSS v4` + CSS variables | Best fit for white-label design tokens and shared theming. |
-| Components | `shadcn/ui` + custom primitives | Use as a base layer, not as the visual identity. |
-| API contract | `Orval` (fetch client) | Generate typed API endpoint functions and models from the backend Swagger/OpenAPI output. |
-| Data fetching | Server `fetch` by default on the website, `TanStack Query` in admin/client-heavy flows | Keep the public website SEO-first and the admin productivity-first. |
-| Forms | `React Hook Form` + `Zod` | Strong DX for admin forms and validation. |
-| Testing | `Vitest`, `React Testing Library`, `Playwright`, `MSW` | Unit, component, e2e, and API-mocking coverage. |
-| Quality | `ESLint`, `Prettier`, `Husky`, `lint-staged`, `commitlint` | Good defaults for an open-source repo. |
-| Containers | Multi-stage `Dockerfile` per app | Keep deployment consistent across apps. |
-| Hosting | AWS EC2 + Docker Swarm stack + reverse proxy | Recommended proxy: `Traefik` for multi-service routing in Swarm. |
+| Area          | Decision                                                                               | Notes                                                                                                                                       |
+| ------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Monorepo      | `pnpm` workspaces + `Turborepo`                                                        | Great fit for the two Next.js apps and shared packages. The .NET API can live in the same repo under `services/api` with its own lifecycle. |
+| Website       | `Next.js` App Router + `TypeScript`                                                    | Server Components first, ISR/SSG for content pages, modern SEO support.                                                                     |
+| Admin         | `Next.js` App Router + `TypeScript`                                                    | Separate app with authenticated CRUD workflows.                                                                                             |
+| Styling       | `Tailwind CSS v4` + CSS variables                                                      | Best fit for white-label design tokens and shared theming.                                                                                  |
+| Components    | `shadcn/ui` + custom primitives                                                        | Use as a base layer, not as the visual identity.                                                                                            |
+| API contract  | `Orval` (fetch client)                                                                 | Generate typed API endpoint functions and models from the backend Swagger/OpenAPI output.                                                   |
+| Data fetching | Server `fetch` by default on the website, `TanStack Query` in admin/client-heavy flows | Keep the public website SEO-first and the admin productivity-first.                                                                         |
+| Forms         | `React Hook Form` + `Zod`                                                              | Strong DX for admin forms and validation.                                                                                                   |
+| Testing       | `Vitest`, `React Testing Library`, `Playwright`, `MSW`                                 | Unit, component, e2e, and API-mocking coverage.                                                                                             |
+| Quality       | `ESLint`, `Prettier`, `Husky`, `lint-staged`, `commitlint`                             | Good defaults for an open-source repo.                                                                                                      |
+| Containers    | Multi-stage `Dockerfile` per app                                                       | Keep deployment consistent across apps.                                                                                                     |
+| Hosting       | Railway                                                                                | Persistent `web`, `admin`, API, and MySQL services in one production project.                                                               |
 
 ## Architecture Principles
 
@@ -209,21 +207,17 @@ Analytics must stay optional by environment so local and preview deployments rem
 
 ## Deployment Direction
 
-Production target:
+The production pre-launch environment uses the Railway project
+`cafedebug-backend.api-railway` and its `production` environment:
 
-- AWS EC2
-- Docker Swarm stack
-- one reverse proxy service
-- one service for `web`
-- one service for `admin`
-- one service for `api`
+- `web`: fixture-backed public website with a temporary Railway HTTPS domain and a service-owned `NEXT_PUBLIC_SITE_URL`
+- `admin`: authenticated HTTPS backoffice, no-index policy, and secure host-only cookies
+- `cafedebug-backend.api`: existing API, preserved and reached by admin only through private networking
+- `cafedebugdb`: existing MySQL with no public domain and no frontend credentials
 
-Recommended approach:
+Each frontend is a multi-stage standalone Next.js image with no volume, one replica in `ams`, and an `/api/health` health check. Railway waits for successful CI on `main`, keeps the previous deployment until the replacement is healthy, and uses 20/30-second overlap and draining windows.
 
-- local development with Docker Compose only where useful
-- multi-stage Docker builds for each app
-- GitHub Actions for CI, image build, and deployment
-- environment variables managed per service
+Infrastructure settings are versioned in `.railway/railway.ts`. Run `railway config plan` before every apply; a plan that changes or removes the API, database, volumes, or preserved variables is invalid. `cafedebug.com.br`, public-content API integration, API CORS changes, and database changes are outside this deployment.
 
 ### Run `apps/admin` on Your Machine
 
@@ -232,7 +226,7 @@ Use this section when you want to run the admin app locally as a contributor.
 #### Prerequisites
 
 - Node.js `>= 22`
-- pnpm `>= 10`
+- pnpm `>= 12`
 - a running backend API reachable by `ADMIN_API_BASE_URL` (default `http://localhost:8080`)
 
 #### Backend API source (pick one)
@@ -426,18 +420,18 @@ This project should be AI-friendly without becoming AI-dependent.
 
 ## Validation Gates (Root + CI)
 
-CafeDebug CI now exposes a single admin-only validation workflow in `.github/workflows/validation-gates.yml`.
+CafeDebug CI validates both deployable apps before Railway deploys a `main` commit.
 
 Use these root commands locally to match CI:
 
-- `pnpm ci:admin:build` → runs `@cafedebug/admin` build
-- `pnpm ci:admin:test` → runs `@cafedebug/admin` tests
-- `pnpm ci:admin:validate` → runs `@cafedebug/admin` lint, then typecheck
-- `pnpm ci:validation` → runs the full admin sequence in order: build → test → validate
+- `pnpm ci:web:build`, `pnpm ci:web:test`, and `pnpm ci:web:validate` → website build, tests, lint, and typecheck
+- `pnpm ci:admin:build`, `pnpm ci:admin:test`, and `pnpm ci:admin:validate` → backoffice build, tests, lint, and typecheck
+- `pnpm ci:validation` → website sequence followed by backoffice sequence
+- `pnpm docker:web:build` and `pnpm docker:admin:build` → production-image validation
 
-Branch protection for `main` should require the single `admin-gate` job from the `Validation Gates` workflow.
+Branch protection for `main` should require the single `application-gate` job from the `Validation Gates` workflow.
 
-`apps/web`, `packages/api-client`, and other packages are not part of this required CI gate.
+Packages are exercised through the deployable app that consumes them; no separate API-client gate is introduced.
 
 ## Phased Plan
 
