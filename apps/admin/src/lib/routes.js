@@ -9,8 +9,11 @@ export const appRoutes = Object.freeze({
   teamMembers: "/team-members",
   newTeamMember: "/team-members/new",
   editTeamMember: (id) => `/team-members/${id}/edit`,
+  users: "/users",
+  newUser: "/users/new",
+  editUser: (id) => `/users/${id}/edit`,
   dashboard: "/dashboard",
   settings: "/settings"
 });
 
-export const postLoginRedirectRoute = appRoutes.episodes;
+export const postLoginRedirectRoute = appRoutes.users;
