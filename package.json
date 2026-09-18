@@ -26,7 +26,8 @@
     "docker:admin:dev": "docker compose -f infra/docker/docker-compose.admin.yml --env-file .env up --build admin",
     "docker:admin:down": "docker compose -f infra/docker/docker-compose.admin.yml --env-file .env down --remove-orphans",
     "docker:admin:build": "docker build -f infra/docker/admin/Dockerfile --target production -t cafedebug/admin:local .",
-    "docker:web:build": "docker build -f infra/docker/web/Dockerfile --target production -t cafedebug/web:local ."
+    "docker:web:build": "docker build -f infra/docker/web/Dockerfile --target production -t cafedebug/web:local .",
+    "docker:web:smoke": "bash infra/scripts/smoke-web-production-image.sh"
   },
   "devDependencies": {
     "railway": "3.11.0",

@@ -422,14 +422,34 @@ This project should be AI-friendly without becoming AI-dependent.
 
 CafeDebug CI validates both deployable apps before Railway deploys a `main` commit.
 
+`Validation Gates` is the single required `main` check. It runs with read-only permissions on
+pull requests and `main`, cancels only superseded pull-request runs, and never cancels an active
+`main` validation that Railway Wait for CI may need.
+
 Use these root commands locally to match CI:
 
 - `pnpm ci:web:build`, `pnpm ci:web:test`, and `pnpm ci:web:validate` → website build, tests, lint, and typecheck
 - `pnpm ci:admin:build`, `pnpm ci:admin:test`, and `pnpm ci:admin:validate` → backoffice build, tests, lint, and typecheck
 - `pnpm ci:validation` → website sequence followed by backoffice sequence
-- `pnpm docker:web:build` and `pnpm docker:admin:build` → production-image validation
+- `pnpm docker:web:smoke` → builds and starts the standalone website image, then checks health, cache policy, sitemap, and robots
+- `pnpm docker:admin:build` → backoffice production-image validation
 
-Branch protection for `main` should require the single `application-gate` job from the `Validation Gates` workflow.
+Two protected operational workflows do not deploy:
+
+- `Railway IaC Plan` runs only for selected `main` changes or manual dispatch. It uses a
+  project-scoped `RAILWAY_TOKEN` in the GitHub `production` environment, stores a redacted plan
+  artifact for 14 days, and fails on diagnostics, destructive changes, or deletions. It never
+  applies, redeploys, or changes Railway service variables.
+- `Production Smoke` is manual-only in that environment and has no Railway credential. Once
+  temporary Railway domains exist, it uses `WEB_BASE_URL`, `ADMIN_BASE_URL`, and
+  `API_PUBLIC_BASE_URL` to verify health, cache policy, sitemap, robots, canonical metadata,
+  and readiness.
+
+The repository owner must create the protected GitHub `production` environment (only `main`,
+reviewer Jessica, `RAILWAY_TOKEN`, and the three URL variables) and the `protect-main` ruleset:
+pull request, one current approval, resolved conversations, an up-to-date branch, and
+`application-gate`, with no force push, deletion, or bypass actors. Pull-request workflows use
+`pull_request`, never `pull_request_target`, and receive no secrets.
 
 Packages are exercised through the deployable app that consumes them; no separate API-client gate is introduced.
 

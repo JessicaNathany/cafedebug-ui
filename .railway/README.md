@@ -45,7 +45,9 @@ railway config apply
 - `railway config plan` is safe and does not change Railway.
 - `railway config apply` previews changes and asks before applying unless you pass `--yes`.
 - Destructive changes in non-interactive or agent sessions require `railway config apply --confirm-destructive` after reviewing the plan.
-- CI should pin a plan (`railway config plan --out railway-plan.json`) and apply that file on merge (`railway config apply --plan railway-plan.json --yes --confirm-destructive`) so the reviewed change set is what lands. On GitHub Actions, use https://github.com/railwayapp/config.
+- GitHub Actions never applies this configuration, redeploys a service, or mutates service variables. The trusted `Railway IaC Plan` workflow only links the existing production project and writes a redacted `railway config plan --out` artifact after `main` changes. A human reviews a safe, non-destructive plan before any local or Railway-console apply.
+- The `RAILWAY_TOKEN` used by that plan workflow is a project-scoped secret in the protected GitHub `production` environment. It must not be added to repository secrets, exposed to pull-request workflows, or used by the `Production Smoke` workflow.
+- `Production Smoke` is manual-only, has no Railway credential, and reads the three public base URLs from protected-environment variables. It proves public health and SEO contracts after Railway has deployed a trusted `main` commit.
 - Services already managed by `railway.json` must be migrated before `.railway/railway.ts` can manage them.
 - Keep one `.railway` file for the whole project. A named `export const partial` (or `PARTIAL` / `const Partial`) is a last resort for separate repos that cannot share that file. Do not add it unless omit=delete across repos is a blocker.
 - The imported API, database, and volume definitions are managed as preserved state. A plan containing their deletion is a stop condition, never an apply candidate.

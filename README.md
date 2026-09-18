@@ -388,12 +388,34 @@ Este projeto deve ser amigável à IA sem se tornar dependente de IA.
 
 ## Portões de Validação (Raiz + CI)
 
-Use os comandos de validação da raiz antes do merge e no CI:
+`Validation Gates` é o único check obrigatório de `main`. Ele roda em pull requests e em
+`main`, possui apenas permissão de leitura e cancela somente execuções de pull request que foram
+substituídas; uma validação de `main` em andamento nunca é cancelada, para que Railway Wait for
+CI possa decidir o deploy.
 
-- `pnpm gate:contract` → verifica se o cliente gerado OpenAPI está atualizado (`orval --config orval.config.ts`)
-- `pnpm gate:quality` → executa `lint`, `typecheck` e `build`
-- `pnpm gate:states` → executa verificações de cobertura de estados loading/empty/error do admin
-- `pnpm gate:validation` (ou `pnpm ci:validation`) → executa todos os portões em ordem
+Use estes comandos locais para espelhar a validação de aplicações:
+
+- `pnpm ci:web:build`, `pnpm ci:web:test` e `pnpm ci:web:validate` → build, testes, lint e typecheck do site
+- `pnpm ci:admin:build`, `pnpm ci:admin:test` e `pnpm ci:admin:validate` → build, testes, lint e typecheck do backoffice
+- `pnpm ci:validation` → sequência do site seguida da sequência do backoffice
+- `pnpm docker:web:smoke` → cria, inicia e verifica a imagem standalone do site, incluindo health, cache, sitemap e robots
+- `pnpm docker:admin:build` → valida a imagem de produção do backoffice
+
+Há dois fluxos operacionais protegidos e sem poder de deploy:
+
+- `Railway IaC Plan` roda somente em alterações selecionadas de `main` ou por execução manual,
+  usa um `RAILWAY_TOKEN` com escopo do projeto no ambiente GitHub `production`, cria um artefato
+  de plano redigido por 14 dias e falha diante de diagnóstico, destruição ou remoção. Ele nunca
+  executa `apply`, redeploy ou alteração de variáveis.
+- `Production Smoke` só pode ser executado manualmente no mesmo ambiente e não recebe credencial
+  Railway. Depois dos domínios temporários existirem, ele usa `WEB_BASE_URL`, `ADMIN_BASE_URL` e
+  `API_PUBLIC_BASE_URL` para verificar saúde, cache, sitemap, robots, canonical e readiness.
+
+A proprietária do repositório deve criar o ambiente GitHub `production` (somente branch `main`,
+revisora Jessica, segredo `RAILWAY_TOKEN` e as três variáveis de URL) e a ruleset `protect-main`:
+pull request, uma aprovação atual, conversas resolvidas, branch atualizada e o check
+`application-gate`, sem force-push, deleção ou bypass. Fluxos de PR usam `pull_request`, nunca
+`pull_request_target` e nunca recebem segredos.
 
 ## Plano Faseado
 

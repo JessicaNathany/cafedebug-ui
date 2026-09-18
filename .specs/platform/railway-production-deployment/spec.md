@@ -2,7 +2,7 @@
 
 | Field              | Value                                                                                       |
 | ------------------ | ------------------------------------------------------------------------------------------- |
-| **Status**         | `In progress`                                                                               |
+| **Status**         | `Ready for review`                                                                          |
 | **Domain**         | `platform`                                                                                  |
 | **Spec path**      | `.specs/platform/railway-production-deployment/`                                            |
 | **Affected areas** | website, backoffice, CI, container images, Railway infrastructure, deployment documentation |
@@ -27,15 +27,31 @@ production project with the existing API and MySQL, which are explicitly preserv
 - Change the API, MySQL, database schema, existing API domain, or any Railway volume.
 - Migrate DNS, add custom domains, configure CORS, or promise high availability.
 - Add App Sleep, arbitrary resource limits, or persistent frontend storage.
+- Grant GitHub Actions authority to apply Railway configuration, redeploy services, mutate
+  production variables, or access Railway from pull-request workflows.
+
+## CI and production governance
+
+- `Validation Gates` is the only required repository check. It has read-only pull-request
+  permissions, cancels superseded pull-request runs only, validates workflow syntax first, and
+  exercises both applications plus the website's running production image.
+- `Railway IaC Plan` runs only on trusted `main` changes or manual dispatch in the protected
+  GitHub `production` environment. It uses the project-scoped `RAILWAY_TOKEN` only to produce
+  a redacted, non-destructive plan artifact; it never applies or deploys.
+- `Production Smoke` is manual-only in the protected `production` environment and has no
+  Railway credential. It verifies public endpoints using protected-environment base-URL
+  variables after Railway deployment.
+- The repository owner configures the protected environment and the `main` ruleset. These
+  settings are intentionally not modified by this repository change.
 
 ## Success criteria
 
-| ID    | Criterion                                                                                                                            |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| AC-01 | `web` and `admin` are one-replica Railway services in `ams`, sourced from the canonical repository's `main` branch.                  |
-| AC-02 | Both apps build to minimal standalone images and listen on `0.0.0.0:$PORT`.                                                          |
-| AC-03 | `/api/health` returns a non-cacheable 2xx for web; admin returns 2xx only when its API readiness probe succeeds.                     |
-| AC-04 | Admin uses `http://cafedebug-backendapi.railway.internal:8080`, secure host-only cookies, and a no-index policy.                     |
-| AC-05 | CI validates both apps and both production images before Railway autodeploys `main`.                                                 |
-| AC-06 | Railway IaC planning shows only the intended frontend additions and never deletes preserved production state.                        |
-| AC-07 | Generated HTTPS domains, canonical metadata, no-index behavior, internal readiness, and one authorized admin read flow are verified. |
+| ID    | Criterion                                                                                                                                                                 |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AC-01 | `web` and `admin` are one-replica Railway services in `ams`, sourced from the canonical repository's `main` branch.                                                       |
+| AC-02 | Both apps build to minimal standalone images and listen on `0.0.0.0:$PORT`.                                                                                               |
+| AC-03 | `/api/health` returns a non-cacheable 2xx for web; admin returns 2xx only when its API readiness probe succeeds.                                                          |
+| AC-04 | Admin uses `http://cafedebug-backendapi.railway.internal:8080`, secure host-only cookies, and a no-index policy.                                                          |
+| AC-05 | The sole required `application-gate` validates workflow syntax, both apps, the running website image, and the admin production image before Railway autodeploys `main`.   |
+| AC-06 | A protected-environment, trusted-main plan creates only a redacted artifact and fails on diagnostics, destructive changes, or deletions.                                  |
+| AC-07 | Manual production smoke verifies generated HTTPS URLs, canonical metadata, no-index behavior, and admin-to-API readiness; a human verifies an authorized admin read flow. |
