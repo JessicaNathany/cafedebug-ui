@@ -2,3 +2,7 @@ packages:
   - "apps/*"
   - "packages/*"
   - "services/*"
+allowBuilds:
+  '@sentry/cli': true
+  esbuild: true
+  sharp: true

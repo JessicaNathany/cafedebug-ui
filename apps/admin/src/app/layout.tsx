@@ -11,7 +11,11 @@ export const metadata: Metadata = {
     default: "Café Debug Admin",
     template: "%s | Café Debug Admin"
   },
-  description: "Café Debug backoffice scaffold for authenticated admin workflows."
+  description: "Café Debug backoffice scaffold for authenticated admin workflows.",
+  robots: {
+    index: false,
+    follow: false
+  }
 };
 
 export default async function RootLayout({
