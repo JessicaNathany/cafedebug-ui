@@ -118,6 +118,7 @@ export function BannerCarousel({ banners, featuredEpisode }: BannerCarouselProps
                 sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 80px), 728px"
                 src={banner.imageUrl}
                 style={{ objectPosition: banner.imagePosition }}
+                unoptimized
               />
               <span aria-hidden className="absolute inset-0 bg-[image:var(--home-beta-banner-overlay)]" />
 

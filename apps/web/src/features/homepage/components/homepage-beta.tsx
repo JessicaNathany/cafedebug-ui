@@ -1,5 +1,5 @@
 import { BannerCarousel } from "@/features/banners/components/banner-carousel";
-import { homepageBanners } from "@/features/banners/mock/homepage-banners.mock";
+import { listHomepageBanners } from "@/features/banners/server/list-homepage-banners";
 import { HeroPlayer } from "@/features/episodes/components/hero-player";
 import { listEpisodes } from "@/features/episodes/server/list-episodes";
 
@@ -8,6 +8,7 @@ import { RecentEpisodes } from "./recent-episodes";
 
 export async function HomepageBeta() {
   const episodes = await listEpisodes();
+  const homepageBanners = await listHomepageBanners();
   const featuredEpisode = episodes[0];
 
   if (!featuredEpisode) {
