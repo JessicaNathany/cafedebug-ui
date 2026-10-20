@@ -6,31 +6,12 @@ import { test } from "node:test";
 const root = process.cwd();
 const readSource = (file) => readFileSync(join(root, file), "utf8");
 
-test("Homepage Beta banner fixtures retain Pencil order, copy, CTA intent, and local provenance", () => {
-  const source = readSource("src/features/banners/mock/homepage-banners.mock.ts");
+test("Homepage Beta banners source uses backend endpoint without fixture fallback", () => {
+  const source = readSource("src/features/banners/server/list-homepage-banners.ts");
 
-  for (const copy of [
-    "Dê o próximo passo na sua carreira dev",
-    "Seis meses de conversas que mudam carreiras",
-    "CaféDebug ao vivo, pela primeira vez",
-    "Feito com a comunidade, para a comunidade",
-    "Ouvir agora",
-    "Ver todos os episódios",
-    "Entrar na comunidade",
-    "Ver episódios"
-  ]) {
-    assert.ok(source.includes(copy), `missing authored banner copy: ${copy}`);
-  }
-
-  assert.deepEqual(
-    [...source.matchAll(/tabLabel: "([^"]+)"/g)].map((match) => match[1]),
-    ["DESTAQUE", "TEMPORADA", "AO VIVO", "COMUNIDADE"]
-  );
-  assert.equal((source.match(/action: "disabled"/g) ?? []).length, 5);
-  assert.equal((source.match(/action: "episodes-anchor"/g) ?? []).length, 2);
-  assert.equal((source.match(/action: "play-featured"/g) ?? []).length, 1);
-  assert.equal((source.match(/imageUrl: "\/mock\/home-beta-banner-/g) ?? []).length, 4);
-  assert.equal((source.match(/sourcePhotoUrl: "https:\/\/images\.unsplash\.com\//g) ?? []).length, 4);
+  assert.match(source, /\/api\/v1\/public\/banners\/latest/);
+  assert.match(source, /next: \{ revalidate: 60 \}/);
+  assert.doesNotMatch(source, /mockHomepageBanners|homepage-banners\.mock/);
 });
 
 test("BannerCarousel is the only interactive banner boundary and never autoplays", () => {
@@ -63,6 +44,8 @@ test("carousel CTA semantics distinguish playable, linked, and deferred actions"
   assert.match(source, /<PlayButton[^>]+episode=\{episode\}/);
   assert.match(source, /cta\.action === "episodes-anchor"/);
   assert.match(source, /<Link className=\{className\} href="\/episodes">/);
+  assert.match(source, /cta\.action === "external-link"/);
+  assert.match(source, /<a\s+className=\{className\}[\s\S]*href=\{cta\.href\}/);
   assert.match(source, /<button aria-disabled="true"[^>]+type="button">/);
   assert.doesNotMatch(source, /disabled=\{true\}|\sdisabled(?:\s|>)/);
 });

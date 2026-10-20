@@ -132,7 +132,7 @@ Tests that read `home-page.tsx` may be retargeted to `homepage-v2.tsx`; their as
 | ---: | --- | --- | --- | --- | --- |
 | 1 | `EP 142 · EPISÓDIO EM DESTAQUE` | `Dê o próximo passo na sua carreira dev` | `Conversas profundas com os melhores desenvolvedores sobre carreira, tecnologia e crescimento profissional.` | `Ouvir agora` | `Ver todos os episódios` |
 | 2 | `NOVA TEMPORADA · 2026` | `Seis meses de conversas que mudam carreiras` | `Uma temporada inteira dedicada a quem quer crescer de verdade na engenharia de software.` | `Ver a temporada` | `Assinar o feed` |
-| 3 | `AO VIVO · 24 JUN · SÃO PAULO` | `CaféDebug ao vivo, pela primeira vez` | `Gravação aberta, painéis com convidados e networking com a comunidade dev.` | `Garantir ingresso` | `Saber mais` |
+| 3 | `AO VIVO · 24 JUN · SÃO PAULO` | `CaféDebug ao vivo, pela primeira vez` | `Gravação aberta, painéis com convidados e networking com a comunidade dev.` | `—` | `Saber mais` |
 | 4 | `COMUNIDADE · 85 MIL DEVS` | `Feito com a comunidade, para a comunidade` | `Sugira pautas, indique convidados e participe das gravações ao vivo toda semana.` | `Entrar na comunidade` | `Ver episódios` |
 
 Localize the exact Pencil image fills as:
@@ -159,7 +159,8 @@ Keep the Pencil remote URL in fixture metadata for provenance, but render local 
 - Previous/next carousel buttons change selection but retain focus on the arrow button. The active tab and panel relationships update synchronously.
 - Previous/next wrap at the ends.
 - Slide 1 primary is a `<button>` reusing EP 142 play behavior. Slide 1 secondary and slide 4 secondary are `<a href="#episodios">` links.
-- Slide 2 CTAs, slide 3 CTAs, and slide 4 primary are focusable `<button type="button" aria-disabled="true">` placeholders with no click handler. Preserve their Pencil appearance and do not invent routes.
+- Slide 2 CTAs and slide 4 primary are focusable `<button type="button" aria-disabled="true">` placeholders with no click handler. Preserve their Pencil appearance and do not invent routes.
+- Slide 3 does not render a primary CTA. Its `Saber mais` CTA uses the banner URL as link target, without rendering that URL inline in the subtitle/body copy.
 - Active counter may use a polite live region; slide body must not announce on every focus move.
 - Inactive slide content is `hidden`/inert rather than only transparent.
 - No autoplay.

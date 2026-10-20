@@ -8,6 +8,14 @@ const allowedDevOrigins = process.env.NEXT_DEV_ALLOWED_ORIGINS
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cafedebug-uploads.s3.us-east-2.amazonaws.com"
+      }
+    ]
+  },
   ...(allowedDevOrigins ? { allowedDevOrigins } : {})
 };
 

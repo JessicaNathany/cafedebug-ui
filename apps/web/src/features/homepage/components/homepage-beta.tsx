@@ -1,13 +1,13 @@
 import { BannerCarousel } from "@/features/banners/components/banner-carousel";
 import { listHomepageBanners } from "@/features/banners/server/list-homepage-banners";
 import { HeroPlayer } from "@/features/episodes/components/hero-player";
-import { listEpisodes } from "@/features/episodes/server/list-episodes";
+import { listHomepageEpisodes } from "@/features/episodes/server/list-homepage-episodes";
 
 import { NewsletterSection } from "./newsletter-section";
 import { RecentEpisodes } from "./recent-episodes";
 
 export async function HomepageBeta() {
-  const episodes = await listEpisodes();
+  const episodes = await listHomepageEpisodes();
   const homepageBanners = await listHomepageBanners();
   const featuredEpisode = episodes[0];
 

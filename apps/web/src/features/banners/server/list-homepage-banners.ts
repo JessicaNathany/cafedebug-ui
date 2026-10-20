@@ -2,10 +2,9 @@ import { z } from "zod";
 
 import { env } from "@/lib/env";
 
-import { homepageBanners as mockHomepageBanners } from "../mock/homepage-banners.mock";
 import type { HomepageBanner } from "../types";
 
-const latestBannerSchema = z.object({
+const apiBannerSchema = z.object({
   id: z.number().optional(),
   name: z.string().nullish(),
   url: z.string().nullish(),
@@ -13,23 +12,24 @@ const latestBannerSchema = z.object({
   urlImage: z.string().min(1).nullish()
 });
 
-const latestBannersPayloadSchema = z.union([
-  z.array(latestBannerSchema),
-  z.object({ data: z.array(latestBannerSchema) }),
-  z.object({ result: z.array(latestBannerSchema) })
+const apiBannersPayloadSchema = z.union([
+  z.array(apiBannerSchema),
+  z.object({ data: z.array(apiBannerSchema) }),
+  z.object({ result: z.array(apiBannerSchema) }),
+  z.object({ value: z.array(apiBannerSchema) })
 ]);
 
-function normalizeImageUrl(urlImage: string): string {
-  if (/^https?:\/\//i.test(urlImage)) {
-    return urlImage;
+function normalizeUrl(url: string): string {
+  if (/^https?:\/\//i.test(url)) {
+    return url;
   }
 
-  const normalizedPath = urlImage.startsWith("/") ? urlImage : `/${urlImage}`;
+  const normalizedPath = url.startsWith("/") ? url : `/${url}`;
   return new URL(normalizedPath, env.WEB_API_BASE_URL).toString();
 }
 
 function extractBanners(payload: unknown) {
-  const parsed = latestBannersPayloadSchema.parse(payload);
+  const parsed = apiBannersPayloadSchema.parse(payload);
 
   if (Array.isArray(parsed)) {
     return parsed;
@@ -39,68 +39,64 @@ function extractBanners(payload: unknown) {
     return parsed.data;
   }
 
-  return parsed.result;
+  if ("result" in parsed) {
+    return parsed.result;
+  }
+
+  return parsed.value;
 }
 
 export async function listHomepageBanners(): Promise<readonly HomepageBanner[]> {
-  if (env.WEB_HOMEPAGE_BANNERS_SOURCE !== "api") {
-    return mockHomepageBanners;
-  }
-
-  const defaultBanner = mockHomepageBanners[0];
-  if (!defaultBanner) {
-    throw new Error("Homepage banner fallback fixtures are not configured.");
-  }
-
   const endpoint = new URL("/api/v1/public/banners/latest", env.WEB_API_BASE_URL);
+  const response = await fetch(endpoint.toString(), {
+    method: "GET",
+    headers: { Accept: "application/json" },
+    next: { revalidate: 60 }
+  });
 
-  try {
-    const response = await fetch(endpoint.toString(), {
-      method: "GET",
-      headers: { Accept: "application/json" },
-      next: { revalidate: 60 }
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to load homepage banners from ${endpoint.toString()} (status ${response.status}).`);
-    }
-
-    const apiBanners = extractBanners(await response.json())
-      .slice()
-      .sort((a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER));
-
-    if (apiBanners.length === 0) {
-      throw new Error(`No active homepage banners returned by ${endpoint.toString()}.`);
-    }
-
-    return apiBanners.map((apiBanner, index) => {
-      const banner = mockHomepageBanners[index % mockHomepageBanners.length] ?? defaultBanner;
-      const urlImage = apiBanner?.urlImage;
-
-      if (!urlImage) {
-        throw new Error(`Banner at index ${index} from ${endpoint.toString()} is missing "urlImage".`);
-      }
-
-      const imageUrl = normalizeImageUrl(urlImage);
-      const headline = apiBanner.name?.trim() || banner.headline;
-      const subtitle = apiBanner.url?.trim() || banner.subtitle;
-
-      return {
-        ...banner,
-        id: String(apiBanner.id ?? banner.id),
-        tabLabel: `BANNER ${String(index + 1).padStart(2, "0")}`,
-        headline,
-        subtitle,
-        imageUrl,
-        sourcePhotoUrl: imageUrl
-      };
-    });
-  } catch (error) {
-    if (process.env.NODE_ENV !== "production") {
-      console.error("[homepage-banners] Falling back to mock banners because API request failed.", error);
-      return mockHomepageBanners;
-    }
-
-    throw error;
+  if (!response.ok) {
+    throw new Error(`Failed to load homepage banners from ${endpoint.toString()} (status ${response.status}).`);
   }
+
+  const apiBanners = extractBanners(await response.json())
+    .slice()
+    .sort((a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER));
+
+  if (apiBanners.length === 0) {
+    throw new Error(`No active homepage banners returned by ${endpoint.toString()}.`);
+  }
+
+  return apiBanners.map((apiBanner, index) => {
+    const image = apiBanner.urlImage?.trim();
+
+    if (!image) {
+      throw new Error(`Banner at index ${index} from ${endpoint.toString()} is missing "urlImage".`);
+    }
+
+    const headline = apiBanner.name?.trim() || `Destaque ${index + 1}`;
+    const bannerLink = apiBanner.url?.trim();
+
+    return {
+      id: String(apiBanner.id ?? index + 1),
+      tabLabel: `BANNER ${String(index + 1).padStart(2, "0")}`,
+      eyebrow: "DESTAQUE",
+      headline,
+      subtitle: "Saiba mais sobre este destaque no CaféDebug.",
+      imageUrl: normalizeUrl(image),
+      imagePosition: "center",
+      sourcePhotoUrl: normalizeUrl(image),
+      primaryCta: null,
+      secondaryCta: bannerLink
+        ? {
+            label: "Saber mais",
+            action: "external-link",
+            href: normalizeUrl(bannerLink)
+          }
+        : {
+            label: "Saber mais",
+            action: "disabled"
+          },
+      pencilSourceNodes: { dark: "runtime-api", light: "runtime-api" }
+    };
+  });
 }
