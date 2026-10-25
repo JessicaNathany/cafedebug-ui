@@ -1,13 +1,17 @@
 # Spec: GitHub Actions CI Validation Redesign
 
-| Field | Value |
-|---|---|
-| **Status** | `Implemented` |
-| **Domain** | `platform` |
-| **Spec path** | `.specs/platform/ci-validation-redesign/` |
+| Field              | Value                                                                                             |
+| ------------------ | ------------------------------------------------------------------------------------------------- |
+| **Status**         | `Superseded by Railway Production Deployment`                                                     |
+| **Domain**         | `platform`                                                                                        |
+| **Spec path**      | `.specs/platform/ci-validation-redesign/`                                                         |
 | **Affected areas** | `.github/workflows/validation-gates.yml`, root `package.json`, contributor-facing validation docs |
 
 ---
+
+> The admin-only CI contract documented below is historical. The active deployment
+> contract is `.specs/platform/railway-production-deployment/`, which validates both
+> deployable apps and their production images before Railway receives a `main` commit.
 
 ## 1. Overview
 
@@ -133,13 +137,13 @@ Operational surfaces in scope:
 
 ## 8. Success Criteria
 
-| ID | Criterion |
-|---|---|
+| ID    | Criterion                                                                                                                                    |
+| ----- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | AC-01 | `.github/workflows/validation-gates.yml` remains the single validation workflow file and keeps `pull_request` plus `push` to `main` triggers |
-| AC-02 | The workflow exposes exactly one validation job |
-| AC-03 | That one job runs exactly three sequential steps in this order: build, test, validate |
-| AC-04 | The job targets only `@cafedebug/admin` |
-| AC-05 | The `validate` step runs admin `lint` and admin `typecheck`, and does not include any `api-client` or generated-client checks |
-| AC-06 | Root CI helper scripts, if retained, are admin-only and align to the single-job contract |
-| AC-07 | Spec and contributor-doc expectations no longer describe multiple named jobs, api-client validation, or generated-client drift checks |
-| AC-08 | Branch-protection guidance reflects the simpler single-status workflow contract |
+| AC-02 | The workflow exposes exactly one validation job                                                                                              |
+| AC-03 | That one job runs exactly three sequential steps in this order: build, test, validate                                                        |
+| AC-04 | The job targets only `@cafedebug/admin`                                                                                                      |
+| AC-05 | The `validate` step runs admin `lint` and admin `typecheck`, and does not include any `api-client` or generated-client checks                |
+| AC-06 | Root CI helper scripts, if retained, are admin-only and align to the single-job contract                                                     |
+| AC-07 | Spec and contributor-doc expectations no longer describe multiple named jobs, api-client validation, or generated-client drift checks        |
+| AC-08 | Branch-protection guidance reflects the simpler single-status workflow contract                                                              |

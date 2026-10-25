@@ -3,6 +3,6 @@ packages:
   - "packages/*"
   - "services/*"
 allowBuilds:
-  '@sentry/cli': false
-  esbuild: false
-  sharp: false
+  '@sentry/cli': true
+  esbuild: true
+  sharp: true

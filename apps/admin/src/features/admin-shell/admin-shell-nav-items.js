@@ -42,6 +42,12 @@ export const ADMIN_SHELL_NAV_ITEMS = Object.freeze([
   Object.freeze({
     href: appRoutes.teamMembers,
     label: "Team Members",
+    icon: "diversity_3",
+    disabled: false
+  }),
+  Object.freeze({
+    href: appRoutes.users,
+    label: "Users",
     icon: "group",
     disabled: false
   }),
@@ -76,6 +82,11 @@ const ADMIN_SHELL_ROUTE_CONTEXTS = Object.freeze([
     href: appRoutes.teamMembers,
     title: "Team Members",
     description: "Browse, search, and reopen team member records."
+  }),
+  Object.freeze({
+    href: appRoutes.users,
+    title: "Users",
+    description: "Browse, search, and reopen user records."
   }),
   Object.freeze({
     href: appRoutes.settings,

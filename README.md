@@ -9,7 +9,7 @@ Este repositório é o espaço de planejamento e fundação para o esforço de m
 Cafe Debug é um projeto de podcast e comunidade sobre desenvolvimento de software, arquitetura de software, vida de desenvolvedor, gerenciamento de projetos e engenharia de software. O estado alvo para este repositório é um monorepo público que contém:
 
 - o site público
-- o backoffice administrativo  
+- o backoffice administrativo
 - a API REST .NET
 
 ## Status
@@ -43,20 +43,20 @@ O que confirmamos dessas fontes:
 
 ## Decisão de Stack Tecnológica
 
-| Área | Decisão | Notas |
-| --- | --- | --- |
-| Monorepo | `pnpm` workspaces + `Turborepo` | Ótimo ajuste para os dois apps Next.js e pacotes compartilhados. A API .NET pode viver no mesmo repo sob `services/api` com seu próprio ciclo de vida. |
-| Website | `Next.js` App Router + `TypeScript` | Server Components primeiro, ISR/SSG para páginas de conteúdo, suporte SEO moderno. |
-| Admin | `Next.js` App Router + `TypeScript` | App separado com fluxos de trabalho CRUD autenticados. |
-| Estilização | `Tailwind CSS v4` + variáveis CSS | Melhor ajuste para tokens de design white-label e temas compartilhados. |
-| Componentes | `shadcn/ui` + primitivos customizados | Usar como camada base, não como identidade visual. |
-| Contrato de API | `Orval` (cliente fetch) | Gerar funções de endpoint da API tipadas e modelos a partir da saída Swagger/OpenAPI do backend. |
-| Busca de dados | `fetch` do servidor por padrão no website, `TanStack Query` em admin/fluxos pesados do cliente | Manter o site público SEO-primeiro e o admin produtividade-primeiro. |
-| Formulários | `React Hook Form` + `Zod` | DX forte para formulários administrativos e validação. |
-| Testes | `Vitest`, `React Testing Library`, `Playwright`, `MSW` | Cobertura unitária, de componente, e2e e mock de API. |
-| Qualidade | `ESLint`, `Prettier`, `Husky`, `lint-staged`, `commitlint` | Bons padrões para um repo open-source. |
-| Contêineres | `Dockerfile` multi-estágio por app | Manter deployment consistente entre apps. |
-| Hospedagem | AWS EC2 + stack Docker Swarm + proxy reverso | Proxy recomendado: `Traefik` para roteamento multi-serviço no Swarm. |
+| Área            | Decisão                                                                                        | Notas                                                                                                                                                  |
+| --------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Monorepo        | `pnpm` workspaces + `Turborepo`                                                                | Ótimo ajuste para os dois apps Next.js e pacotes compartilhados. A API .NET pode viver no mesmo repo sob `services/api` com seu próprio ciclo de vida. |
+| Website         | `Next.js` App Router + `TypeScript`                                                            | Server Components primeiro, ISR/SSG para páginas de conteúdo, suporte SEO moderno.                                                                     |
+| Admin           | `Next.js` App Router + `TypeScript`                                                            | App separado com fluxos de trabalho CRUD autenticados.                                                                                                 |
+| Estilização     | `Tailwind CSS v4` + variáveis CSS                                                              | Melhor ajuste para tokens de design white-label e temas compartilhados.                                                                                |
+| Componentes     | `shadcn/ui` + primitivos customizados                                                          | Usar como camada base, não como identidade visual.                                                                                                     |
+| Contrato de API | `Orval` (cliente fetch)                                                                        | Gerar funções de endpoint da API tipadas e modelos a partir da saída Swagger/OpenAPI do backend.                                                       |
+| Busca de dados  | `fetch` do servidor por padrão no website, `TanStack Query` em admin/fluxos pesados do cliente | Manter o site público SEO-primeiro e o admin produtividade-primeiro.                                                                                   |
+| Formulários     | `React Hook Form` + `Zod`                                                                      | DX forte para formulários administrativos e validação.                                                                                                 |
+| Testes          | `Vitest`, `React Testing Library`, `Playwright`, `MSW`                                         | Cobertura unitária, de componente, e2e e mock de API.                                                                                                  |
+| Qualidade       | `ESLint`, `Prettier`, `Husky`, `lint-staged`, `commitlint`                                     | Bons padrões para um repo open-source.                                                                                                                 |
+| Contêineres     | `Dockerfile` multi-estágio por app                                                             | Manter deployment consistente entre apps.                                                                                                              |
+| Hospedagem      | Railway                                                                                        | Serviços persistentes para `web`, `admin`, API e MySQL no mesmo projeto de produção.                                                                   |
 
 ## Princípios de Arquitetura
 
@@ -208,21 +208,17 @@ Analytics devem permanecer opcionais por ambiente para que deployments locais e 
 
 ## Direção de Deployment
 
-Alvo de produção:
+O ambiente de pré-lançamento de produção usa o projeto Railway
+`cafedebug-backend.api-railway`, no ambiente `production`:
 
-- AWS EC2
-- stack Docker Swarm
-- um serviço de proxy reverso
-- um serviço para `web`
-- um serviço para `admin`
-- um serviço para `api`
+- `web`: site público com fixtures, domínio HTTPS temporário do Railway e `NEXT_PUBLIC_SITE_URL` configurado no serviço
+- `admin`: backoffice HTTPS autenticado, sem indexação e com cookies `Secure` host-only
+- `cafedebug-backend.api`: API existente, preservada e usada pelo admin exclusivamente pela rede privada
+- `cafedebugdb`: MySQL existente, sem domínio público ou credenciais nos frontends
 
-Abordagem recomendada:
+Cada frontend é uma imagem Next.js standalone, multi-stage, sem volume, uma réplica em `ams` e health check em `/api/health`. Railway aguarda o CI em `main`, mantém o deploy anterior até a nova instância responder e aplica overlap/draining de 20/30 segundos.
 
-- desenvolvimento local com Docker Compose apenas onde útil
-- builds Docker multi-estágio para cada app
-- GitHub Actions para CI, build de imagem e deployment
-- variáveis de ambiente gerenciadas por serviço
+As configurações de infraestrutura vivem em `.railway/railway.ts`. Execute `railway config plan` antes de qualquer `apply`; um plano que altere ou remova API, banco, volumes ou variáveis preservadas é inválido. O domínio `cafedebug.com.br`, integrações públicas de conteúdo, CORS da API e alterações de banco permanecem fora deste deploy.
 
 ### Executar `apps/admin` na Sua Máquina
 
@@ -230,8 +226,8 @@ Use esta seção quando quiser executar o app administrativo localmente como con
 
 #### Pré-requisitos
 
-- Node.js `>= 20`
-- pnpm `>= 10`
+- Node.js `>= 22`
+- pnpm `>= 12`
 - uma API backend em execução acessível por `ADMIN_API_BASE_URL` (padrão `http://localhost:8080`)
 
 #### 1. Install dependencies
@@ -292,6 +288,7 @@ pnpm --filter @cafedebug/admin dev
 Abra `http://localhost:3001`.
 
 **Notas de Plataforma:**
+
 - **macOS/Linux/Windows:** `pnpm --filter @cafedebug/admin dev` funciona como fluxo padrão cross-platform.
 - **HTTPS local com certificado de desenvolvimento:** use `pnpm --filter @cafedebug/admin dev:insecure-tls` (opt-in) ou descomente `NODE_TLS_REJECT_UNAUTHORIZED=0` em `apps/admin/.env.local` (veja `apps/admin/.env.example`).
 
@@ -391,12 +388,34 @@ Este projeto deve ser amigável à IA sem se tornar dependente de IA.
 
 ## Portões de Validação (Raiz + CI)
 
-Use os comandos de validação da raiz antes do merge e no CI:
+`Validation Gates` é o único check obrigatório de `main`. Ele roda em pull requests e em
+`main`, possui apenas permissão de leitura e cancela somente execuções de pull request que foram
+substituídas; uma validação de `main` em andamento nunca é cancelada, para que Railway Wait for
+CI possa decidir o deploy.
 
-- `pnpm gate:contract` → verifica se o cliente gerado OpenAPI está atualizado (`orval --config orval.config.ts`)
-- `pnpm gate:quality` → executa `lint`, `typecheck` e `build`
-- `pnpm gate:states` → executa verificações de cobertura de estados loading/empty/error do admin
-- `pnpm gate:validation` (ou `pnpm ci:validation`) → executa todos os portões em ordem
+Use estes comandos locais para espelhar a validação de aplicações:
+
+- `pnpm ci:web:build`, `pnpm ci:web:test` e `pnpm ci:web:validate` → build, testes, lint e typecheck do site
+- `pnpm ci:admin:build`, `pnpm ci:admin:test` e `pnpm ci:admin:validate` → build, testes, lint e typecheck do backoffice
+- `pnpm ci:validation` → sequência do site seguida da sequência do backoffice
+- `pnpm docker:web:smoke` → cria, inicia e verifica a imagem standalone do site, incluindo health, cache, sitemap e robots
+- `pnpm docker:admin:build` → valida a imagem de produção do backoffice
+
+Há dois fluxos operacionais protegidos e sem poder de deploy:
+
+- `Railway IaC Plan` roda somente em alterações selecionadas de `main` ou por execução manual,
+  usa um `RAILWAY_TOKEN` com escopo do projeto no ambiente GitHub `production`, cria um artefato
+  de plano redigido por 14 dias e falha diante de diagnóstico, destruição ou remoção. Ele nunca
+  executa `apply`, redeploy ou alteração de variáveis.
+- `Production Smoke` só pode ser executado manualmente no mesmo ambiente e não recebe credencial
+  Railway. Depois dos domínios temporários existirem, ele usa `WEB_BASE_URL`, `ADMIN_BASE_URL` e
+  `API_PUBLIC_BASE_URL` para verificar saúde, cache, sitemap, robots, canonical e readiness.
+
+A proprietária do repositório deve criar o ambiente GitHub `production` (somente branch `main`,
+revisora Jessica, segredo `RAILWAY_TOKEN` e as três variáveis de URL) e a ruleset `protect-main`:
+pull request, uma aprovação atual, conversas resolvidas, branch atualizada e o check
+`application-gate`, sem force-push, deleção ou bypass. Fluxos de PR usam `pull_request`, nunca
+`pull_request_target` e nunca recebem segredos.
 
 ## Plano Faseado
 

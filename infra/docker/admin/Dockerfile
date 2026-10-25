@@ -26,9 +26,14 @@ FROM deps AS build
 COPY . .
 RUN pnpm --filter @cafedebug/admin build
 
-FROM base AS production
+FROM node:22-alpine AS production
 ENV NODE_ENV=production
-COPY --from=build /app /app
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
+WORKDIR /app
+COPY --from=build --chown=node:node /app/apps/admin/.next/standalone ./
+COPY --from=build --chown=node:node /app/apps/admin/.next/static ./apps/admin/.next/static
+USER node
 WORKDIR /app/apps/admin
 EXPOSE 3000
-CMD ["sh", "-c", "pnpm exec next start --hostname 0.0.0.0 --port ${PORT:-3000}"]
+CMD ["node", "server.js"]

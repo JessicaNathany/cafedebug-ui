@@ -1,7 +1,7 @@
 export const AUTH_ROUTE_RULES = Object.freeze({
   login: "/login",
-  postLogin: "/episodes",
-  protectedPrefixes: ["/dashboard", "/episodes", "/banners", "/settings"]
+  postLogin: "/users",
+  protectedPrefixes: ["/dashboard", "/episodes", "/banners", "/team-members", "/users", "/settings"]
 });
 
 const normalizePathname = (pathname) => {
@@ -24,10 +24,6 @@ export const isProtectedAdminPath = (pathname) => {
 
 export const getRouteProtectionRedirect = ({ pathname, isAuthenticated }) => {
   const normalizedPathname = normalizePathname(pathname);
-
-  if (normalizedPathname === AUTH_ROUTE_RULES.login && isAuthenticated) {
-    return AUTH_ROUTE_RULES.postLogin;
-  }
 
   if (isProtectedAdminPath(normalizedPathname) && !isAuthenticated) {
     return AUTH_ROUTE_RULES.login;

@@ -53,8 +53,8 @@ export default function GlobalError({
               >
                 Try again
               </button>
-              <a className="rounded-lg bg-surface-container-high px-4 py-2 text-sm font-medium text-on-surface" href={appRoutes.episodes}>
-                Back to episodes
+              <a className="rounded-lg bg-surface-container-high px-4 py-2 text-sm font-medium text-on-surface" href={appRoutes.login}>
+                Back to login
               </a>
             </div>
           </div>
