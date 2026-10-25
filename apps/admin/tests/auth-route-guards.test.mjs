@@ -44,29 +44,33 @@ const readAuthorizationHeader = (headers) => {
   return "";
 };
 
-test("auth route rules enforce episodes-first redirects", () => {
+test("auth route rules use the users post-login destination", () => {
   assert.equal(AUTH_ROUTE_RULES.login, "/login");
-  assert.equal(AUTH_ROUTE_RULES.postLogin, "/episodes");
+  assert.equal(AUTH_ROUTE_RULES.postLogin, "/users");
 });
 
-test("protected admin routes include episodes/banners/dashboard/settings paths", () => {
+test("protected admin routes include content and account paths", () => {
   assert.equal(isProtectedAdminPath("/episodes"), true);
   assert.equal(isProtectedAdminPath("/episodes/new"), true);
   assert.equal(isProtectedAdminPath("/banners"), true);
   assert.equal(isProtectedAdminPath("/banners/new"), true);
+  assert.equal(isProtectedAdminPath("/team-members"), true);
+  assert.equal(isProtectedAdminPath("/team-members/new"), true);
+  assert.equal(isProtectedAdminPath("/users"), true);
+  assert.equal(isProtectedAdminPath("/users/new"), true);
   assert.equal(isProtectedAdminPath("/dashboard"), true);
   assert.equal(isProtectedAdminPath("/settings"), true);
   assert.equal(isProtectedAdminPath("/login"), false);
   assert.equal(isProtectedAdminPath("/"), false);
 });
 
-test("route protection redirects anonymous and authenticated users correctly", () => {
+test("route protection redirects anonymous users and allows authenticated routes", () => {
   assert.equal(
     getRouteProtectionRedirect({
       pathname: "/login",
       isAuthenticated: true
     }),
-    "/episodes"
+    null
   );
 
   assert.equal(
@@ -80,6 +84,14 @@ test("route protection redirects anonymous and authenticated users correctly", (
   assert.equal(
     getRouteProtectionRedirect({
       pathname: "/banners/new",
+      isAuthenticated: false
+    }),
+    "/login"
+  );
+
+  assert.equal(
+    getRouteProtectionRedirect({
+      pathname: "/users/new",
       isAuthenticated: false
     }),
     "/login"
