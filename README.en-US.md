@@ -479,3 +479,9 @@ Packages are exercised through the deployable app that consumes them; no separat
 - live site: `https://cafedebug.com.br`
 - legacy repo: `https://github.com/JessicaNathany/cafedebug.legacy`
 - backend repo: `https://github.com/JessicaNathany/cafedebug-backend.api`
+
+### Railway UI ownership
+
+The named IaC partial `ui` manages only `web` and `admin`; the existing API, MySQL, volumes, and backend variables are external. Both sources explicitly track `main`. Use Railway CLI 5.71.0 and SDK 3.16.0. Run `pnpm ci:iac` for the compiled ownership boundary and fail-closed plan tests. The protected trusted-main workflow rejects changes outside those frontends and publishes only allowlisted review metadata. Ownership transfers and apply remain operator steps.
+
+See [.railway/README.md](.railway/README.md) for ownership inspection, migration and rollback, and [Jessica’s deployment checklist](docs/railway-deployment-handoff.md) for GitHub/Railway variables and production acceptance. Earlier full-project plan evidence does not validate this partial; live planning remains pending until authentication is restored.

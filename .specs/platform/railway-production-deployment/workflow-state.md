@@ -4,10 +4,10 @@
 | ------------------ | ------------------------------------------------------------ |
 | **State**          | `Ready for review`                                           |
 | **Approved input** | User-approved Railway production pre-launch plan             |
-| **Branch**         | `codex/railway-production-prelaunch`                         |
-| **Baseline**       | `jessica/main` at `648537c28f5a98d6a1111661344931a19bbd08d0` |
+| **Branch**         | `codex/railway-ui-ownership`                         |
+| **Baseline**       | `main` at `f78c412aacdd7f9a9d4bc6ecf2818c296a3d9807` |
 
-## Completed
+## Historical evidence — full-project configuration (superseded)
 
 - Created an isolated worktree; the conflicting source checkout remains untouched.
 - Upgraded Railway CLI from `5.49.2` to `5.57.6`.
@@ -44,3 +44,16 @@
 - The project-scoped `RAILWAY_TOKEN` belongs only to the protected GitHub `production`
   environment and is never present in pull-request or smoke workflows.
 - Railway Wait for CI remains the deployment gate; GitHub Actions only validates and observes.
+
+## UI ownership revision — ready for review
+
+Approved input: user-approved UI-only ownership plan. Branch: `codex/railway-ui-ownership`. Earlier whole-project plan evidence is historical and does not validate the new partial. Live planning is pending: Railway login is unauthorized. No production ownership transfer, apply, deployment, or variable mutation is authorized in this PR.
+
+### Implemented and validated
+
+- CLI pin 5.71.0 and SDK 3.16.0; frozen lockfile install passes with only the SDK dependency change.
+- `ui` evaluates to exactly `service.web` and `service.admin`; source branch main and existing runtime contracts verified. TypeScript configuration check passes.
+- `pnpm ci:iac`: graph check and six plan safety/redaction/CLI tests pass. Graph and tests also run successfully on Node 22.
+- actionlint 1.7.12 and `git diff --check` pass. No application code, images or deployment behavior changed; existing full application checks remain in CI.
+- Read-only debugger review approved the boundary, supported pinned CLI schema and workflow safeguards; documentation inconsistencies corrected.
+- Live CLI 5.71.0 status returns Unauthorized. Ownership inventory, private API reference resolution, remote UI plan, transfer/apply and deployment acceptance remain pending operator evidence.

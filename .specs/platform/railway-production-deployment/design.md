@@ -31,8 +31,7 @@ database credential is introduced.
 
 ## Railway model
 
-- `.railway/railway.ts` imports the current API, MySQL, and volumes with `preserve()` for
-  production variables, then declares the two frontend services.
+- `.railway/railway.ts` exports the named partial `ui` and declares only `web` and `admin`. API, MySQL, volumes, and backend variables remain external. CLI 5.71.0 / SDK 3.16.0 support the ownership boundary.
 - `web` receives its generated Railway public domain as `NEXT_PUBLIC_SITE_URL` at build
   time. `admin` receives only the API's private URL and secure cookie policy.
 - Each frontend has one `ams` replica, a 120-second health timeout, 20 seconds of overlap,
@@ -71,3 +70,7 @@ read-only permissions; `pull_request_target` is prohibited.
 Railway check suites must be enabled for each service. Failed health checks keep the previous
 deployment active. A frontend rollback selects its own previous successful deployment; the API,
 database, schema, and volumes are never rollback targets here.
+
+## UI ownership migration
+
+Inspect `railway config partials list --json` before applying. Unowned/absent frontends are claimed on first UI apply; transfer already-owned frontends only after a dry-run and etag check. Update previous authoring files before any later apply. Never transfer backend resources. Re-plan after ownership changes. The plan validator accepts only safe frontend create/update and variable-set operations and emits allowlisted review metadata. No ownership changes or apply occur in CI or this implementation PR.

@@ -218,7 +218,7 @@ O ambiente de pré-lançamento de produção usa o projeto Railway
 
 Cada frontend é uma imagem Next.js standalone, multi-stage, sem volume, uma réplica em `ams` e health check em `/api/health`. Railway aguarda o CI em `main`, mantém o deploy anterior até a nova instância responder e aplica overlap/draining de 20/30 segundos.
 
-As configurações de infraestrutura vivem em `.railway/railway.ts`. Execute `railway config plan` antes de qualquer `apply`; um plano que altere ou remova API, banco, volumes ou variáveis preservadas é inválido. O domínio `cafedebug.com.br`, integrações públicas de conteúdo, CORS da API e alterações de banco permanecem fora deste deploy.
+As configurações de infraestrutura dos frontends vivem no partial `ui` em `.railway/railway.ts`. Execute `railway config plan` antes de qualquer `apply`; um plano que altere ou remova API, banco, volumes ou variáveis preservadas é inválido. O domínio `cafedebug.com.br`, integrações públicas de conteúdo, CORS da API e alterações de banco permanecem fora deste deploy.
 
 ### Executar `apps/admin` na Sua Máquina
 
@@ -444,3 +444,9 @@ pull request, uma aprovação atual, conversas resolvidas, branch atualizada e o
 - site ao vivo: `https://cafedebug.com.br`
 - repo legado: `https://github.com/JessicaNathany/cafedebug.legacy`
 - repo backend: `https://github.com/JessicaNathany/cafedebug-backend.api`
+
+### Railway UI ownership
+
+The named IaC partial `ui` manages only `web` and `admin`; the existing API, MySQL, volumes, and backend variables are external. Both sources explicitly track `main`. Use Railway CLI 5.71.0 and SDK 3.16.0. Run `pnpm ci:iac` for the compiled ownership boundary and fail-closed plan tests. The protected trusted-main workflow rejects changes outside those frontends and publishes only allowlisted review metadata. Ownership transfers and apply remain operator steps.
+
+See [.railway/README.md](.railway/README.md) for ownership inspection, migration and rollback, and [Jessica’s deployment checklist](docs/railway-deployment-handoff.md) for GitHub/Railway variables and production acceptance. Earlier full-project plan evidence does not validate this partial; live planning remains pending until authentication is restored.
