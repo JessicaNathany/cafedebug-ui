@@ -7,6 +7,7 @@ const allowedDevOrigins = process.env.NEXT_DEV_ALLOWED_ORIGINS
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  output: "standalone",
   outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
   images: {
     remotePatterns: [
