@@ -29,11 +29,15 @@ function CarouselCta({
   icon,
   primary
 }: {
-  cta: BannerCta;
+  cta: BannerCta | null | undefined;
   episode: Episode;
   icon?: (typeof ctaIcons)[number];
   primary: boolean;
 }) {
+  if (!cta) {
+    return null;
+  }
+
   const Icon = icon;
   const className = cn(
     "inline-flex h-[50px] w-full items-center justify-center gap-2 rounded-pill px-[26px] font-secondary text-base font-semibold leading-[19px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:w-auto",
@@ -49,6 +53,21 @@ function CarouselCta({
       <Link className={className} href="/episodes">
         {cta.label}
       </Link>
+    );
+  }
+
+  if (cta.action === "external-link" && cta.href) {
+    const isExternal = /^https?:\/\//i.test(cta.href);
+
+    return (
+      <a
+        className={className}
+        href={cta.href}
+        rel={isExternal ? "noreferrer noopener" : undefined}
+        target={isExternal ? "_blank" : undefined}
+      >
+        {cta.label}
+      </a>
     );
   }
 
@@ -118,6 +137,7 @@ export function BannerCarousel({ banners, featuredEpisode }: BannerCarouselProps
                 sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 80px), 728px"
                 src={banner.imageUrl}
                 style={{ objectPosition: banner.imagePosition }}
+                unoptimized
               />
               <span aria-hidden className="absolute inset-0 bg-[image:var(--home-beta-banner-overlay)]" />
 

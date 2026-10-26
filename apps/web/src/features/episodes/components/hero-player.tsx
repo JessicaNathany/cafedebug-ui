@@ -13,7 +13,14 @@ export function HeroPlayer({ episode }: HeroPlayerProps) {
   return (
     <article aria-label="Player do episódio em destaque" className="w-full max-w-130 justify-self-center overflow-hidden rounded-[var(--radius-m)] border border-border bg-card text-card-foreground shadow-card lg:h-[559px]">
       <div className="relative h-60 overflow-hidden">
-        <Image alt={`Capa do episódio ${episode.number}: ${episode.title}`} className="object-cover" fill priority sizes="(max-width: 1023px) 100vw, 520px" src="/mock/hero-episode-142.jpg" />
+        <Image
+          alt={`Capa do episódio ${episode.number}: ${episode.title}`}
+          className="object-cover"
+          fill
+          priority
+          sizes="(max-width: 1023px) 100vw, 520px"
+          src={episode.artworkUrl}
+        />
         <span className="absolute left-5 top-5 rounded-pill bg-background/80 px-3 py-1.5 font-primary text-[11px] font-semibold tracking-[1px] text-primary">
           {episode.category}
         </span>
@@ -32,7 +39,7 @@ export function HeroPlayer({ episode }: HeroPlayerProps) {
         <h2 className="text-[21px] font-semibold leading-[1.3] text-foreground">{episode.title}</h2>
 
         <div className="flex items-center gap-2.5">
-          <Image alt={episode.guestName} className="size-8 rounded-pill object-cover" height={32} src="/mock/hero-guest-ana.jpg" width={32} />
+          <Image alt={episode.guestName} className="size-8 rounded-pill object-cover" height={32} src={episode.guestAvatarUrl} width={32} />
           <div className="grid gap-px">
             <p className="text-sm font-medium text-foreground">com {episode.guestName}</p>
             <p className="text-xs text-muted-foreground">{episode.guestRole}</p>

@@ -90,7 +90,8 @@ The launch change must not delete, overwrite, or make unrecoverable any existing
 - Previous on slide 1 wraps to slide 4; next on slide 4 wraps to slide 1.
 - The carousel does not auto-advance.
 - Slide 1 `Ouvir agora` is a button using the featured-episode play action; slide 1 `Ver todos os episódios` and slide 4 `Ver episódios` are links to `#episodios`.
-- Both slide 2 CTAs, both slide 3 CTAs, and slide 4 `Entrar na comunidade` are focusable buttons with `aria-disabled="true"`, no click handler, and unchanged Pencil appearance until their owning features are specified.
+- Both slide 2 CTAs and slide 4 `Entrar na comunidade` are focusable buttons with `aria-disabled="true"`, no click handler, and unchanged Pencil appearance until their owning features are specified.
+- Slide 3 does not render the primary CTA (`Garantir ingresso`). Its `Saber mais` CTA is the only action and uses the banner URL as link target.
 - Hidden slides must not expose duplicate headings or actionable controls to assistive technology.
 - Transitions respect reduced-motion preferences and never change carousel height.
 

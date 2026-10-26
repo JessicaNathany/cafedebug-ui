@@ -44,9 +44,9 @@ const readAuthorizationHeader = (headers) => {
   return "";
 };
 
-test("auth route rules enforce episodes-first redirects", () => {
+test("auth route rules enforce post-login redirects", () => {
   assert.equal(AUTH_ROUTE_RULES.login, "/login");
-  assert.equal(AUTH_ROUTE_RULES.postLogin, "/episodes");
+  assert.equal(AUTH_ROUTE_RULES.postLogin, "/users");
 });
 
 test("protected admin routes include episodes/banners/dashboard/settings paths", () => {
@@ -66,7 +66,7 @@ test("route protection redirects anonymous and authenticated users correctly", (
       pathname: "/login",
       isAuthenticated: true
     }),
-    "/episodes"
+    "/users"
   );
 
   assert.equal(
