@@ -16223,9 +16223,9 @@
                               "type": "frame",
                               "id": "J1ps2",
                               "name": "Badge",
-                              "width": 52,
-                              "height": 52,
-                              "fill": "$--primary",
+                              "width": 48,
+                              "height": 48,
+                              "fill": "$--secondary",
                               "cornerRadius": "$--radius-m",
                               "justifyContent": "center",
                               "alignItems": "center",
@@ -16234,11 +16234,11 @@
                                   "type": "icon",
                                   "id": "oY9O6",
                                   "name": "icon",
-                                  "width": 26,
-                                  "height": 26,
+                                  "width": 22,
+                                  "height": 22,
                                   "icon": "message-circle",
                                   "library": "lucide",
-                                  "fill": "$--primary-foreground"
+                                  "fill": "$--primary"
                                 }
                               ]
                             },
@@ -16299,19 +16299,45 @@
                               ]
                             },
                             {
-                              "id": "Ppv1m",
-                              "type": "ref",
-                              "ref": "ZGI9Z",
+                              "type": "frame",
+                              "id": "ZIqUo",
                               "name": "Join",
                               "width": "fill_container",
-                              "descendants": {
-                                "oNDwn": {
-                                  "enabled": false
+                              "height": 48,
+                              "fill": "$--primary",
+                              "cornerRadius": "$--radius-pill",
+                              "gap": 12,
+                              "padding": [
+                                12,
+                                24
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "MtfHC",
+                                  "name": "Button",
+                                  "fill": "$--primary-foreground",
+                                  "content": "Entrar no Discord",
+                                  "lineHeight": 1.5555555555555556,
+                                  "textAlign": "center",
+                                  "textAlignVertical": "middle",
+                                  "fontFamily": "$--font-primary",
+                                  "fontSize": 14,
+                                  "fontWeight": "500"
                                 },
-                                "J3Z6N": {
-                                  "content": "Entrar no Discord"
+                                {
+                                  "type": "icon",
+                                  "id": "d6XR54",
+                                  "name": "External",
+                                  "width": 16,
+                                  "height": 16,
+                                  "icon": "arrow-up-right",
+                                  "library": "lucide",
+                                  "fill": "$--primary-foreground"
                                 }
-                              }
+                              ]
                             }
                           ]
                         },
@@ -33231,9 +33257,9 @@
                               "type": "frame",
                               "id": "u9dpp6",
                               "name": "Badge",
-                              "width": 52,
-                              "height": 52,
-                              "fill": "$--primary",
+                              "width": 48,
+                              "height": 48,
+                              "fill": "$--secondary",
                               "cornerRadius": "$--radius-m",
                               "justifyContent": "center",
                               "alignItems": "center",
@@ -33242,11 +33268,11 @@
                                   "type": "icon",
                                   "id": "rNYqN",
                                   "name": "icon",
-                                  "width": 26,
-                                  "height": 26,
+                                  "width": 22,
+                                  "height": 22,
                                   "icon": "message-circle",
                                   "library": "lucide",
-                                  "fill": "$--primary-foreground"
+                                  "fill": "$--primary"
                                 }
                               ]
                             },
@@ -33307,19 +33333,45 @@
                               ]
                             },
                             {
-                              "id": "aSU2w",
-                              "type": "ref",
-                              "ref": "ZGI9Z",
+                              "type": "frame",
+                              "id": "U0z3j5",
                               "name": "Join",
                               "width": "fill_container",
-                              "descendants": {
-                                "oNDwn": {
-                                  "enabled": false
+                              "height": 48,
+                              "fill": "$--primary",
+                              "cornerRadius": "$--radius-pill",
+                              "gap": 12,
+                              "padding": [
+                                12,
+                                24
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "dtdUV",
+                                  "name": "Button",
+                                  "fill": "$--primary-foreground",
+                                  "content": "Entrar no Discord",
+                                  "lineHeight": 1.5555555555555556,
+                                  "textAlign": "center",
+                                  "textAlignVertical": "middle",
+                                  "fontFamily": "$--font-primary",
+                                  "fontSize": 14,
+                                  "fontWeight": "500"
                                 },
-                                "J3Z6N": {
-                                  "content": "Entrar no Discord"
+                                {
+                                  "type": "icon",
+                                  "id": "UDHmx",
+                                  "name": "External",
+                                  "width": 16,
+                                  "height": 16,
+                                  "icon": "arrow-up-right",
+                                  "library": "lucide",
+                                  "fill": "$--primary-foreground"
                                 }
-                              }
+                              ]
                             }
                           ]
                         },
