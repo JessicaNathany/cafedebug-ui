@@ -10,6 +10,8 @@ test("Homepage Beta is a server-first launch composition with six non-featured e
   const source = readSource("src/features/homepage/components/homepage-beta.tsx");
 
   assert.doesNotMatch(source, /["']use client["']/, "the beta composition should remain a Server Component");
+  assert.match(source, /listHomepageEpisodes/);
+  assert.doesNotMatch(source, /listEpisodes/);
   assert.match(source, /const recentEpisodes = episodes\.slice\(1, 7\)/);
   assert.match(source, /<BannerCarousel banners=\{homepageBanners\} featuredEpisode=\{featuredEpisode\} \/>/);
   assert.match(source, /<HeroPlayer episode=\{featuredEpisode\} \/>/);
@@ -43,12 +45,10 @@ test("beta recent episodes preserve exact desktop geometry and responsive tracks
   assert.match(cardSource, /alt=\{episode\.guestName\}/);
 });
 
-test("beta fixtures append the exact six-card episode sequence without replacing EP 142", () => {
-  const source = readSource("src/features/episodes/mock/episodes.mock.ts");
-  const numbers = [...source.matchAll(/number: (\d+),/g)].map((match) => Number(match[1]));
+test("homepage episodes source uses backend endpoint without mock fallback", () => {
+  const source = readSource("src/features/episodes/server/list-homepage-episodes.ts");
 
-  assert.deepEqual(numbers, [142, 141, 140, 139, 138, 137, 136]);
-  for (const guest of ["Camila Ferreira", "Diego Andrade", "Juliana Prado"]) {
-    assert.ok(source.includes(`guestName: "${guest}"`), `missing beta guest ${guest}`);
-  }
+  assert.match(source, /\/api\/v1\/public\/episodes/);
+  assert.match(source, /pageSize", "7"/);
+  assert.doesNotMatch(source, /mockEpisodes|mockEpisodeCatalog/);
 });

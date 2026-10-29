@@ -5,7 +5,8 @@ export type BannerPencilNodes = {
 
 export type BannerCta = {
   label: string;
-  action: "play-featured" | "episodes-anchor" | "disabled";
+  action: "play-featured" | "episodes-anchor" | "external-link" | "disabled";
+  href?: string;
 };
 
 export type HomepageBanner = {
@@ -18,6 +19,6 @@ export type HomepageBanner = {
   imagePosition: string;
   sourcePhotoUrl: string;
   pencilSourceNodes: BannerPencilNodes;
-  primaryCta: BannerCta;
+  primaryCta?: BannerCta | null;
   secondaryCta: BannerCta;
 };

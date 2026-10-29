@@ -44,7 +44,7 @@ const readAuthorizationHeader = (headers) => {
   return "";
 };
 
-test("auth route rules use the users post-login destination", () => {
+test("auth route rules enforce post-login redirects", () => {
   assert.equal(AUTH_ROUTE_RULES.login, "/login");
   assert.equal(AUTH_ROUTE_RULES.postLogin, "/users");
 });
@@ -70,7 +70,7 @@ test("route protection redirects anonymous users and allows authenticated routes
       pathname: "/login",
       isAuthenticated: true
     }),
-    null
+    "/users"
   );
 
   assert.equal(
