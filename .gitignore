@@ -67,3 +67,8 @@ docker-data/
 .docker-data/
 .mcp.json
 .junie/
+
+# Local Railway plan and ownership review artifacts
+/railway-plan*.json
+/railway-plan-summary.md
+/railway-ownership*.json

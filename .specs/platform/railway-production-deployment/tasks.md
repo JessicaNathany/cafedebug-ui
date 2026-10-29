@@ -20,8 +20,9 @@
 
 - [x] Upgrade the Railway CLI and import the existing project into IaC without exposing production values.
 - [x] Verify the imported state produces a zero-change plan before adding frontend resources.
-- [ ] Confirm the frontend IaC plan adds only `web` and `admin`, then apply it.
-- [ ] Generate Railway HTTPS domains, configure watch paths, and re-import the resulting state.
+- [ ] Confirm the UI-partial plan affects only `web` and `admin` (live evidence pending).
+- [ ] Operator inspects ownership, transfers frontend ownership if necessary, reviews a fresh plan, then applies separately.
+- [ ] Generate Railway HTTPS domains and verify frontend settings while retaining the `ui` partial; do not run whole-project config pull.
 - [ ] Confirm check suites / Wait for CI and the default `ON_FAILURE` restart policy for both services.
 - [ ] Repository owner configures the protected `production` GitHub environment: `main` deployment branch policy, reviewer Jessica, the project-scoped `RAILWAY_TOKEN`, and the three generated public base-URL variables.
 - [ ] Repository owner configures the `protect-main` ruleset: pull requests, one current approval, resolved conversations, up-to-date branch, `application-gate`, no force pushes/deletions/bypass actors.
@@ -33,3 +34,10 @@
 - [ ] Manually dispatch the IaC plan with the protected token; confirm its redacted artifact has no deletion or destructive change.
 - [ ] After Railway domains exist, manually dispatch production smoke; verify website canonical metadata and sitemap, admin no-index behavior, private API readiness, and an authorized admin read operation.
 - [ ] Record deployed commit IDs, service IDs, domains, and rollback evidence in `workflow-state.md`.
+
+## 4. UI ownership revision (AC-08–12)
+
+- [x] Pin CLI/SDK, compile the `ui` graph with exactly two frontend services (AC-08/09).
+- [x] Add fail-closed plan validation, secret-safe review output, trusted-main/token guards and CI triggers (AC-10).
+- [x] Test valid/invalid plans, graph boundary, redaction and workflow syntax (AC-12).
+- [x] Update owner handoff and rollback guidance; keep live migration and planning pending without authentication (AC-11/12).

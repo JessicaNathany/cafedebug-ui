@@ -11,7 +11,7 @@
 
 Cafe Debug needs a small but production-grade pre-launch deployment for the public
 website and authenticated backoffice. Both apps will run in the existing Railway
-production project with the existing API and MySQL, which are explicitly preserved.
+production project with the existing API and MySQL, which remain external to this repository’s infrastructure ownership.
 
 ## Goals
 
@@ -55,3 +55,11 @@ production project with the existing API and MySQL, which are explicitly preserv
 | AC-05 | The sole required `application-gate` validates workflow syntax, both apps, the running website image, and the admin production image before Railway autodeploys `main`.   |
 | AC-06 | A protected-environment, trusted-main plan creates only a redacted artifact and fails on diagnostics, destructive changes, or deletions.                                  |
 | AC-07 | Manual production smoke verifies generated HTTPS URLs, canonical metadata, no-index behavior, and admin-to-API readiness; a human verifies an authorized admin read flow. |
+
+## UI ownership revision
+
+- AC-08: The stable named partial `ui` declares exactly `service.web` and `service.admin`; API, database, volumes, and backend variables are not declared or managed here.
+- AC-09: CLI 5.71.0 and SDK 3.16.0 compile the UI configuration; frontend settings remain unchanged except explicit source branch `main`.
+- AC-10: Plans fail closed on malformed/unsupported structures, diagnostics, destructive changes, deletions, or any change outside those two services. Safe summaries expose only operation, address, and field names.
+- AC-11: Ownership inspection/transfer, configuration apply, and deployments are documented operator steps, excluded from this implementation PR. Live evidence remains pending until authentication is available.
+- AC-12: CI verifies the partial graph, validator cases, and secret-safe artifacts. Ownership rollback requires a fresh review rather than restoring whole-project configuration blindly.

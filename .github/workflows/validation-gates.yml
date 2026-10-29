@@ -38,6 +38,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Validate Railway ownership and plan safeguards
+        run: pnpm ci:iac
+
       - name: Build website
         run: pnpm ci:web:build
 
