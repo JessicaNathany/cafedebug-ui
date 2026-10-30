@@ -51,8 +51,9 @@ GitHub has three deliberately separate workflow responsibilities:
    cancels superseded pull-request validation only; an in-progress `main` validation is retained
    for Railway Wait for CI.
 2. `Railway IaC Plan` runs only for selected trusted `main` changes or manual dispatch. In the
-   protected GitHub `production` environment it links the fixed Railway project and environment,
-   writes `railway-plan.raw.json`, redacts it to the 14-day artifact, and rejects diagnostics,
+   protected GitHub `production` environment it verifies the project token targets the fixed
+   Railway project and production environment, then uses the token's scope directly to write
+   `railway-plan.raw.json`, redacts it to the 14-day artifact, and rejects diagnostics,
    destructive changes, and every deletion. It has no `apply`, deployment, or mutation command.
 3. `Production Smoke` is manual-only in the same protected environment. It has no Railway token
    and reads `WEB_BASE_URL`, `ADMIN_BASE_URL`, and `API_PUBLIC_BASE_URL` environment variables.

@@ -39,7 +39,7 @@ Ownership transfer changes metadata only; ordinary apply is a separate operation
 ## Workflow responsibilities
 
 - `application-gate` validates the UI graph, plan safety and workflows alongside existing application checks. PR workflows receive no Railway token.
-- `Railway IaC Plan` runs only from `main`, uses the protected `production` environment's project token, and validates the pinned plan before publishing an allowlisted artifact for 14 days. Review output includes operation, resource address and field names, never values or textual diffs. It never applies or changes ownership.
+- `Railway IaC Plan` runs only from `main`, verifies that the protected `production` environment's project token targets the expected project and environment, and uses that token directly for planning. A project token does not need a separate `railway link` step. The workflow validates the pinned plan before publishing an allowlisted artifact for 14 days. Review output includes operation, resource address and field names, never values or textual diffs. It never applies or changes ownership.
 - Manual `Production Smoke` uses the three public URL environment variables and no Railway credential. Human login/read-only acceptance remains required.
 
 Keep one always-on replica per frontend in `ams`, private admin-to-API traffic, secure host-only cookies, and no frontend volumes or database credentials.
