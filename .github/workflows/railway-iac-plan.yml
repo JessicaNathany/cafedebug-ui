@@ -58,10 +58,18 @@ jobs:
       - name: Install Railway CLI
         run: npm install --global @railway/cli@5.71.0
 
-      - name: Link the production project
+      - name: Verify production token scope
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway link --project 8bbaed6f-c14a-400b-b2a6-e4c332c31ed7 --environment production --json
+        run: |
+          set -euo pipefail
+          scope="$(railway api --compact 'query { projectToken { project { id } environment { name } } }')"
+          if ! jq -e --arg project '8bbaed6f-c14a-400b-b2a6-e4c332c31ed7' \
+            '.data.projectToken.project.id == $project and .data.projectToken.environment.name == "production"' \
+            <<< "$scope" > /dev/null; then
+            echo "RAILWAY_TOKEN must target the production environment of the configured Railway project." >&2
+            exit 1
+          fi
 
       - name: Generate Railway plan
         env:

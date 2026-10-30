@@ -35,6 +35,17 @@
   services and confirms no destructive change.
 - Owner-created protected GitHub environment/ruleset, canonical repository push, Railway apply/domain configuration, and production smoke evidence.
 
+## Project-token CI correction — live validation pending
+
+- Canonical run `40977663191` failed at `railway link` with `Unauthorized` after the GitHub
+  `production` secret passed the nonempty guard. Railway CLI `5.71.0` lists workspaces during
+  `link`, which a project-scoped token cannot authorize.
+- The plan workflow now checks the token's project ID and environment name through Railway's
+  `projectToken` query, then runs `railway config plan` using the token's own scope. It does not
+  request broader account or workspace credentials.
+- Local `actionlint`, `pnpm ci:iac`, and scope-guard checks passed. A new protected `main` run is
+  still required to confirm live planning; no plan artifact, apply, or deployment is claimed here.
+
 ## Risks and guardrails
 
 - The existing detached `mysql-volume-uzLX` and active `mysql-volume-r-7X` are not targets.
