@@ -50,6 +50,7 @@ A IaC configura estas variáveis. Conferir em **Variables**:
 | Serviço | Nome | Valor esperado |
 | --- | --- | --- |
 | `web` | `NEXT_PUBLIC_SITE_URL` | `https://${{RAILWAY_PUBLIC_DOMAIN}}` |
+| `web` | `WEB_API_BASE_URL` | `https://cafedebug-backendapi-production.up.railway.app` — API pública para banners e episódios da homepage; evita o fallback local `http://localhost:5105` |
 | `admin` | `ADMIN_API_BASE_URL` | Referência ao domínio privado da API; deve resolver para `http://cafedebug-backendapi.railway.internal:8080` — confirmar no projeto |
 | `admin` | `ADMIN_COOKIE_SECURE` | `true` |
 | `admin` | `ADMIN_COOKIE_SAMESITE` | `Lax` |

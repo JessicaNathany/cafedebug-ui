@@ -23,8 +23,9 @@ for (const resource of definition.resources) {
 }
 const web = definition.resources.find((resource) => resource.name === "web");
 const admin = definition.resources.find((resource) => resource.name === "admin");
-assert.deepEqual(Object.keys(web.variables), ["NEXT_PUBLIC_SITE_URL"]);
+assert.deepEqual(Object.keys(web.variables).sort(), ["NEXT_PUBLIC_SITE_URL", "WEB_API_BASE_URL"]);
 assert.equal(web.variables.NEXT_PUBLIC_SITE_URL.value, "https://${{RAILWAY_PUBLIC_DOMAIN}}");
+assert.equal(web.variables.WEB_API_BASE_URL.value, "https://cafedebug-backendapi-production.up.railway.app");
 assert.deepEqual(Object.keys(admin.variables).sort(), ["ADMIN_API_BASE_URL", "ADMIN_COOKIE_SAMESITE", "ADMIN_COOKIE_SECURE"]);
 assert.equal(admin.variables.ADMIN_API_BASE_URL.value, "http://${{cafedebug-backendapi.RAILWAY_PRIVATE_DOMAIN}}:8080");
 assert.equal(admin.variables.ADMIN_COOKIE_SECURE.value, "true");
