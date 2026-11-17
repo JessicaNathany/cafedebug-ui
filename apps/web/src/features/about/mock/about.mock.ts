@@ -2,14 +2,13 @@ import type { AboutContent } from "../types";
 
 export const mockAboutContent = {
   hero: {
-    eyebrow: "// SOBRE O CAFÉDEBUG",
-    heading: "Café, código e conversas que movem a comunidade dev brasileira.",
+    eyebrow: "// SOBRE O CAFÉ DEBUG",
+    heading: "Café Debug é um podcast dedicado ao universo da ciência e tecnologia.",
     description:
-      "Desde 2018, o CaféDebug reúne pessoas desenvolvedoras de todo o Brasil para falar de carreira, tecnologia, cultura e os bastidores reais de quem constrói software. Um podcast que virou comunidade.",
+      "Desde sua fundação em 2017, o programa tem se destacado por trazer especialistas do setor para discutir uma ampla variedade de tópicos, incluindo desenvolvimento de software, ferramentas tecnológicas, conceitos avançados de arquitetura de software, trajetórias profissionais na tecnologia e na ciência, e muito mais. Junte-se a nós para explorar as últimas tendências e inovações que moldam nosso mundo. Apresentado e criado por Jéssica Nathany.",
     metrics: [
-      { value: "180+", label: "episódios publicados" },
-      { value: "6 anos", label: "no ar, sem pausa" },
-      { value: "320k+", label: "ouvintes na comunidade" }
+      { value: "200+", label: "episódios publicados" },
+      { value: "9 anos", label: "compartilhando conhecimento sobre ciência e tecnologia" }
     ]
   },
   mission: {
@@ -44,16 +43,6 @@ export const mockAboutContent = {
         title: "Carreira sem hype",
         description: "Tecnologia com pé no chão: o que realmente importa para crescer de forma sustentável."
       }
-    ]
-  },
-  impact: {
-    eyebrow: "// IMPACTO NA COMUNIDADE",
-    title: "Números que viraram histórias",
-    metrics: [
-      { id: "listeners", value: "320k+", label: "ouvintes ativos", description: "em todas as plataformas de áudio" },
-      { id: "discord-members", value: "12.4k", label: "membros no Discord", description: "trocando código e vagas diariamente" },
-      { id: "downloads", value: "8.7M", label: "downloads totais", description: "desde o primeiro episódio em 2018" },
-      { id: "jobs", value: "1.2k+", label: "vagas divulgadas", description: "conectando talentos a empresas" }
     ]
   },
   journey: {

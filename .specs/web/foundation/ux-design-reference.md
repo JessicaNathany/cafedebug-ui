@@ -254,7 +254,7 @@ Buttons (`Button/Default` `ZETEA`, `Button/Outline` `4x7RU`, `Button/Secondary`,
   4. **`Empresa`**: `Publicidade`, `Newsletter`, `Imprensa`, `RSS Feed`.
   5. **Newsletter mini** (w300): title **"Newsletter semanal"**, desc **"As melhores discussões
      da semana no seu email."**, email input (`seu@email.com`) + 36×36 primary send button.
-- **Divider** (1px `--border`), then **bottom row:** copyright **"© 2026 CaféDebug. Todos os
+- **Divider** (1px `--border`), then **bottom row:** copyright **"© 2026 Café Debug. Todos os
   direitos reservados."** + legal links **`Privacidade`** · **`Termos`** · **`Cookies`**.
 - Column titles: `--font-primary` 12px/600, letterSpacing 1.5. Links: 14px `--muted-foreground`.
 
@@ -409,7 +409,7 @@ Not in the deliverable list (`spec.md` §3 defers `/episodes`).
 
 ### 4.5 Team Page — `n4YNV`  ·  Contact Page — `hBoyk`  `[Deferred — Phase 3]`
 
-- **Team:** intro (eyebrow **"COMUNIDADE"**, H1 **"As pessoas por trás do CaféDebug"**); three
+- **Team:** intro (eyebrow **"COMUNIDADE"**, H1 **"As pessoas por trás do Café Debug"**); three
   sections — **Apresentadores** ("03 pessoas", 3 Profile Cards), **Contribuidores** ("06 pessoas",
   6 cards), **Comunidade** ("03 pessoas", 3 cards). Section head shows a right-aligned count →
   drive from data length.

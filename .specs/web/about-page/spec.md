@@ -29,9 +29,8 @@ The future page is a mock-only, server-first public route at `/about` with:
 1. The existing shared Homepage Beta Header and Footer shell.
 2. An editorial hero with its three headline metrics.
 3. The purpose narrative and four principle cards.
-4. A community-impact metric surface.
-5. A chronological Café Debug journey.
-6. Metadata, sitemap coverage, keyboard-safe semantics, and dark/light
+4. A chronological Café Debug journey.
+5. Metadata, sitemap coverage, keyboard-safe semantics, and dark/light
    treatment.
 
 All visible repeated data is deterministic local fixture data. The approved
@@ -70,11 +69,15 @@ replaced with live, inferred, or externally researched statistics.
 
 Render, in this order:
 
-- `// SOBRE O CAFÉDEBUG`
-- `Café, código e conversas que movem a comunidade dev brasileira.`
-- `Desde 2018, o CaféDebug reúne pessoas desenvolvedoras de todo o Brasil para
-  falar de carreira, tecnologia, cultura e os bastidores reais de quem constrói
-  software. Um podcast que virou comunidade.`
+- `// SOBRE O CAFÉ DEBUG`
+- `Café Debug é um podcast dedicado ao universo da ciência e tecnologia.`
+- `Desde sua fundação em 2017, o programa tem se destacado por trazer
+  especialistas do setor para discutir uma ampla variedade de tópicos,
+  incluindo desenvolvimento de software, ferramentas tecnológicas, conceitos
+  avançados de arquitetura de software, trajetórias profissionais na
+  tecnologia e na ciência, e muito mais. Junte-se a nós para explorar as
+  últimas tendências e inovações que moldam nosso mundo. Apresentado e criado
+  por Jéssica Nathany.`
 - `180+ episódios publicados`, `6 anos no ar, sem pausa`, and
   `320k+ ouvintes na comunidade`.
 
@@ -97,21 +100,7 @@ The implementation must preserve the asymmetrical desktop editorial header and
 use a single principle-card responsibility rather than four duplicated
 components.
 
-### FR-04 — Community impact
-
-Render the `// IMPACTO NA COMUNIDADE` eyebrow,
-`Números que viraram histórias`, and exactly these deterministic metrics:
-
-| Value | Label | Description |
-| --- | --- | --- |
-| 320k+ | ouvintes ativos | em todas as plataformas de áudio |
-| 12.4k | membros no Discord | trocando código e vagas diariamente |
-| 8.7M | downloads totais | desde o primeiro episódio em 2018 |
-| 1.2k+ | vagas divulgadas | conectando talentos a empresas |
-
-They are display content, not live counters or calculated analytics.
-
-### FR-05 — Journey timeline
+### FR-04 — Journey timeline
 
 Render `// A JORNADA` and
 `De um microfone na cozinha à maior comunidade dev em português` above one
@@ -128,7 +117,7 @@ Each milestone has an accessible year, title, and description. The rail and
 dots are supplementary visual treatment; they cannot be the only way to
 understand sequence or current/starting state.
 
-### FR-06 — Themes and responsive behavior
+### FR-05 — Themes and responsive behavior
 
 - A single token-driven component tree supports both themes; no duplicate
   light/dark About components are allowed.
@@ -141,7 +130,7 @@ understand sequence or current/starting state.
   documented in `design.md` as adaptations until a dedicated Pencil frame
   exists.
 
-### FR-07 — Accessibility and resilience
+### FR-06 — Accessibility and resilience
 
 - Use one `main` landmark, named `section` landmarks where useful, one
   `h1`, and sequential `h2` headings.
@@ -158,7 +147,7 @@ understand sequence or current/starting state.
 
 - Future feature UI, types, fixtures, a local read seam, metadata helper, and
   any page composition live under `apps/web/src/features/about/`.
-- Repeated value cards, impact metrics, and timeline milestones are typed
+- Repeated value cards and timeline milestones are typed
   fixtures. Static page-heading copy may stay in the server page composition.
 - The future `apps/web/src/app/(beta)/about/page.tsx` exposes route metadata
   and delegates rendering; it does not own fixtures, visual logic, or
@@ -185,8 +174,8 @@ understand sequence or current/starting state.
 | --- | --- |
 | AC-01 | `/about` is a thin `(beta)` route with canonical metadata, sitemap coverage, and feature-owned composition/data; it has no direct `fetch`. |
 | AC-02 | The existing shared Beta Header/Footer, canonical `Sobre → /about` navigation, compact menu behavior, theme infrastructure, and global player are reused without duplication or regression. |
-| AC-03 | The desktop dark and light page match the confirmed hero, Mission/Values, Impact, Timeline, and Footer anatomy, copy, hierarchy, token roles, and measured geometry from `MwqyG` / `td6q3`. |
-| AC-04 | Principle cards, impact metrics, and milestones are deterministic typed fixtures in their confirmed order, with no remote/statistical calculation. |
+| AC-03 | The desktop dark and light page match the confirmed hero, Mission/Values, Timeline, and Footer anatomy, copy, hierarchy, token roles, and measured geometry from `MwqyG` / `td6q3`. |
+| AC-04 | Principle cards and milestones are deterministic typed fixtures in their confirmed order, with no remote/statistical calculation. |
 | AC-05 | The timeline remains semantically understandable and visually intact with long text, zoom, keyboard navigation, and assistive technology. |
 | AC-06 | Dark/light at all three required viewports have no horizontal overflow, clipping, unreadable wrapping, theme mismatch, or player obstruction; tablet/mobile outcomes are labeled responsive adaptations. |
 | AC-07 | `web-design-reviewer` compares live browser screenshots with Pencil at every viewport/theme, logs concrete differences in `validation.md`, and completes the correction loop before visual approval. |

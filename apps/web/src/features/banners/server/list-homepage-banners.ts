@@ -88,12 +88,12 @@ export async function listHomepageBanners(): Promise<readonly HomepageBanner[]> 
       primaryCta: null,
       secondaryCta: bannerLink
         ? {
-            label: "Saber mais",
+            label: "Saiba mais",
             action: "external-link",
             href: normalizeUrl(bannerLink)
           }
         : {
-            label: "Saber mais",
+            label: "Saiba mais",
             action: "disabled"
           },
       pencilSourceNodes: { dark: "runtime-api", light: "runtime-api" }

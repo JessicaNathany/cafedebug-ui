@@ -13,17 +13,6 @@ export type AboutValue = {
   title: string;
 };
 
-export const aboutImpactMetricIds = ["listeners", "discord-members", "downloads", "jobs"] as const;
-
-export type AboutImpactMetricId = (typeof aboutImpactMetricIds)[number];
-
-export type AboutImpactMetric = {
-  description: string;
-  id: AboutImpactMetricId;
-  label: string;
-  value: string;
-};
-
 export const aboutMilestoneIds = ["2018", "2019", "2021", "2023", "2026"] as const;
 
 export type AboutMilestoneId = (typeof aboutMilestoneIds)[number];
@@ -46,11 +35,6 @@ export type AboutContent = {
     eyebrow: string;
     heading: string;
     metrics: readonly AboutHeroMetric[];
-  };
-  impact: {
-    eyebrow: string;
-    metrics: readonly AboutImpactMetric[];
-    title: string;
   };
   journey: {
     eyebrow: string;
