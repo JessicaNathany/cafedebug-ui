@@ -30,7 +30,7 @@ export function episodeCollectionJsonLd(episodes: Episode[], baseUrl: string): W
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Episódios do CaféDebug",
+    name: "Episódios do Café Debug",
     url: `${baseUrl}/episodes`,
     mainEntity: {
       "@type": "ItemList",

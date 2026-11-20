@@ -14,7 +14,7 @@ export const mockHomepageEvents: HomepageEvent[] = [
     month: "OUT",
     day: "24",
     format: "PRESENCIAL",
-    title: "CaféDebug Conf 2026",
+    title: "Café Debug Conf 2026",
     locationLabel: "São Paulo, SP"
   },
   {
@@ -30,7 +30,7 @@ export const mockHomepageEvents: HomepageEvent[] = [
     month: "NOV",
     day: "21",
     format: "PRESENCIAL",
-    title: "Meetup CaféDebug Rio",
+    title: "Meetup Café Debug Rio",
     locationLabel: "Rio de Janeiro, RJ"
   }
 ];

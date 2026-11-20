@@ -22,13 +22,13 @@ export async function getEpisodesListMetadata(searchParams: EpisodeListSearchPar
 
   return {
     title: pageTitle,
-    description: "Explore os episódios do CaféDebug sobre carreira, tecnologia e a comunidade de desenvolvimento.",
+    description: "Explore os episódios do Café Debug sobre carreira, tecnologia e a comunidade de desenvolvimento.",
     alternates: { canonical },
     robots: isTransientQuery ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: {
       type: "website",
-      title: "Episódios do CaféDebug",
-      description: "Explore os episódios do CaféDebug sobre carreira, tecnologia e a comunidade de desenvolvimento.",
+      title: "Episódios do Café Debug",
+      description: "Explore os episódios do Café Debug sobre carreira, tecnologia e a comunidade de desenvolvimento.",
       url: canonical
     },
     twitter: { card: "summary_large_image" }

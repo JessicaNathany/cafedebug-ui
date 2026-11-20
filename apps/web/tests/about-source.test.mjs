@@ -11,23 +11,20 @@ const readSource = (file) => readFileSync(join(root, file), "utf8");
 
 test("About fixtures preserve the Pencil content and chronology", () => {
   assert.deepEqual(mockAboutContent.hero.metrics.map((metric) => `${metric.value} ${metric.label}`), [
-    "180+ episódios publicados",
-    "6 anos no ar, sem pausa",
-    "320k+ ouvintes na comunidade"
+    "200+ episódios publicados",
+    "9 anos compartilhando conhecimento sobre ciência e tecnologia"
   ]);
   assert.deepEqual(mockAboutContent.mission.values.map((value) => [value.title, value.icon]), [
-    ["Conversas reais", "mic"],
-    ["Comunidade primeiro", "users"],
-    ["Acesso aberto", "heart"],
-    ["Carreira sem hype", "compass"]
+    ["temas técnicos e não técnicos", "mic"],
+    ["Pense cientificamente", "users"],
+    ["Comunidade", "heart"],
+    ["Carreira", "compass"]
   ]);
-  assert.deepEqual(mockAboutContent.impact.metrics.map((metric) => metric.value), ["320k+", "12.4k", "8.7M", "1.2k+"]);
   assert.deepEqual(mockAboutContent.journey.milestones.map((milestone) => `${milestone.year} ${milestone.title}`), [
-    "2018 O primeiro episódio",
-    "2019 A comunidade nasce",
-    "2021 100 episódios",
-    "2023 Eventos presenciais",
-    "2026 CaféDebug 2.0"
+    "2017 O primeiro episódio",
+    "2021 A comunidade nasce",
+    "2022 Mais de 100 episódios publicados",
+    "2026 Café Debug 2.0"
   ]);
 });
 
@@ -55,26 +52,18 @@ test("About route is thin, indexable, and delegates to the feature server compos
 test("About content uses semantic landmarks and keeps decoration outside the accessibility tree", () => {
   const pageSource = readSource("src/features/about/components/about-page.tsx");
   const valueCardSource = readSource("src/features/about/components/about-value-card.tsx");
-  const metricsSource = readSource("src/features/about/components/about-impact-metrics.tsx");
   const timelineSource = readSource("src/features/about/components/about-timeline.tsx");
 
   assert.match(pageSource, /<main/);
   assert.match(pageSource, /<h1/);
   assert.match(pageSource, /aria-labelledby="about-purpose-title"/);
-  assert.match(pageSource, /aria-labelledby="about-impact-title"/);
   assert.match(pageSource, /aria-labelledby="about-journey-title"/);
   assert.match(pageSource, /about-purpose-title" className="border-y border-border/);
   assert.match(pageSource, /about-journey-title" className="border-t border-border/);
   assert.match(valueCardSource, /<article/);
   assert.match(valueCardSource, /rounded-m border border-border bg-background/);
   assert.match(valueCardSource, /aria-hidden/);
-  assert.match(metricsSource, /<dl/);
-  assert.match(metricsSource, /rounded-m border border-border bg-card/);
-  assert.match(metricsSource, /xl:divide-x xl:divide-border/);
-  assert.match(metricsSource, /<dt/);
-  assert.match(metricsSource, /<dd/);
   assert.match(pageSource, /<dt className="order-2[\s\S]*<dd className="order-1/);
-  assert.match(metricsSource, /<dt className="order-2[\s\S]*<dd className="order-1/);
   assert.match(timelineSource, /<ol/);
   assert.match(timelineSource, /<time/);
   assert.match(timelineSource, /dateTime=\{milestone\.year\}/);
@@ -84,7 +73,6 @@ test("About content uses semantic landmarks and keeps decoration outside the acc
 
 test("About's feature tree is server-first, token-backed, and reflows without page-local shared chrome", () => {
   const featureSources = [
-    "src/features/about/components/about-impact-metrics.tsx",
     "src/features/about/components/about-page.tsx",
     "src/features/about/components/about-timeline.tsx",
     "src/features/about/components/about-value-card.tsx",
