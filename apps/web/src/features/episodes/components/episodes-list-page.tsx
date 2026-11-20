@@ -32,7 +32,7 @@ export function EpisodesListPage({ result }: { result: EpisodeListResult }) {
         </section>
         <section aria-labelledby="episodes-results-title" className="grid gap-10">
           <div className="sr-only">
-            <h2 id="episodes-results-title">Episódios do CaféDebug</h2>
+            <h2 id="episodes-results-title">Episódios do Café Debug</h2>
             <p aria-live="polite">
               {totalItems === 0 ? "Nenhum episódio encontrado" : `${totalItems} ${totalItems === 1 ? "episódio encontrado" : "episódios encontrados"}${totalPages > 1 ? ` · Página ${page} de ${totalPages}` : ""}`}
             </p>

@@ -47,14 +47,14 @@ test("G09 events retain the deterministic o5gLmf agenda fixtures", () => {
     "Online · 19h",
     "24",
     "PRESENCIAL",
-    "CaféDebug Conf 2026",
+    "Café Debug Conf 2026",
     "São Paulo, SP",
     "NOV",
     "08",
     "Live: Carreira internacional para devs",
     "Online · 20h",
     "21",
-    "Meetup CaféDebug Rio",
+    "Meetup Café Debug Rio",
     "Rio de Janeiro, RJ"
   ]) {
     assert.match(source, new RegExp(copy.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));

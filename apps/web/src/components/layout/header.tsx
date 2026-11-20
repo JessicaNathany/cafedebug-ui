@@ -37,10 +37,10 @@ export function Header(props: HeaderProps = {}) {
     <header className={cn(!isBeta && "dark", "relative h-18 border-b border-border bg-background text-foreground")}>
       <div className="flex h-full w-full items-center justify-between gap-4 px-4 sm:px-6 md:px-10">
         <div className="flex min-w-0 items-center gap-3 lg:gap-10">
-          <Link aria-label="CaféDebug" className="inline-flex h-10 shrink-0 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href="/">
+          <Link aria-label="Café Debug" className="inline-flex h-10 shrink-0 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" href="/">
             <Image alt="" aria-hidden className="h-11 w-auto dark:hidden" height={1000} priority src="/logo-Horzt.png" width={2000} />
             <Image alt="" aria-hidden className="hidden h-11 w-auto dark:block" height={1000} priority src="/logo-Horzt3.png" width={2000} />
-            <span className="sr-only">CaféDebug</span>
+            <span className="sr-only">Café Debug</span>
           </Link>
           <MobileNav />
           <Nav />

@@ -11,22 +11,20 @@ const readSource = (file) => readFileSync(join(root, file), "utf8");
 
 test("About fixtures preserve the Pencil content and chronology", () => {
   assert.deepEqual(mockAboutContent.hero.metrics.map((metric) => `${metric.value} ${metric.label}`), [
-    "180+ episódios publicados",
-    "6 anos no ar, sem pausa",
-    "320k+ ouvintes na comunidade"
+    "200+ episódios publicados",
+    "9 anos compartilhando conhecimento sobre ciência e tecnologia"
   ]);
   assert.deepEqual(mockAboutContent.mission.values.map((value) => [value.title, value.icon]), [
-    ["Conversas reais", "mic"],
-    ["Comunidade primeiro", "users"],
-    ["Acesso aberto", "heart"],
-    ["Carreira sem hype", "compass"]
+    ["temas técnicos e não técnicos", "mic"],
+    ["Pense cientificamente", "users"],
+    ["Comunidade", "heart"],
+    ["Carreira", "compass"]
   ]);
   assert.deepEqual(mockAboutContent.journey.milestones.map((milestone) => `${milestone.year} ${milestone.title}`), [
-    "2018 O primeiro episódio",
-    "2019 A comunidade nasce",
-    "2021 100 episódios",
-    "2023 Eventos presenciais",
-    "2026 CaféDebug 2.0"
+    "2017 O primeiro episódio",
+    "2021 A comunidade nasce",
+    "2022 Mais de 100 episódios publicados",
+    "2026 Café Debug 2.0"
   ]);
 });
 

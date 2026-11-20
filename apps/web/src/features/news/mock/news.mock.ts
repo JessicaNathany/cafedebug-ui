@@ -16,7 +16,7 @@ export const mockNewsArticles: NewsArticle[] = [
   {
     slug: "cafedebug-conf-2026-inscricoes-abertas",
     category: "COMUNIDADE",
-    title: "CaféDebug Conf 2026: inscrições abertas",
+    title: "Café Debug Conf 2026: inscrições abertas",
     excerpt: "O maior evento da comunidade dev brasileira volta em outubro, agora em formato híbrido.",
     readTimeLabel: "3 min de leitura",
     artworkUrl: "/mock/news-community.jpg",

@@ -12,7 +12,7 @@ export function AboutPage({ content }: { content: AboutContent }) {
             {content.hero.heading}
           </h1>
           <p className="max-w-[760px] font-secondary text-lg leading-[1.6] text-muted-foreground xl:text-[19px]">{content.hero.description}</p>
-          <dl aria-label="Resumo do CaféDebug" className="flex w-fit flex-col gap-6 pt-7 sm:flex-row sm:gap-8 xl:gap-14">
+          <dl aria-label="Resumo do Café Debug" className="flex w-fit flex-col gap-6 pt-7 sm:flex-row sm:gap-8 xl:gap-14">
             {content.hero.metrics.map((metric) => (
               <div className="flex shrink-0 flex-col gap-1" key={metric.label}>
                 <dt className="order-2 font-secondary text-sm leading-[1.3] text-muted-foreground">{metric.label}</dt>

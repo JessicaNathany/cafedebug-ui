@@ -31,8 +31,10 @@ test("beta footer explicitly inherits the root theme", () => {
 test("site footer preserves Pencil content, typography, a live episodes link, and inert deferred links", () => {
   const source = readSource("src/components/layout/footer.tsx");
 
-  assert.match(source, /font-primary text-\[22px\] font-bold leading-none/);
-  assert.match(source, /Conversas profundas sobre carreira, tecnologia e a comunidade de desenvolvimento\./);
+  assert.match(source, /src="\/Logo-Vert\.png"/);
+  assert.match(source, /src="\/logo-fundo-dark\.png"/);
+  assert.match(source, /sr-only">Café Debug<\/span>/);
+  assert.match(source, /Um podcast sobre ciêcnai e tecnologia/);
   assert.match(source, /font-primary text-xs font-semibold leading-4 tracking-\[1\.5px\] text-card-foreground/);
   assert.match(source, /flex flex-col gap-3\.5 font-secondary text-sm leading-\[1\.3\] text-muted-foreground/);
 
@@ -69,25 +71,31 @@ test("site footer uses the exact Pencil social and newsletter controls", () => {
   const source = readSource("src/components/layout/footer.tsx");
 
   assert.match(source, /import \{ ArrowRight \} from "lucide-react"/);
-  for (const label of ["GitHub", "Twitter", "YouTube", "LinkedIn", "Instagram"]) {
+  for (const label of ["GitHub", "Bluesky", "Discord", "LinkedIn", "Instagram"]) {
     assert.match(source, new RegExp(`label: "${label}"`));
   }
+  assert.match(source, /href: "https:\/\/github\.com\/cafedebug"/);
+  assert.match(source, /href: "https:\/\/bsky\.app\/profile\/cafedebug\.bsky\.social"/);
+  assert.match(source, /href: "https:\/\/discord\.gg\/hGpFPsV2gB"/);
+  assert.match(source, /href: "https:\/\/www\.linkedin\.com\/company\/83067356"/);
+  assert.match(source, /href: "https:\/\/www\.instagram\.com\/cafedebugpodcast\/"/);
   assert.match(source, /inline-flex size-9 items-center justify-center rounded-pill bg-secondary text-muted-foreground/);
-  assert.match(source, /disabled:pointer-events-none disabled:cursor-default disabled:bg-secondary disabled:text-muted-foreground disabled:opacity-100/);
   assert.match(source, /\[&_svg\]:size-4 \[&_svg\]:fill-current/);
   assert.match(source, /h-11 w-full items-center justify-between gap-2 rounded-pill border border-border bg-background py-0 pl-4 pr-1/);
   assert.match(source, /font-secondary text-\[13px\] leading-none text-muted-foreground/);
   assert.match(source, /inline-flex size-9 items-center justify-center rounded-pill bg-primary text-primary-foreground/);
   assert.match(source, /disabled:pointer-events-none disabled:cursor-default disabled:bg-primary disabled:text-primary-foreground disabled:opacity-100/);
   assert.match(source, /<ArrowRight aria-hidden size=\{16\} \/>/);
+  assert.match(source, /target="_blank"/);
+  assert.match(source, /rel="noopener noreferrer"/);
   assert.match(source, /type="button"/);
-  assert.doesNotMatch(source, /size="icon"|variant="secondary"|variant="primary"|↗|Globe|MessageCircle|Radio|Rss/);
+  assert.doesNotMatch(source, /Twitter|YouTube|size="icon"|variant="secondary"|variant="primary"|↗|Globe|MessageCircle|Radio|Rss/);
 });
 
 test("site footer copy-only controls are natively disabled", () => {
   const source = readSource("src/components/layout/footer.tsx");
 
-  assert.match(source, /<button aria-disabled="true" aria-label=\{`\$\{label\} do CaféDebug \(em breve\)`\} className=\{iconButtonClass\} disabled key=\{label\} type="button">/);
+  assert.match(source, /<Link[\s\S]*aria-label=\{`\$\{label\} do Café Debug`\}[\s\S]*href=\{href\}[\s\S]*target="_blank"/);
   assert.match(source, /aria-label="Enviar email da newsletter \(em breve\)"[\s\S]*?disabled[\s\S]*?type="button"/);
 });
 

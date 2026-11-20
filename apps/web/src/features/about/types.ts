@@ -13,7 +13,7 @@ export type AboutValue = {
   title: string;
 };
 
-export const aboutMilestoneIds = ["2018", "2019", "2021", "2023", "2026"] as const;
+export const aboutMilestoneIds = ["2017", "2021", "2022", "2026"] as const;
 
 export type AboutMilestoneId = (typeof aboutMilestoneIds)[number];
 

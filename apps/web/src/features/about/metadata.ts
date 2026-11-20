@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
 const aboutDescription =
-  "Conheça a história, o propósito e a comunidade que fazem do CaféDebug um podcast para pessoas desenvolvedoras brasileiras.";
+  "Conheça a história, o propósito e a comunidade que fazem do Café Debug um podcast para pessoas desenvolvedoras brasileiras.";
 
 export function getAboutMetadata(): Metadata {
   const canonicalUrl = "/about";
 
   return {
-    title: "Sobre o CaféDebug",
+    title: "Sobre o Café Debug",
     description: aboutDescription,
     alternates: {
       canonical: canonicalUrl
@@ -18,7 +18,7 @@ export function getAboutMetadata(): Metadata {
     },
     openGraph: {
       type: "website",
-      title: "Sobre o CaféDebug",
+      title: "Sobre o Café Debug",
       description: aboutDescription,
       url: canonicalUrl
     },

@@ -81,7 +81,7 @@ export async function listHomepageBanners(): Promise<readonly HomepageBanner[]> 
       tabLabel: `BANNER ${String(index + 1).padStart(2, "0")}`,
       eyebrow: "DESTAQUE",
       headline,
-      subtitle: "Saiba mais sobre este destaque no CaféDebug.",
+      subtitle: "Saiba mais sobre este destaque no Café Debug.",
       imageUrl: normalizeUrl(image),
       imagePosition: "center",
       sourcePhotoUrl: normalizeUrl(image),

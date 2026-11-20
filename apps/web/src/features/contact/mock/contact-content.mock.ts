@@ -12,31 +12,31 @@ export const contactSubjectOptions = [
 
 export const contactSocialLinks = [
   {
-    accessibleName: "GitHub do CaféDebug",
+    accessibleName: "GitHub do Café Debug",
     displayValue: "@cafedebug",
     platform: "github",
     url: "https://example.com/cafedebug/github"
   },
   {
-    accessibleName: "X do CaféDebug",
+    accessibleName: "X do Café Debug",
     displayValue: "@cafedebugcast",
     platform: "x",
     url: "https://example.com/cafedebug/x"
   },
   {
-    accessibleName: "YouTube do CaféDebug",
+    accessibleName: "YouTube do Café Debug",
     displayValue: "/cafedebug",
     platform: "youtube",
     url: "https://example.com/cafedebug/youtube"
   },
   {
-    accessibleName: "LinkedIn do CaféDebug",
+    accessibleName: "LinkedIn do Café Debug",
     displayValue: "/company/cafedebug",
     platform: "linkedin",
     url: "https://example.com/cafedebug/linkedin"
   },
   {
-    accessibleName: "Instagram do CaféDebug",
+    accessibleName: "Instagram do Café Debug",
     displayValue: "@cafedebug",
     platform: "instagram",
     url: "https://example.com/cafedebug/instagram"
@@ -44,13 +44,13 @@ export const contactSocialLinks = [
 ] as const satisfies readonly ContactSocialLink[];
 
 export const discordCommunityLink = {
-  accessibleName: "Entrar no Discord do CaféDebug",
+  accessibleName: "Entrar no Discord do Café Debug",
   url: "https://example.com/cafedebug/discord"
 } as const;
 
 export const businessContacts = [
   {
-    description: "Quer apoiar o CaféDebug ou propor uma collab? Fale com nosso time e receba o nosso mídia kit completo.",
+    description: "Quer apoiar o Café Debug ou propor uma collab? Fale com nosso time e receba o nosso mídia kit completo.",
     email: "parcerias@cafedebug.com.br",
     id: "partnerships",
     title: "Parcerias & Patrocínios"

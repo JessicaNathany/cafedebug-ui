@@ -113,7 +113,7 @@ export function BannerCarousel({ banners, featuredEpisode }: BannerCarouselProps
   }
 
   return (
-    <section aria-label="Destaques do CaféDebug" aria-roledescription="carousel" className="w-full max-w-[728px]" role="region">
+    <section aria-label="Destaques do Café Debug" aria-roledescription="carousel" className="w-full max-w-[728px]" role="region">
       <div className="relative h-[420px] overflow-hidden rounded-[var(--radius-m)] bg-secondary sm:aspect-[91/65] sm:h-auto lg:h-[520px] lg:aspect-auto">
         {banners.map((banner, index) => {
           const PrimaryIcon = ctaIcons[index] ?? Play;

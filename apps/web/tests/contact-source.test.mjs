@@ -97,7 +97,7 @@ test("Contact sidebar and business cards retain the corrected Pencil content ana
   assert.match(pageSource, /text-lg font-semibold/);
   assert.match(pageSource, /className="mt-auto inline-flex min-h-10 items-center gap-2 self-start font-primary text-sm font-medium text-primary/);
   assert.doesNotMatch(pageSource, /underline decoration-primary/);
-  assert.match(fixtureSource, /Quer apoiar o CaféDebug ou propor uma collab\? Fale com nosso time e receba o nosso mídia kit completo\./);
+  assert.match(fixtureSource, /Quer apoiar o Café Debug ou propor uma collab\? Fale com nosso time e receba o nosso mídia kit completo\./);
   assert.match(fixtureSource, /Spots no episódio, posts patrocinados e campanhas para alcançar milhares de devs em todo o Brasil\./);
 });
 
