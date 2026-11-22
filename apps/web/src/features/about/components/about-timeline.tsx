@@ -2,7 +2,7 @@ import type { AboutMilestone } from "../types";
 
 export function AboutTimeline({ milestones }: { milestones: readonly AboutMilestone[] }) {
   return (
-    <ol aria-label="Linha do tempo do CaféDebug" className="flex min-w-0 flex-col">
+    <ol aria-label="Linha do tempo do Café Debug" className="flex min-w-0 flex-col">
       {milestones.map((milestone, index) => {
         const isFirst = index === 0;
         const isLast = index === milestones.length - 1;

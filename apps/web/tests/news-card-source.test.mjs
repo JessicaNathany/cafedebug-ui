@@ -40,7 +40,7 @@ test("G08 fixtures retain inspected Pencil copy and local visual assets", () => 
   assert.match(source, /readTimeLabel: "4 min de leitura"/);
   assert.match(source, /category: "COMUNIDADE"/);
   assert.match(source, /authorName: "Pedro Antunes"/);
-  assert.match(source, /CaféDebug Conf 2026: inscrições abertas/);
+  assert.match(source, /Café Debug Conf 2026: inscrições abertas/);
   assert.match(source, /O maior evento da comunidade dev brasileira volta em outubro, agora em formato híbrido\./);
   assert.match(source, /readTimeLabel: "3 min de leitura"/);
 

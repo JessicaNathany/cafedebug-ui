@@ -120,7 +120,7 @@ function ContactForm() {
 
 function ContactSidebar() {
   return (
-    <aside className="grid gap-6" aria-label="Canais da comunidade CaféDebug">
+    <aside className="grid gap-6" aria-label="Canais da comunidade Café Debug">
       <section aria-labelledby="discord-title" className="flex min-h-[338px] flex-col rounded-m border border-border bg-card p-6 text-card-foreground shadow-pencil-subtle lg:p-8">
         <span aria-hidden className="inline-flex size-12 items-center justify-center rounded-m bg-secondary text-primary"><MessageCircle size={22} /></span>
         <div className="mt-6 grid gap-3">
@@ -157,7 +157,7 @@ function BusinessContacts() {
       <div className="grid max-w-160 gap-3">
         <p className="font-primary text-[13px] font-semibold leading-[1.4] tracking-[2px] text-primary">PARA EMPRESAS</p>
         <h2 className="font-secondary text-[26px] font-bold leading-[1.2]" id="business-contact-title">Para empresas</h2>
-        <p className="font-secondary text-base leading-[1.6] text-muted-foreground">Oportunidades comerciais e de mídia com o CaféDebug.</p>
+        <p className="font-secondary text-base leading-[1.6] text-muted-foreground">Oportunidades comerciais e de mídia com o Café Debug.</p>
       </div>
       <div className="grid gap-6 lg:grid-cols-2">
         {businessContacts.map((contact) => {

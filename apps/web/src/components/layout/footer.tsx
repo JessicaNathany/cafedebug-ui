@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -27,8 +28,9 @@ const footerColumns = [
   { title: "Empresa", links: [{ label: "Publicidade" }, { label: "Newsletter" }, { label: "Imprensa" }, { label: "RSS Feed" }] }
 ] as const;
 
-const socialLinks: Array<{ icon: ReactNode; label: string }> = [
+const socialLinks: Array<{ href: string; icon: ReactNode; label: string }> = [
   {
+    href: "https://github.com/cafedebug",
     icon: (
       <svg aria-hidden viewBox="0 0 16 16">
         <path d="M8 0C3.6 0 0 3.7 0 8.2c0 3.6 2.3 6.6 5.5 7.7.4.1.5-.2.5-.4v-1.4c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.1-.9-1.1-.7-.5.1-.5.1-.5.8.1 1.2.9 1.2.9.7 1.2 1.8.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.2-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.5 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.2 0 3.1-1.9 3.8-3.6 4 .3.2.5.7.5 1.4v2.1c0 .2.1.5.5.4A8.2 8.2 0 0 0 16 8.2C16 3.7 12.4 0 8 0Z" />
@@ -37,22 +39,25 @@ const socialLinks: Array<{ icon: ReactNode; label: string }> = [
     label: "GitHub"
   },
   {
+    href: "https://bsky.app/profile/cafedebug.bsky.social",
     icon: (
       <svg aria-hidden viewBox="0 0 16 16">
-        <path d="M16 3.1c-.6.3-1.2.4-1.9.5.7-.4 1.2-1.1 1.4-1.9-.6.4-1.3.6-2.1.8a3.3 3.3 0 0 0-5.6 3c-2.7-.1-5.1-1.4-6.7-3.4-.3.5-.4 1.1-.4 1.7 0 1.1.6 2.1 1.4 2.7-.5 0-1-.2-1.5-.4v.1c0 1.6 1.1 2.9 2.6 3.2-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.2 3 2.3A6.6 6.6 0 0 1 0 13.7 9.3 9.3 0 0 0 5 15.2c6 0 9.3-5 9.3-9.4v-.4c.7-.5 1.2-1 1.7-1.7Z" />
+        <path d="M3.8 2.2c1.5 1.1 3.1 3.2 4.2 5.4 1-2.2 2.7-4.3 4.2-5.4 1.1-.8 3-.9 3 1.2 0 .4-.2 3.2-.3 3.8-.4 2-1.8 2.5-3.1 2.3 2.2.4 2.8 1.6 1.6 2.9-2.3 2.5-3.3-.6-3.6-1.4-.1-.2-.1-.3-.2-.3s-.1.1-.2.3c-.3.8-1.3 3.9-3.6 1.4-1.2-1.3-.6-2.5 1.6-2.9-1.3.2-2.7-.3-3.1-2.3-.1-.6-.3-3.4-.3-3.8 0-2.1 1.9-2 3-1.2Z" />
       </svg>
     ),
-    label: "Twitter"
+    label: "Bluesky"
   },
   {
+    href: "https://discord.gg/hGpFPsV2gB",
     icon: (
       <svg aria-hidden viewBox="0 0 16 16">
-        <path d="M15.7 4.4a2 2 0 0 0-1.4-1.5C13 2.6 8 2.6 8 2.6s-5 0-6.3.3A2 2 0 0 0 .3 4.4 20.3 20.3 0 0 0 0 8a20.3 20.3 0 0 0 .3 3.6 2 2 0 0 0 1.4 1.5c1.3.3 6.3.3 6.3.3s5 0 6.3-.3a2 2 0 0 0 1.4-1.5A20.3 20.3 0 0 0 16 8a20.3 20.3 0 0 0-.3-3.6ZM6.4 10.3V5.7L10.6 8l-4.2 2.3Z" />
+        <path d="M13.4 3.1A12.2 12.2 0 0 0 10.6 2c-.1.2-.3.6-.4.9a11.3 11.3 0 0 0-4.4 0c-.1-.3-.3-.7-.4-.9a12.4 12.4 0 0 0-2.8 1.1C.8 5.3.2 7.4.4 9.6a12.4 12.4 0 0 0 3.5 1.8c.3-.4.6-.8.8-1.2-.4-.2-.8-.4-1.1-.6l.3-.2c2.1 1 4.4 1 6.5 0l.3.2c-.3.2-.7.4-1.1.6.2.4.5.8.8 1.2a12.4 12.4 0 0 0 3.5-1.8c.3-2.4-.3-4.4-1.9-6.5ZM5.5 8.8c-.6 0-1-.5-1-1s.4-1 1-1 1 .5 1 1-.4 1-1 1Zm5 0c-.6 0-1-.5-1-1s.4-1 1-1 1 .5 1 1-.4 1-1 1Z" />
       </svg>
     ),
-    label: "YouTube"
+    label: "Discord"
   },
   {
+    href: "https://www.linkedin.com/company/83067356",
     icon: (
       <svg aria-hidden viewBox="0 0 16 16">
         <path d="M3.6 5.3H.5V16h3.1V5.3ZM2 0C.9 0 .2.7.2 1.7c0 1 .7 1.7 1.8 1.7s1.8-.7 1.8-1.7C3.8.7 3.1 0 2 0Zm13.9 9.9c0-3.3-1.8-4.9-4.1-4.9-1.9 0-2.7 1-3.2 1.8V5.3h-3V16h3.1v-6c0-.3 0-.6.1-.9.2-.6.8-1.2 1.7-1.2 1.2 0 1.7.9 1.7 2.3V16h3.1V9.9Z" />
@@ -61,6 +66,7 @@ const socialLinks: Array<{ icon: ReactNode; label: string }> = [
     label: "LinkedIn"
   },
   {
+    href: "https://www.instagram.com/cafedebugpodcast/",
     icon: (
       <svg aria-hidden viewBox="0 0 16 16">
         <path d="M8 3.9A4.1 4.1 0 1 0 8 12a4.1 4.1 0 0 0 0-8.1Zm0 6.6A2.5 2.5 0 1 1 8 5.5a2.5 2.5 0 0 1 0 5Zm5.3-6.8a1 1 0 1 1-1.9 0 1 1 0 0 1 1.9 0Z" />
@@ -72,7 +78,7 @@ const socialLinks: Array<{ icon: ReactNode; label: string }> = [
 ];
 
 const iconButtonClass =
-  "inline-flex size-9 items-center justify-center rounded-pill bg-secondary text-muted-foreground transition-colors hover:text-secondary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:cursor-default disabled:bg-secondary disabled:text-muted-foreground disabled:opacity-100 [&_svg]:size-4 [&_svg]:fill-current";
+  "inline-flex size-9 items-center justify-center rounded-pill bg-secondary text-muted-foreground transition-colors hover:text-secondary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&_svg]:size-4 [&_svg]:fill-current";
 
 export type FooterVariant = "beta" | "fixed-dark";
 
@@ -86,17 +92,24 @@ export function Footer({ variant = "fixed-dark" }: { variant?: FooterVariant }) 
     >
       <div className="grid w-full gap-10 md:grid-cols-2 xl:h-36 xl:w-[calc(100vw-5rem)] xl:flex xl:justify-between xl:gap-16">
         <section className="flex max-w-80 flex-col gap-4 xl:w-80 xl:max-w-none">
-          <p className="font-primary text-[22px] font-bold leading-none">
-            Café<span className="text-primary">Debug</span>
-          </p>
-          <p className="font-secondary text-sm leading-[1.6] text-muted-foreground">
-            Conversas profundas sobre carreira, tecnologia e a comunidade de desenvolvimento.
-          </p>
+          <div aria-label="Café Debug" className="inline-flex h-24 shrink-0 items-center">
+            <Image alt="" aria-hidden className="h-24 w-auto dark:hidden" height={768} src="/Logo-Vert.png" width={768} />
+            <Image alt="" aria-hidden className="hidden h-24 w-auto dark:block" height={768} src="/logo-fundo-dark.png" width={768} />
+            <span className="sr-only">Café Debug</span>
+          </div>
+          <p className="font-secondary text-sm leading-[1.6] text-muted-foreground">Um podcast sobre ciêcnai e tecnologia</p>
           <div className="flex items-center gap-2.5">
-            {socialLinks.map(({ icon, label }) => (
-              <button aria-disabled="true" aria-label={`${label} do CaféDebug (em breve)`} className={iconButtonClass} disabled key={label} type="button">
+            {socialLinks.map(({ href, icon, label }) => (
+              <Link
+                aria-label={`${label} do Café Debug`}
+                className={iconButtonClass}
+                href={href}
+                key={label}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 {icon}
-              </button>
+              </Link>
             ))}
           </div>
         </section>
@@ -152,7 +165,7 @@ export function Footer({ variant = "fixed-dark" }: { variant?: FooterVariant }) 
       <div className="h-px w-full shrink-0 bg-border xl:w-[calc(100vw-5rem)]" />
 
       <div className="flex w-full flex-col gap-4 font-secondary text-[13px] leading-[1.3] text-muted-foreground md:flex-row md:items-center md:justify-between xl:w-[calc(100vw-5rem)]">
-        <p>© 2026 CaféDebug. Todos os direitos reservados.</p>
+        <p>© 2026 Café Debug. Todos os direitos reservados.</p>
         <div className="flex flex-wrap items-center gap-5">
           <span aria-disabled="true">Privacidade</span>
           <span aria-disabled="true">Termos</span>

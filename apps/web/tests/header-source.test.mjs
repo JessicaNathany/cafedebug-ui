@@ -63,9 +63,14 @@ test("site navigation preserves allowed links and inert placeholders", () => {
 test("site header composes the compact trigger after the wordmark and keeps the desktop breakpoint", () => {
   const headerSource = readSource("src/components/layout/header.tsx");
 
+  assert.match(headerSource, /import Image from "next\/image"/);
   assert.match(headerSource, /import \{ MobileNav \} from "@\/components\/layout\/mobile-nav"/);
   assert.match(headerSource, /flex min-w-0 items-center gap-3 lg:gap-10/);
   assert.match(headerSource, /<\/Link>\s*<MobileNav \/>\s*<Nav \/>/);
   assert.match(headerSource, /flex shrink-0 items-center gap-3\.5/);
-  assert.match(headerSource, /inline-flex h-10 shrink-0 items-center font-primary/, "the logo link must keep a 40px touch target");
+  assert.match(headerSource, /inline-flex h-10 shrink-0 items-center/, "the logo link must keep a 40px touch target");
+  assert.match(headerSource, /src="\/logo-Horzt\.png"/);
+  assert.match(headerSource, /src="\/logo-Horzt3\.png"/);
+  assert.match(headerSource, /dark:hidden/);
+  assert.match(headerSource, /dark:block/);
 });

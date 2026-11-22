@@ -36003,7 +36003,7 @@
                       "fill": "$--muted-foreground",
                       "textGrowth": "fixed-width",
                       "width": 680,
-                      "content": "Meetups, workshops e encontros presenciais do CaféDebug. Participe ao vivo ou assista às gravações.",
+                      "content": "Meetups, workshops e encontros presenciais do Café Debug. Participe ao vivo ou assista às gravações.",
                       "lineHeight": 1.6,
                       "fontFamily": "$--font-secondary",
                       "fontSize": 16,
@@ -36790,7 +36790,7 @@
                                       "fill": "$--foreground",
                                       "textGrowth": "fixed-width",
                                       "width": "fill_container",
-                                      "content": "CaféDebug Live • São Paulo",
+                                      "content": "Café Debug Live • São Paulo",
                                       "lineHeight": 1.3,
                                       "fontFamily": "$--font-secondary",
                                       "fontSize": 18,
@@ -37488,7 +37488,7 @@
       "id": "CCkvq",
       "x": 22000,
       "y": 4200,
-      "name": "CaféDebug 2.0 • About + Advertisement (Light Content)",
+      "name": "Café Debug 2.0 • About + Advertisement (Light Content)",
       "theme": {
         "Mode": "Dark"
       },
@@ -42473,7 +42473,7 @@
                                           "id": "ICUgw",
                                           "name": "label",
                                           "fill": "#FFFFFF",
-                                          "content": "Saber mais",
+                                          "content": "Saiba mais",
                                           "fontFamily": "$--font-secondary",
                                           "fontSize": 15,
                                           "fontWeight": "500"
@@ -45347,7 +45347,7 @@
                                           "id": "sdIH5",
                                           "name": "label",
                                           "fill": "#FFFFFF",
-                                          "content": "Saber mais",
+                                          "content": "Saiba mais",
                                           "fontFamily": "$--font-secondary",
                                           "fontSize": 15,
                                           "fontWeight": "500"

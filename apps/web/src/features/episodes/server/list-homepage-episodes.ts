@@ -171,7 +171,7 @@ function mapApiEpisodeToHomepage(entry: z.infer<typeof apiEpisodeSchema>, index:
     plays: "N/A",
     audioUrl: normalizeUrl(audioUrl),
     artworkUrl: normalizeUrl(imageUrl),
-    guestName: "Convidado CaféDebug",
+    guestName: "Convidado Café Debug",
     guestAvatarUrl: normalizeUrl(imageUrl),
     guestRole: "Convidado(a)",
     showNotesHtml: `<p>${summary}</p>`

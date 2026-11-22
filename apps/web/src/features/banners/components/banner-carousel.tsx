@@ -113,7 +113,7 @@ export function BannerCarousel({ banners, featuredEpisode }: BannerCarouselProps
   }
 
   return (
-    <section aria-label="Destaques do CaféDebug" aria-roledescription="carousel" className="w-full max-w-[728px]" role="region">
+    <section aria-label="Destaques do Café Debug" aria-roledescription="carousel" className="w-full max-w-[728px]" role="region">
       <div className="relative h-[420px] overflow-hidden rounded-[var(--radius-m)] bg-secondary sm:aspect-[91/65] sm:h-auto lg:h-[520px] lg:aspect-auto">
         {banners.map((banner, index) => {
           const PrimaryIcon = ctaIcons[index] ?? Play;
@@ -146,8 +146,6 @@ export function BannerCarousel({ banners, featuredEpisode }: BannerCarouselProps
                   <span aria-hidden className="size-[7px] rounded-pill bg-primary" />
                   <span>{banner.eyebrow}</span>
                 </div>
-                <h1 className="max-w-[656px] font-secondary text-[32px] font-bold leading-[1.12] sm:text-[38px] lg:text-[42px]">{banner.headline}</h1>
-                <p className="max-w-[520px] font-secondary text-sm leading-[1.5] text-white/85 sm:text-[15px]">{banner.subtitle}</p>
                 <div className="grid gap-3 sm:flex sm:flex-wrap">
                   <CarouselCta cta={banner.primaryCta} episode={featuredEpisode} icon={PrimaryIcon} primary />
                   <CarouselCta cta={banner.secondaryCta} episode={featuredEpisode} primary={false} />

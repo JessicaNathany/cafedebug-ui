@@ -1,4 +1,3 @@
-import { AboutImpactMetrics } from "./about-impact-metrics";
 import { AboutTimeline } from "./about-timeline";
 import { AboutValueCard } from "./about-value-card";
 import type { AboutContent } from "../types";
@@ -13,7 +12,7 @@ export function AboutPage({ content }: { content: AboutContent }) {
             {content.hero.heading}
           </h1>
           <p className="max-w-[760px] font-secondary text-lg leading-[1.6] text-muted-foreground xl:text-[19px]">{content.hero.description}</p>
-          <dl aria-label="Resumo do CaféDebug" className="flex w-fit flex-col gap-6 pt-7 sm:flex-row sm:gap-8 xl:gap-14">
+          <dl aria-label="Resumo do Café Debug" className="flex w-fit flex-col gap-6 pt-7 sm:flex-row sm:gap-8 xl:gap-14">
             {content.hero.metrics.map((metric) => (
               <div className="flex shrink-0 flex-col gap-1" key={metric.label}>
                 <dt className="order-2 font-secondary text-sm leading-[1.3] text-muted-foreground">{metric.label}</dt>
@@ -41,18 +40,6 @@ export function AboutPage({ content }: { content: AboutContent }) {
           <div className="grid min-w-0 grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
             {content.mission.values.map((value) => <AboutValueCard key={value.id} value={value} />)}
           </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="about-impact-title" className="px-4 py-16 sm:px-6 md:px-10 md:py-20 xl:min-h-[444px] xl:px-25">
-        <div className="mx-auto flex w-full min-w-0 max-w-[1240px] flex-col gap-9">
-          <div className="flex max-w-[680px] flex-col gap-3">
-            <p className="font-primary text-[13px] font-semibold leading-[1.3] tracking-[1.5px] text-primary">{content.impact.eyebrow}</p>
-            <h2 className="font-secondary text-3xl font-bold leading-[1.15] text-foreground xl:text-[36px]" id="about-impact-title">
-              {content.impact.title}
-            </h2>
-          </div>
-          <AboutImpactMetrics metrics={content.impact.metrics} />
         </div>
       </section>
 
