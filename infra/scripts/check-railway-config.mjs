@@ -26,7 +26,7 @@ const admin = definition.resources.find((resource) => resource.name === "admin")
 assert.deepEqual(Object.keys(web.variables), ["NEXT_PUBLIC_SITE_URL"]);
 assert.equal(web.variables.NEXT_PUBLIC_SITE_URL.value, "https://${{RAILWAY_PUBLIC_DOMAIN}}");
 assert.deepEqual(Object.keys(admin.variables).sort(), ["ADMIN_API_BASE_URL", "ADMIN_COOKIE_SAMESITE", "ADMIN_COOKIE_SECURE"]);
-assert.equal(admin.variables.ADMIN_API_BASE_URL.value, "http://${{cafedebug-backendapi.RAILWAY_PRIVATE_DOMAIN}}:8080");
+assert.equal(admin.variables.ADMIN_API_BASE_URL.value, "http://${{cafedebug-backend.api.RAILWAY_PRIVATE_DOMAIN}}:8080");
 assert.equal(admin.variables.ADMIN_COOKIE_SECURE.value, "true");
 assert.equal(admin.variables.ADMIN_COOKIE_SAMESITE.value, "Lax");
 console.log("Railway ui partial: exactly web/admin; frontend deployment contracts verified.");
