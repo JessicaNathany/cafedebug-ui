@@ -40,6 +40,7 @@ export default defineRailway(() => {
     networking: { privateNetworkEndpoint: "web" },
     env: {
       NEXT_PUBLIC_SITE_URL: "https://${{RAILWAY_PUBLIC_DOMAIN}}",
+      WEB_API_BASE_URL: "https://cafedebug-backendapi-production.up.railway.app",
     },
   });
   const admin = service("admin", {

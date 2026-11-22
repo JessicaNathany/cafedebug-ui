@@ -13,7 +13,9 @@ Internet -> admin (Railway HTTPS domain, application authentication)
 admin -> cafedebug-backendapi.railway.internal:8080 -> cafedebugdb
 ```
 
-`web` remains fixture-backed. `admin` keeps browser traffic same-origin and sends
+The deployed `web` homepage reads public banners and episodes from the API through
+`WEB_API_BASE_URL`; remaining fixture-backed features retain their existing behavior.
+`admin` keeps browser traffic same-origin and sends
 authenticated backend requests from its server layer, so no browser-visible API URL or
 database credential is introduced.
 
@@ -33,7 +35,10 @@ database credential is introduced.
 
 - `.railway/railway.ts` exports the named partial `ui` and declares only `web` and `admin`. API, MySQL, volumes, and backend variables remain external. CLI 5.71.0 / SDK 3.16.0 support the ownership boundary.
 - `web` receives its generated Railway public domain as `NEXT_PUBLIC_SITE_URL` at build
-  time. `admin` receives only the API's private URL and secure cookie policy.
+  time, and `WEB_API_BASE_URL=https://cafedebug-backendapi-production.up.railway.app`
+  for homepage API requests instead of the localhost development fallback.
+  Validate the compiled web variable contract with `pnpm ci:iac` before applying.
+  `admin` receives only the API's private URL and secure cookie policy.
 - Each frontend has one `ams` replica, a 120-second health timeout, 20 seconds of overlap,
   30 seconds of draining, an explicit `ON_FAILURE` restart policy, and App Sleep disabled.
 - IaC selects each service-specific Dockerfile and narrow watch paths while retaining the
