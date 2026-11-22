@@ -68,7 +68,7 @@ export default defineRailway(() => {
     networking: { privateNetworkEndpoint: "admin" },
     env: {
       ADMIN_API_BASE_URL:
-        "http://${{cafedebug-backendapi.RAILWAY_PRIVATE_DOMAIN}}:8080",
+        "http://${{cafedebug-backend.api.RAILWAY_PRIVATE_DOMAIN}}:8080",
       ADMIN_COOKIE_SAMESITE: "Lax",
       ADMIN_COOKIE_SECURE: "true",
     },
